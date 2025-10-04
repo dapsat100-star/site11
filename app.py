@@ -1,22 +1,25 @@
-# app.py — MAVIPE Space Systems · Landing com HERO YouTube (full-bleed, estilo DAP)
-# Coloque na MESMA pasta: app.py, logo-mavipe.jpeg
+# -*- coding: utf-8 -*-
+# app.py — MAVIPE Space Systems · Landing com HERO YouTube + logo JPEG
+
 import streamlit as st
 from urllib.parse import quote
 
+# ================== CONFIG ==================
 st.set_page_config(
     page_title="MAVIPE Space Systems — DAP ATLAS",
-    page_icon="logo-mavipe.jpeg",
+    page_icon="logo-mavipe.jpeg",  # ✅ logo jpeg
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
-# ========= CONFIG DO VÍDEO (YouTube) =========
-YOUTUBE_ID = "Ulrl6TFaWtA"  # do link https://youtu.be/Ulrl6TFaWtA
+YOUTUBE_ID = "Ulrl6TFaWtA"  # link: https://youtu.be/Ulrl6TFaWtA
 
 # ================== CSS ==================
 st.markdown("""
 <style>
-html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221; overflow-x:hidden; }
+html, body, [data-testid="stAppViewContainer"] {
+  height:100%; background:#0b1221; overflow-x:hidden;
+}
 #MainMenu, header, footer {visibility:hidden;}
 .block-container { padding:0 !important; max-width:100% !important; }
 
@@ -46,12 +49,11 @@ html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221
   position:relative; height:100vh; min-height:640px; width:100vw;
   left:50%; right:50%; margin-left:-50vw; margin-right:-50vw; overflow:hidden;
 }
-/* O iframe precisa cobrir toda a tela mantendo proporção 16:9 — truque de 177.777vw */
 #yt-hero {
   position: absolute; top:50%; left:50%;
-  width: 177.777vw; height: 100vh;  /* 100 * (16/9) = 177.777 */
+  width: 177.777vw; height: 100vh;
   transform: translate(-50%, -50%);
-  pointer-events: none; /* desativa interação com o player */
+  pointer-events: none;
 }
 .hero-overlay {
   position: absolute; inset:0;
@@ -79,7 +81,6 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 .card {border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:18px; background:#0f1830;}
 .grid3 { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
 
-/* Responsivo */
 @media (max-width:980px){
   .grid3{ grid-template-columns:1fr; }
   .navbar{padding:12px 18px}
@@ -92,7 +93,7 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 st.markdown("""
 <div class="navbar">
   <div class="nav-left">
-    <img src="logo-mavipe.jpeg" alt="logo"/>
+    <img src="logo-mavipe.jpeg" alt="logo"/>  <!-- ✅ aqui .jpeg -->
     <div class="brand">MAVIPE Space Systems</div>
   </div>
   <div class="nav-right">
@@ -104,7 +105,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ================== HERO (YouTube embed) ==================
+# ================== HERO YouTube ==================
 st.markdown(f"""
 <div class="hero-wrapper">
   <iframe id="yt-hero"
@@ -159,20 +160,21 @@ st.header("Setores / Casos de uso")
 st.markdown("- Óleo & Gás • Portos e Costas • Mineração • Defesa & Segurança • Monitoramento Ambiental.")
 st.markdown("</div>", unsafe_allow_html=True)
 
+# ================== CONTATO ==================
 st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Agendar demo")
 col1, col2 = st.columns(2)
 with col1:
-    nome = st.text_input("Seu nome")
-    email = st.text_input("E-mail corporativo")
+  nome = st.text_input("Seu nome")
+  email = st.text_input("E-mail corporativo")
 with col2:
-    org = st.text_input("Organização")
-    phone = st.text_input("WhatsApp/Telefone (opcional)")
+  org = st.text_input("Organização")
+  phone = st.text_input("WhatsApp/Telefone (opcional)")
 msg = st.text_area("Qual desafio você quer resolver?")
 if st.button("Enviar e-mail"):
-    subject = "MAVIPE — Agendar demo"
-    body = f"Nome: {nome}\\nEmail: {email}\\nOrg: {org}\\nTelefone: {phone}\\nMensagem:\\n{msg}"
-    st.success("Clique abaixo para abrir seu e-mail:")
-    st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
+  subject = "MAVIPE — Agendar demo"
+  body = f"Nome: {nome}\\nEmail: {email}\\nOrg: {org}\\nTelefone: {phone}\\nMensagem:\\n{msg}"
+  st.success("Clique abaixo para abrir seu e-mail:")
+  st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
