@@ -1,4 +1,4 @@
-# app.py — MAVIPE Landing Page (Hero YouTube + Logo Base64 + Seção Empresa com st.image)
+# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Empresa com Carrossel)
 import base64
 from pathlib import Path
 from urllib.parse import quote
@@ -9,50 +9,53 @@ st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=No
 
 # ================== CONFIG ==================
 YOUTUBE_ID = "Ulrl6TFaWtA"
-
-# Opções aceitas para as imagens da seção Empresa (ordem de prioridade)
-EMPRESA1_CANDIDATES = [
-    "empresa1.jpg", "empresa1.jpeg", "empresa1.png",
-    "empresa a1.jpg", "empresa a1.jpeg", "empresa a1.png",
-    "empresa_a1.jpg", "empresa_a1.jpeg", "empresa_a1.png",
-]
-EMPRESA2_CANDIDATES = [
-    "empresa2.jpg", "empresa2.jpeg", "empresa2.png",
-    "empresa a2.jpg", "empresa a2.jpeg", "empresa a2.png",
-    "empresa_a2.jpg", "empresa_a2.jpeg", "empresa_a2.png",
-]
-EMPRESA3_CANDIDATES = [
-    "empresa3.jpg", "empresa3.jpeg", "empresa3.png",
-    "empresa a3.jpg", "empresa a3.jpeg", "empresa a3.png",
-    "empresa_a3.jpg", "empresa_a3.jpeg", "empresa_a3.png",
-]
 LOGO_CANDIDATES = ["logo-mavipe.png", "logo-mavipe.jpeg", "logo-mavipe.jpg"]
-
 
 # ================== UTILS ==================
 def find_first(candidates) -> str | None:
-    """Retorna o primeiro caminho existente com tamanho > 0."""
     for name in candidates:
         p = Path(name)
         if p.exists() and p.stat().st_size > 0:
             return str(p)
     return None
 
-
 def guess_mime(path: Path) -> str:
     ext = path.suffix.lower()
-    if ext == ".png":
-        return "image/png"
-    return "image/jpeg"
-
+    return "image/png" if ext == ".png" else "image/jpeg"
 
 def as_data_uri(path_str: str) -> str:
-    """Converte uma imagem local para data URI (Base64) com MIME correto."""
     p = Path(path_str)
-    mime = guess_mime(p)
     b64 = base64.b64encode(p.read_bytes()).decode("utf-8")
-    return f"data:{mime};base64,{b64}"
+    return f"data:{guess_mime(p)};base64,{b64}"
 
+def gather_empresa_images() -> list[str]:
+    """Coleta imagens para o carrossel:
+       - prioridade para empresa1/2/3 (jpg/jpeg/png)
+       - depois qualquer arquivo 'empresa*.jpg|jpeg|png'
+       - remove duplicatas e mantém ordem estável
+    """
+    base_candidates = [
+        "empresa1.jpg","empresa1.jpeg","empresa1.png",
+        "empresa2.jpg","empresa2.jpeg","empresa2.png",
+        "empresa3.jpg","empresa3.jpeg","empresa3.png",
+    ]
+    found = [p for p in base_candidates if Path(p).exists() and Path(p).stat().st_size > 0]
+
+    # glob extra
+    extras = []
+    for pat in ("empresa*.jpg", "empresa*.jpeg", "empresa*.png"):
+        for p in sorted(Path(".").glob(pat)):
+            if p.is_file() and p.stat().st_size > 0:
+                extras.append(str(p))
+
+    # dedup preservando ordem
+    seen = set()
+    ordered = []
+    for p in found + extras:
+        if p not in seen:
+            ordered.append(p)
+            seen.add(p)
+    return ordered
 
 # ================== CSS (desktop + mobile) ==================
 st.markdown("""
@@ -116,6 +119,11 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
   .section{padding:56px 5vw;}
   .nav-right a{margin-left:14px;}
 }
+
+/* Dots do carrossel */
+.carousel-dots{display:flex; gap:8px; justify-content:center; margin-top:10px}
+.carousel-dots span{width:8px; height:8px; border-radius:50%; background:#5d6a8b; display:inline-block; opacity:.6}
+.carousel-dots span.active{background:#e6eefc; opacity:1}
 </style>
 """, unsafe_allow_html=True)
 
@@ -134,13 +142,8 @@ st.markdown("""
 
 # ================== HERO (vídeo + logo Base64) ==================
 logo_path = find_first(LOGO_CANDIDATES)
-logo_tag = ""
-if logo_path:
-    try:
-        logo_tag = f'<img class="logo" src="{as_data_uri(logo_path)}" alt="MAVIPE logo"/>'
-    except Exception as e:
-        st.error(f"Falha ao embutir o logo em Base64: {e}")
-else:
+logo_tag = f'<img class="logo" src="{as_data_uri(logo_path)}" alt="MAVIPE logo"/>' if logo_path else ""
+if not logo_path:
     st.warning(f"Logo não encontrada. Adicione um dos arquivos: {', '.join(LOGO_CANDIDATES)}")
 
 st.markdown(f"""
@@ -165,13 +168,13 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# ================== EMPRESA ==================
+# ================== EMPRESA (texto + CARROSSEL) ==================
 st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 
-left, right = st.columns([1, 1])
+col_text, col_img = st.columns([1, 1])
 
-with left:
+with col_text:
     st.markdown(
         "<h1 style='font-size:2.2rem; font-weight:700; color:#e6eefc; margin-bottom:12px;'>DAP Space Systems</h1>",
         unsafe_allow_html=True,
@@ -192,26 +195,36 @@ with left:
         unsafe_allow_html=True,
     )
 
-with right:
-    img1 = find_first(EMPRESA1_CANDIDATES)
-    img2 = find_first(EMPRESA2_CANDIDATES)
-    img3 = find_first(EMPRESA3_CANDIDATES)
+with col_img:
+    imgs = gather_empresa_images()
+    if "emp_idx" not in st.session_state:
+        st.session_state.emp_idx = 0
+    if imgs:
+        n = len(imgs)
+        idx = st.session_state.emp_idx % n
+        # imagem principal como data URI (para poder estilizar borda/raio/sombra)
+        uri = as_data_uri(imgs[idx])
+        st.markdown(
+            f"<img src='{uri}' alt='Empresa {idx+1}/{n}' "
+            "style='width:100%; border-radius:12px; box-shadow:0 8px 28px rgba(0,0,0,.35);'/>",
+            unsafe_allow_html=True,
+        )
 
-    c1, c2 = st.columns(2)
-    if img1:
-        c1.image(img1, use_column_width=True)
+        bcol1, bcol2, bcol3 = st.columns([1, 6, 1])
+        with bcol1:
+            if st.button("◀", key="emp_prev"):
+                st.session_state.emp_idx = (idx - 1) % n
+        with bcol3:
+            if st.button("▶", key="emp_next"):
+                st.session_state.emp_idx = (idx + 1) % n
+        with bcol2:
+            # dots
+            dots = "".join(
+                f"<span class='{'active' if i==idx else ''}'></span>" for i in range(n)
+            )
+            st.markdown(f"<div class='carousel-dots'>{dots}</div>", unsafe_allow_html=True)
     else:
-        c1.info(f"Coloque a imagem 1 (ex.: {EMPRESA1_CANDIDATES[0]} ou {EMPRESA1_CANDIDATES[2]})")
-
-    if img2:
-        c2.image(img2, use_column_width=True)
-    else:
-        c2.info(f"Coloque a imagem 2 (ex.: {EMPRESA2_CANDIDATES[0]} ou {EMPRESA2_CANDIDATES[2]})")
-
-    if img3:
-        st.image(img3, use_column_width=True)
-    else:
-        st.info(f"Coloque a imagem 3 (ex.: {EMPRESA3_CANDIDATES[0]} ou {EMPRESA3_CANDIDATES[2]})")
+        st.info("Coloque imagens com nomes começando por 'empresa' (ex.: empresa1.jpg, empresa2.png, empresa3.jpeg).")
 
 st.markdown('</div>', unsafe_allow_html=True)
 
