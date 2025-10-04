@@ -1,11 +1,25 @@
-# app.py — Landing com HERO em vídeo full-bleed
+# app.py — MAVIPE Space Systems · Landing com HERO em vídeo (full-bleed, estilo DAP)
+# Coloque na MESMA pasta: app.py, hero.mp4, logo-mavipe.png
 import streamlit as st
 from urllib.parse import quote
+from pathlib import Path
 
-st.set_page_config(page_title="DAP Ocean Framework™",
-                   page_icon="logo-mavipe.png",
-                   layout="wide",
-                   initial_sidebar_state="collapsed")  # <- sidebar fechada
+st.set_page_config(
+    page_title="MAVIPE Space Systems — DAP ATLAS",
+    page_icon="logo-mavipe.png",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+)
+
+# (opcional) diagnóstico rápido — mude para True se quiser ver na sidebar
+DEBUG = False
+if DEBUG:
+    p = Path("hero.mp4")
+    with st.sidebar:
+        st.write("🎬 hero.mp4 existe?", p.exists())
+        st.write("Tamanho (MB):", round(p.stat().st_size/(1024*1024), 2) if p.exists() else "—")
+        if p.exists() and p.stat().st_size > 0:
+            st.video("hero.mp4")
 
 # ================== CSS ==================
 st.markdown("""
@@ -14,7 +28,7 @@ html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221
 #MainMenu, header, footer {visibility:hidden;}
 .block-container { padding:0 !important; max-width:100% !important; }
 
-/* Navbar (já é full-bleed por ser fixed) */
+/* Navbar (estilo DAP) */
 .navbar {
   position: fixed; top:0; left:0; right:0; z-index:1000;
   display:flex; align-items:center; justify-content:space-between;
@@ -29,13 +43,16 @@ html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221
 .nav-right {display:flex; align-items:center; gap:28px;}
 .nav-link {color:#d6def5; text-decoration:none; font-weight:500;}
 .nav-link:hover{opacity:.92}
-.cta { background:#34d399; color:#05131a; font-weight:700; padding:10px 16px; border-radius:12px; text-decoration:none; }
+.cta {
+  background:#34d399; color:#05131a; font-weight:700;
+  padding:10px 16px; border-radius:12px; text-decoration:none;
+}
 .cta:hover{ filter:brightness(1.05); }
 
-/* HERO full-bleed (escapa do container do Streamlit) */
+/* HERO full-bleed */
 .hero {
   position:relative; height:100vh; min-height:640px; overflow:hidden;
-  width:100vw; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw;  /* <- full-bleed */
+  width:100vw; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw;
 }
 .hero video {
   position:absolute; top:50%; left:50%;
@@ -54,11 +71,13 @@ html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221
 }
 .kicker{ color:#cfe7ff; opacity:.92; font-weight:600; margin-bottom:10px; }
 h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 12px 0; }
-.highlight{ color:#34d399; }
+.highlight{ color:#34d399; }  /* cor de destaque (pode trocar) */
 .hero-sub{ font-size: clamp(16px, 2.2vw, 20px); color:#b9c6e6; max-width: 70ch; }
 .hero-actions{ margin-top:22px; display:flex; gap:14px; flex-wrap:wrap; }
-.btn{ display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700;
-      border:1px solid rgba(255,255,255,.18); color:#e6eefc; background: rgba(255,255,255,.06); }
+.btn {
+  display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700;
+  border:1px solid rgba(255,255,255,.18); color:#e6eefc; background: rgba(255,255,255,.06);
+}
 .btn:hover{ background: rgba(255,255,255,.12); }
 
 /* Seções */
@@ -66,7 +85,12 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 .lead { color:#b9c6e6; }
 .card {border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:18px; background:#0f1830;}
 .grid3 { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
-@media (max-width:980px){ .grid3{ grid-template-columns:1fr; } .navbar{padding:12px 18px} .nav-right{gap:16px} }
+
+@media (max-width: 980px){
+  .grid3{ grid-template-columns:1fr; }
+  .navbar{padding:12px 18px}
+  .nav-right{gap:16px}
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -75,18 +99,19 @@ st.markdown("""
 <div class="navbar">
   <div class="nav-left">
     <img src="logo-mavipe.png" alt="logo"/>
-    <div class="brand">DAP SPACE SYSTEMS</div>
+    <div class="brand">MAVIPE Space Systems</div>
   </div>
   <div class="nav-right">
-    <a class="nav-link" href="#company">Company</a>
-    <a class="nav-link" href="#solution">Solution</a>
-    <a class="nav-link" href="#industries">Industries</a>
-    <a class="cta" href="#contact">Contact Sales</a>
+    <a class="nav-link" href="#empresa">Empresa</a>
+    <a class="nav-link" href="#solucao">Solução</a>
+    <a class="nav-link" href="#setores">Setores</a>
+    <a class="cta" href="#contato">Agendar demo</a>
   </div>
 </div>
 """, unsafe_allow_html=True)
 
 # ================== HERO (vídeo) ==================
+# Se preferir usar um link em vez do arquivo local, troque src="hero.mp4" por um URL público (S3/CDN/etc).
 st.markdown("""
 <div class="hero">
   <video autoplay loop muted playsinline preload="auto">
@@ -95,18 +120,16 @@ st.markdown("""
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div>
-      <div class="kicker">Maritime & Ground Domain Awareness</div>
-      <h1 class="hero-title">Maritime Domain Awareness<br>Made Accessible by<br>
-        <span class="highlight">DAP Ocean Framework™</span>
-      </h1>
+      <div class="kicker">GeoINT • InSAR • Metano (OGMP 2.0 L5)</div>
+      <h1 class="hero-title">Transformando dados geoespaciais em <span class="highlight">informações acionáveis</span></h1>
       <div class="hero-sub">
-        Multi-sensor data fusion (SAR, optical, AIS, RF, weather) into one actionable framework.
-        DAP Ocean Framework™ delivers detections, tracks and alerts you can trust.
+        A MAVIPE integra <b>IA</b>, <b>imagens de satélite</b> (ópticas e SAR) e dados operacionais para entregar
+        <b>insights confiáveis</b> em monitoramento ambiental, emissões de metano e integridade de ativos — no ritmo da sua operação.
       </div>
       <div class="hero-actions">
-        <a class="cta" href="#contact">Contact Sales</a>
-        <a class="btn" href="#solution">Explore Solution</a>
-        <a class="btn" href="#industries">Use Cases</a>
+        <a class="cta" href="#contato">Agendar demo</a>
+        <a class="btn" href="#solucao">Explorar solução</a>
+        <a class="btn" href="#setores">Casos de uso</a>
       </div>
     </div>
   </div>
@@ -114,42 +137,44 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ================== SEÇÕES ==================
-st.markdown('<div id="company"></div>', unsafe_allow_html=True)
+st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
-st.header("Company")
-st.markdown("<p class='lead'>Brief institutional overview, mission, team, certifications…</p>", unsafe_allow_html=True)
+st.header("Empresa")
+st.markdown("<p class='lead'>Unimos experiência em operações de satélites, GeoINT e análise avançada para transformar dados em resultados práticos.</p>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-st.markdown('<div id="solution"></div>', unsafe_allow_html=True)
+st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
-st.header("Solution — DAP Ocean Framework™")
+st.header("Solução — DAP ATLAS")
 st.markdown("""
 <div class="grid3">
-  <div class="card"><h4>Ingestion</h4><p>AIS, SAR/optical imagery, RF, metocean.</p></div>
-  <div class="card"><h4>Analytics</h4><p>Vessel detection/tracking, anomaly routes, risk scoring.</p></div>
-  <div class="card"><h4>Delivery</h4><p>APIs, dashboards, alerts and reports.</p></div>
+  <div class="card"><h4>Metano (CH₄)</h4><p>Monitoramento OGMP 2.0 L5: detecção por fonte, fluxo (kg/h), incerteza, Q/C e relatórios georreferenciados.</p></div>
+  <div class="card"><h4>InSAR</h4><p>Deformação do terreno e estruturas (mm/mês), mapas de risco e recomendações para integridade de ativos.</p></div>
+  <div class="card"><h4>GeoINT</h4><p>Camadas contextuais, detecção, alertas e dashboards — exportações em PDF e integrações via API/CSV.</p></div>
 </div>
 """, unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-st.markdown('<div id="industries"></div>', unsafe_allow_html=True)
+st.markdown('<div id="setores"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
-st.header("Industries / Use Cases")
-st.markdown("- Port security • Oil & Gas offshore • IUU fishing • SAR operations • Border/coast guard.")
+st.header("Setores / Casos de uso")
+st.markdown("- Óleo & Gás • Portos e Costas • Mineração • Defesa & Segurança • Monitoramento Ambiental.")
 st.markdown("</div>", unsafe_allow_html=True)
 
-st.markdown('<div id="contact"></div>', unsafe_allow_html=True)
+st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
-st.header("Contact Sales")
+st.header("Agendar demo")
 col1, col2 = st.columns(2)
 with col1:
-    name = st.text_input("Name")
-    email = st.text_input("Work email")
+  nome = st.text_input("Seu nome")
+  email = st.text_input("E-mail corporativo")
 with col2:
-    org = st.text_input("Organization")
-    phone = st.text_input("Phone/WhatsApp (optional)")
-msg = st.text_area("What challenge are you trying to solve?")
-if st.button("Send email"):
-    subject = "DAP Ocean Framework — Contact"
-    body = f"Name: {name}\\nEmail: {email}\\nOrg: {org}\\nPhone: {phone}\\nMessage:\\n{msg}"
-    st.success("Click the link below to open your email client:")
+  org = st.text_input("Organização")
+  phone = st.text_input("WhatsApp/Telefone (opcional)")
+msg = st.text_area("Qual desafio você quer resolver?")
+if st.button("Enviar e-mail"):
+  subject = "MAVIPE — Agendar demo"
+  body = f"Nome: {nome}\\nEmail: {email}\\nOrg: {org}\\nTelefone: {phone}\\nMensagem:\\n{msg}"
+  st.success("Clique abaixo para abrir seu e-mail:")
+  st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
+st.caption("© MAVIPE Space Systems · DAP ATLAS")
