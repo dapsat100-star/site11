@@ -183,7 +183,7 @@ st.markdown("""
   <div class="nav-left"><div class="brand">MAVIPE Space Systems</div></div>
   <div class="nav-right">
     <a href="#empresa">Empresa</a>
-    <a href="#solucao">Solução</a>
+    <a href="#solucao">Produtos</a>
     <a href="#setores">Setores</a>
     <a class="cta" href="#contato">Agendar demo</a>
   </div>
