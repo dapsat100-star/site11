@@ -1,11 +1,21 @@
-
-# app.py — DAP Ocean Framework™ landing com vídeo no hero (estrutura flat)
+# app.py — Landing DAP Ocean Framework™ com HERO em vídeo (flat)
+# Coloque no MESMO diretório: app.py, hero.mp4, logo-mavipe.png
 import streamlit as st
 from urllib.parse import quote
+from pathlib import Path
 
 st.set_page_config(page_title="DAP Ocean Framework™", page_icon="logo-mavipe.png", layout="wide")
 
-# ===== CSS =====
+# ---------- Diagnóstico rápido (remova se quiser) ----------
+p = Path("hero.mp4")
+with st.sidebar:
+    st.write("🎬 hero.mp4 existe?", p.exists())
+    if p.exists():
+        st.write("Tamanho (MB):", round(p.stat().st_size / (1024*1024), 2))
+        with st.expander("Ver player (teste)"):
+            st.video("hero.mp4")
+
+# ================== CSS ==================
 st.markdown("""
 <style>
 html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221; }
@@ -33,13 +43,12 @@ html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221
 }
 .cta:hover{ filter:brightness(1.05); }
 
-/* HERO with video */
+/* HERO com vídeo */
 .hero { position:relative; height:100vh; min-height:640px; overflow:hidden; }
 .hero video {
   position:absolute; top:50%; left:50%;
   min-width:100%; min-height:100%; width:auto; height:auto;
-  transform:translate(-50%, -50%);
-  object-fit:cover;
+  transform:translate(-50%, -50%); object-fit:cover;
   filter:brightness(.58);
 }
 .hero-overlay {
@@ -50,8 +59,7 @@ html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221
 .hero-content {
   position:absolute; z-index:2; inset:0;
   display:flex; align-items:center;
-  padding:0 8vw;
-  color:#e8eefc;
+  padding:0 8vw; color:#e8eefc;
 }
 .kicker{ color:#cfe7ff; opacity:.92; font-weight:600; margin-bottom:10px; }
 h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 12px 0; }
@@ -64,7 +72,7 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 }
 .btn:hover{ background: rgba(255,255,255,.12); }
 
-/* Sections */
+/* Seções */
 .section { padding:72px 8vw; border-top:1px solid rgba(255,255,255,.07); }
 .lead { color:#b9c6e6; }
 .card {border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:18px; background:#0f1830;}
@@ -73,7 +81,7 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 </style>
 """, unsafe_allow_html=True)
 
-# ===== NAVBAR =====
+# ================== NAVBAR ==================
 st.markdown("""
 <div class="navbar">
   <div class="nav-left">
@@ -89,10 +97,11 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ===== HERO with VIDEO =====
+# ================== HERO (vídeo) ==================
+# Dica: se quiser usar um link público em vez de arquivo local, troque src="hero.mp4" por src="https://SEU_CDN/hero.mp4"
 st.markdown("""
 <div class="hero">
-  <video autoplay loop muted playsinline>
+  <video autoplay loop muted playsinline preload="auto">
     <source src="hero.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay"></div>
@@ -116,7 +125,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ====== SECTIONS ======
+# ================== SEÇÕES ==================
 st.markdown('<div id="company"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Company")
