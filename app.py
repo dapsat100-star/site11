@@ -127,12 +127,9 @@ st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
 st.markdown("""
 <div class="section" style="display:flex; flex-wrap:wrap; align-items:center; gap:48px;">
   <div style="flex:1 1 360px; min-width:280px;">
-    <h1 style="font-size:2.2rem; font-weight:700; color:#e6eefc; margin-bottom:12px;">DAP Space Systems</h1>
+    <h1 style="font-size:2.2rem; font-weight:700; color:#e6eefc; margin-bottom:12px;">MAVIPE Sistemas Espaciais</h1>
     <p style="color:#b9c6e6; line-height:1.6; font-size:1rem;">
-      We are a startup company that develops cutting-edge technological solutions for the automated analysis of satellite images
-      with optical and SAR-type sensors through its <b>DAP Ocean Framework™</b>. Our company is capable of performing automated
-      analytics from any supplier of satellite images on the market for the provision of <b>Maritime Domain Awareness (MDA)</b> and
-      <b>Ground Domain Awareness (GDA)</b>, either on the defense or private markets.
+      Fundada por profissionais com experiência em centros de operações de satélites e em geointeligência, além de ampla atuação no mercado privado mundial, unimos tecnologia espacial e análise avançada. 
     </p>
     <a href="#contato" style="display:inline-block; margin-top:18px; background:#34d399; color:#05131a; font-weight:600;
        padding:12px 20px; border-radius:10px; text-decoration:none;">Know more</a>
