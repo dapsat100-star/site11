@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# app.py — MAVIPE Space Systems · HERO YouTube + logo na seção "Empresa" (st.image)
+# app.py — MAVIPE Space Systems · HERO YouTube + logo no canto superior direito
 
 import streamlit as st
 from urllib.parse import quote
@@ -14,8 +14,7 @@ st.set_page_config(
 )
 
 YOUTUBE_ID = "Ulrl6TFaWtA"         # https://youtu.be/Ulrl6TFaWtA
-# >>> Se sua logo for .png, troque o nome abaixo:
-LOGO_FILE  = "logo-mavipe.jpeg"
+LOGO_FILE  = "logo-mavipe.jpeg"     # troque para "logo-mavipe.png" se for PNG
 
 # ================== CSS ==================
 st.markdown("""
@@ -24,7 +23,7 @@ html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221
 #MainMenu, header, footer {visibility:hidden;}
 .block-container { padding:0 !important; max-width:100% !important; }
 
-/* Navbar (sem logo) */
+/* Navbar (simples, sem logo) */
 .navbar { position: fixed; top:0; left:0; right:0; z-index:1000; display:flex; align-items:center; justify-content:space-between;
           padding:14px 36px; background: rgba(8,16,33,.35); backdrop-filter: saturate(160%) blur(10px);
           border-bottom:1px solid rgba(255,255,255,.08); }
@@ -41,13 +40,27 @@ html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221
 #yt-hero { position:absolute; top:50%; left:50%; width:177.777vw; height:100vh; transform:translate(-50%,-50%); pointer-events:none; }
 .hero-overlay { position:absolute; inset:0; background: radial-gradient(85% 60% at 30% 30%, rgba(20,30,55,.0) 0%, rgba(8,16,33,.48) 68%, rgba(8,16,33,.86) 100%); z-index:1; }
 .hero-content { position:absolute; inset:0; z-index:2; display:flex; align-items:center; padding:0 8vw; color:#e8eefc; }
+
+/* Título/Sub */
 .kicker{ color:#cfe7ff; opacity:.92; font-weight:600; margin-bottom:10px; }
 h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 12px 0; }
 .highlight{ color:#34d399; }
 .hero-sub{ font-size: clamp(16px, 2.2vw, 20px); color:#b9c6e6; max-width: 70ch; }
 .hero-actions{ margin-top:22px; display:flex; gap:14px; flex-wrap:wrap; }
-.btn{ display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700; border:1px solid rgba(255,255,255,.18); color:#e6eefc; background: rgba(255,255,255,.06); }
+.btn{ display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700;
+      border:1px solid rgba(255,255,255,.18); color:#e6eefc; background: rgba(255,255,255,.06); }
 .btn:hover{ background: rgba(255,255,255,.12); }
+
+/* === LOGO no canto superior direito do HERO === */
+.hero-logo {
+  position:absolute; z-index:3;           /* acima do overlay e do vídeo */
+  top:16px; right:24px;                    /* canto superior direito */
+  width: clamp(110px, 12vw, 200px);        /* responsivo: 110–200px */
+  height:auto;
+  opacity: .95;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.45));
+  pointer-events:none;                     /* não bloqueia cliques nos botões */
+}
 
 /* Seções */
 .section { padding:72px 8vw; border-top:1px solid rgba(255,255,255,.07); }
@@ -66,9 +79,7 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 # ================== NAVBAR ==================
 st.markdown("""
 <div class="navbar">
-  <div class="nav-left">
-    <div class="brand">MAVIPE Space Systems</div>
-  </div>
+  <div class="nav-left"><div class="brand">MAVIPE Space Systems</div></div>
   <div class="nav-right">
     <a class="nav-link" href="#empresa">Empresa</a>
     <a class="nav-link" href="#solucao">Solução</a>
@@ -79,13 +90,21 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ================== HERO (YouTube) ==================
+# Se a logo existir, injetamos a <img> posicionada no topo direito
+logo_exists = Path(LOGO_FILE).exists()
+logo_tag = f'<img class="hero-logo" src="{LOGO_FILE}" alt="MAVIPE logo"/>' if logo_exists else ""
+
 st.markdown(f"""
 <div class="hero-wrapper">
   <iframe id="yt-hero"
       src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&playlist={YOUTUBE_ID}"
       title="MAVIPE hero" frameborder="0" allow="autoplay; fullscreen; picture-in-picture">
   </iframe>
+
   <div class="hero-overlay"></div>
+
+  {logo_tag}  <!-- LOGO no canto superior direito -->
+
   <div class="hero-content">
     <div>
       <div class="kicker">GeoINT • InSAR • Metano (OGMP 2.0 L5)</div>
@@ -104,18 +123,10 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# ================== EMPRESA (logo com st.image) ==================
+# ================== SEÇÃO EMPRESA ==================
 st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
-
 st.header("Empresa")
-
-# se existir, mostra a logo com Streamlit (robusto, sem CSS extra)
-if Path(LOGO_FILE).exists():
-    st.image(LOGO_FILE, use_column_width=False, width=320, caption="MAVIPE Space Systems")
-else:
-    st.info(f"ℹ️ Adicione o arquivo de logo na raiz do repositório como **{LOGO_FILE}**.")
-
 st.markdown("<p class='lead'>Unimos experiência em operações de satélites, GeoINT e análise avançada para transformar dados em resultados práticos.</p>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
