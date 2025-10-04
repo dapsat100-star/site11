@@ -1,28 +1,20 @@
-# app.py — Landing DAP Ocean Framework™ com HERO em vídeo (flat)
-# Coloque no MESMO diretório: app.py, hero.mp4, logo-mavipe.png
+# app.py — Landing com HERO em vídeo full-bleed
 import streamlit as st
 from urllib.parse import quote
-from pathlib import Path
 
-st.set_page_config(page_title="DAP Ocean Framework™", page_icon="logo-mavipe.png", layout="wide")
-
-# ---------- Diagnóstico rápido (remova se quiser) ----------
-p = Path("hero.mp4")
-with st.sidebar:
-    st.write("🎬 hero.mp4 existe?", p.exists())
-    if p.exists():
-        st.write("Tamanho (MB):", round(p.stat().st_size / (1024*1024), 2))
-        with st.expander("Ver player (teste)"):
-            st.video("hero.mp4")
+st.set_page_config(page_title="DAP Ocean Framework™",
+                   page_icon="logo-mavipe.png",
+                   layout="wide",
+                   initial_sidebar_state="collapsed")  # <- sidebar fechada
 
 # ================== CSS ==================
 st.markdown("""
 <style>
-html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221; }
+html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221; overflow-x:hidden; }
 #MainMenu, header, footer {visibility:hidden;}
 .block-container { padding:0 !important; max-width:100% !important; }
 
-/* Navbar */
+/* Navbar (já é full-bleed por ser fixed) */
 .navbar {
   position: fixed; top:0; left:0; right:0; z-index:1000;
   display:flex; align-items:center; justify-content:space-between;
@@ -37,14 +29,14 @@ html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221
 .nav-right {display:flex; align-items:center; gap:28px;}
 .nav-link {color:#d6def5; text-decoration:none; font-weight:500;}
 .nav-link:hover{opacity:.92}
-.cta {
-  background:#34d399; color:#05131a; font-weight:700;
-  padding:10px 16px; border-radius:12px; text-decoration:none;
-}
+.cta { background:#34d399; color:#05131a; font-weight:700; padding:10px 16px; border-radius:12px; text-decoration:none; }
 .cta:hover{ filter:brightness(1.05); }
 
-/* HERO com vídeo */
-.hero { position:relative; height:100vh; min-height:640px; overflow:hidden; }
+/* HERO full-bleed (escapa do container do Streamlit) */
+.hero {
+  position:relative; height:100vh; min-height:640px; overflow:hidden;
+  width:100vw; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw;  /* <- full-bleed */
+}
 .hero video {
   position:absolute; top:50%; left:50%;
   min-width:100%; min-height:100%; width:auto; height:auto;
@@ -57,8 +49,7 @@ html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221
   z-index:1;
 }
 .hero-content {
-  position:absolute; z-index:2; inset:0;
-  display:flex; align-items:center;
+  position:absolute; z-index:2; inset:0; display:flex; align-items:center;
   padding:0 8vw; color:#e8eefc;
 }
 .kicker{ color:#cfe7ff; opacity:.92; font-weight:600; margin-bottom:10px; }
@@ -66,10 +57,8 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 .highlight{ color:#34d399; }
 .hero-sub{ font-size: clamp(16px, 2.2vw, 20px); color:#b9c6e6; max-width: 70ch; }
 .hero-actions{ margin-top:22px; display:flex; gap:14px; flex-wrap:wrap; }
-.btn {
-  display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700;
-  border:1px solid rgba(255,255,255,.18); color:#e6eefc; background: rgba(255,255,255,.06);
-}
+.btn{ display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700;
+      border:1px solid rgba(255,255,255,.18); color:#e6eefc; background: rgba(255,255,255,.06); }
 .btn:hover{ background: rgba(255,255,255,.12); }
 
 /* Seções */
@@ -77,7 +66,7 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 .lead { color:#b9c6e6; }
 .card {border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:18px; background:#0f1830;}
 .grid3 { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
-@media (max-width: 980px){ .grid3{ grid-template-columns:1fr; } .navbar{padding:12px 18px} .nav-right{gap:16px} }
+@media (max-width:980px){ .grid3{ grid-template-columns:1fr; } .navbar{padding:12px 18px} .nav-right{gap:16px} }
 </style>
 """, unsafe_allow_html=True)
 
@@ -98,7 +87,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ================== HERO (vídeo) ==================
-# Dica: se quiser usar um link público em vez de arquivo local, troque src="hero.mp4" por src="https://SEU_CDN/hero.mp4"
 st.markdown("""
 <div class="hero">
   <video autoplay loop muted playsinline preload="auto">
@@ -167,3 +155,4 @@ if st.button("Send email"):
     st.success("Click the link below to open your email client:")
     st.markdown(f"[Compose email](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 st.caption("© DAP Space Systems · DAP Ocean Framework™")
+
