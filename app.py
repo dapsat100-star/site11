@@ -1,11 +1,11 @@
 # app.py — MAVIPE Space Systems · Landing com HERO YouTube (full-bleed, estilo DAP)
-# Coloque na MESMA pasta: app.py, logo-mavipe.png
+# Coloque na MESMA pasta: app.py, logo-mavipe.jpeg
 import streamlit as st
 from urllib.parse import quote
 
 st.set_page_config(
     page_title="MAVIPE Space Systems — DAP ATLAS",
-    page_icon="logo-mavipe.png",
+    page_icon="logo-mavipe.jpeg",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -92,7 +92,7 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 st.markdown("""
 <div class="navbar">
   <div class="nav-left">
-    <img src="logo-mavipe.png" alt="logo"/>
+    <img src="logo-mavipe.jpeg" alt="logo"/>
     <div class="brand">MAVIPE Space Systems</div>
   </div>
   <div class="nav-right">
@@ -164,15 +164,15 @@ st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Agendar demo")
 col1, col2 = st.columns(2)
 with col1:
-  nome = st.text_input("Seu nome")
-  email = st.text_input("E-mail corporativo")
+    nome = st.text_input("Seu nome")
+    email = st.text_input("E-mail corporativo")
 with col2:
-  org = st.text_input("Organização")
-  phone = st.text_input("WhatsApp/Telefone (opcional)")
+    org = st.text_input("Organização")
+    phone = st.text_input("WhatsApp/Telefone (opcional)")
 msg = st.text_area("Qual desafio você quer resolver?")
 if st.button("Enviar e-mail"):
-  subject = "MAVIPE — Agendar demo"
-  body = f"Nome: {nome}\\nEmail: {email}\\nOrg: {org}\\nTelefone: {phone}\\nMensagem:\\n{msg}"
-  st.success("Clique abaixo para abrir seu e-mail:")
-  st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
+    subject = "MAVIPE — Agendar demo"
+    body = f"Nome: {nome}\\nEmail: {email}\\nOrg: {org}\\nTelefone: {phone}\\nMensagem:\\n{msg}"
+    st.success("Clique abaixo para abrir seu e-mail:")
+    st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
