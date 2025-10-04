@@ -1,5 +1,6 @@
-# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Empresa com Carrossel)
+# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Empresa com Carrossel AUTO)
 import base64
+import time
 from pathlib import Path
 from urllib.parse import quote
 
@@ -10,6 +11,7 @@ st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=No
 # ================== CONFIG ==================
 YOUTUBE_ID = "Ulrl6TFaWtA"
 LOGO_CANDIDATES = ["logo-mavipe.png", "logo-mavipe.jpeg", "logo-mavipe.jpg"]
+CAROUSEL_INTERVAL_SEC = 3  # troca automática
 
 # ================== UTILS ==================
 def find_first(candidates) -> str | None:
@@ -20,8 +22,7 @@ def find_first(candidates) -> str | None:
     return None
 
 def guess_mime(path: Path) -> str:
-    ext = path.suffix.lower()
-    return "image/png" if ext == ".png" else "image/jpeg"
+    return "image/png" if path.suffix.lower() == ".png" else "image/jpeg"
 
 def as_data_uri(path_str: str) -> str:
     p = Path(path_str)
@@ -41,20 +42,17 @@ def gather_empresa_images() -> list[str]:
     ]
     found = [p for p in base_candidates if Path(p).exists() and Path(p).stat().st_size > 0]
 
-    # glob extra
     extras = []
     for pat in ("empresa*.jpg", "empresa*.jpeg", "empresa*.png"):
         for p in sorted(Path(".").glob(pat)):
             if p.is_file() and p.stat().st_size > 0:
                 extras.append(str(p))
 
-    # dedup preservando ordem
     seen = set()
     ordered = []
     for p in found + extras:
         if p not in seen:
-            ordered.append(p)
-            seen.add(p)
+            ordered.append(p); seen.add(p)
     return ordered
 
 # ================== CSS (desktop + mobile) ==================
@@ -168,7 +166,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# ================== EMPRESA (texto + CARROSSEL) ==================
+# ================== EMPRESA (texto + CARROSSEL AUTO) ==================
 st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 
@@ -199,10 +197,12 @@ with col_img:
     imgs = gather_empresa_images()
     if "emp_idx" not in st.session_state:
         st.session_state.emp_idx = 0
+    if "emp_last_tick" not in st.session_state:
+        st.session_state.emp_last_tick = time.time()
+
     if imgs:
         n = len(imgs)
         idx = st.session_state.emp_idx % n
-        # imagem principal como data URI (para poder estilizar borda/raio/sombra)
         uri = as_data_uri(imgs[idx])
         st.markdown(
             f"<img src='{uri}' alt='Empresa {idx+1}/{n}' "
@@ -214,15 +214,28 @@ with col_img:
         with bcol1:
             if st.button("◀", key="emp_prev"):
                 st.session_state.emp_idx = (idx - 1) % n
+                st.session_state.emp_last_tick = time.time()
+                st.experimental_rerun()
         with bcol3:
             if st.button("▶", key="emp_next"):
                 st.session_state.emp_idx = (idx + 1) % n
+                st.session_state.emp_last_tick = time.time()
+                st.experimental_rerun()
         with bcol2:
-            # dots
             dots = "".join(
                 f"<span class='{'active' if i==idx else ''}'></span>" for i in range(n)
             )
             st.markdown(f"<div class='carousel-dots'>{dots}</div>", unsafe_allow_html=True)
+
+        # ===== AUTO-PLAY (opção 1: auto + controles) =====
+        # Se passaram >= CAROUSEL_INTERVAL_SEC desde o último avanço, avança e rerun.
+        now = time.time()
+        if now - st.session_state.emp_last_tick >= CAROUSEL_INTERVAL_SEC:
+            st.session_state.emp_idx = (idx + 1) % n
+            st.session_state.emp_last_tick = now
+            # pequena pausa evita loop muito rápido caso o navegador faça reruns em sequência
+            time.sleep(0.05)
+            st.experimental_rerun()
     else:
         st.info("Coloque imagens com nomes começando por 'empresa' (ex.: empresa1.jpg, empresa2.png, empresa3.jpeg).")
 
@@ -265,3 +278,4 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
+
