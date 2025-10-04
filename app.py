@@ -1,82 +1,61 @@
 # -*- coding: utf-8 -*-
-# app.py — MAVIPE Space Systems · Landing com HERO YouTube (sem logo)
+# app.py — MAVIPE Space Systems · HERO YouTube (sem logo na navbar) + logo na seção Empresa
 
 import streamlit as st
 from urllib.parse import quote
+from pathlib import Path
 
-# ================== CONFIG ==================
+# ====== CONFIG ======
 st.set_page_config(
     page_title="MAVIPE Space Systems — DAP ATLAS",
-    page_icon=None,  # ❌ logo removida
+    page_icon=None,                 # sem favicon por enquanto
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
-YOUTUBE_ID = "Ulrl6TFaWtA"  # link: https://youtu.be/Ulrl6TFaWtA
+YOUTUBE_ID = "Ulrl6TFaWtA"         # https://youtu.be/Ulrl6TFaWtA
+LOGO_FILE  = "logo-mavipe.jpeg"     # troque para "logo-mavipe.png" se for PNG
 
-# ================== CSS ==================
+# ====== CSS ======
 st.markdown("""
 <style>
-html, body, [data-testid="stAppViewContainer"] {
-  height:100%; background:#0b1221; overflow-x:hidden;
-}
+html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221; overflow-x:hidden; }
 #MainMenu, header, footer {visibility:hidden;}
 .block-container { padding:0 !important; max-width:100% !important; }
 
-/* Navbar */
-.navbar {
-  position: fixed; top:0; left:0; right:0; z-index:1000;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:14px 36px;
-  background: rgba(8,16,33,.35);
-  backdrop-filter: saturate(160%) blur(10px);
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.nav-left {display:flex; align-items:center; gap:14px;}
+/* Navbar (sem logo) */
+.navbar { position: fixed; top:0; left:0; right:0; z-index:1000; display:flex; align-items:center; justify-content:space-between;
+          padding:14px 36px; background: rgba(8,16,33,.35); backdrop-filter: saturate(160%) blur(10px);
+          border-bottom:1px solid rgba(255,255,255,.08); }
 .nav-left .brand {line-height:1; color:#e6eefc; font-weight:700; letter-spacing:.5px;}
 .nav-right {display:flex; align-items:center; gap:28px;}
 .nav-link {color:#d6def5; text-decoration:none; font-weight:500;}
 .nav-link:hover{opacity:.92}
-.cta {
-  background:#34d399; color:#05131a; font-weight:700;
-  padding:10px 16px; border-radius:12px; text-decoration:none;
-}
+.cta { background:#34d399; color:#05131a; font-weight:700; padding:10px 16px; border-radius:12px; text-decoration:none; }
 .cta:hover { filter:brightness(1.05); }
 
-/* HERO YouTube full-bleed */
-.hero-wrapper {
-  position:relative; height:100vh; min-height:640px; width:100vw;
-  left:50%; right:50%; margin-left:-50vw; margin-right:-50vw; overflow:hidden;
-}
-#yt-hero {
-  position: absolute; top:50%; left:50%;
-  width: 177.777vw; height: 100vh;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-.hero-overlay {
-  position: absolute; inset:0;
-  background: radial-gradient(85% 60% at 30% 30%, rgba(20,30,55,.0) 0%, rgba(8,16,33,.48) 68%, rgba(8,16,33,.86) 100%);
-  z-index:1; pointer-events:none;
-}
-.hero-content {
-  position:absolute; inset:0; z-index:2; display:flex; align-items:center;
-  padding:0 8vw; color:#e8eefc;
-}
+/* HERO YouTube */
+.hero-wrapper { position:relative; height:100vh; min-height:640px; width:100vw; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw; overflow:hidden; }
+#yt-hero { position:absolute; top:50%; left:50%; width:177.777vw; height:100vh; transform:translate(-50%,-50%); pointer-events:none; }
+.hero-overlay { position:absolute; inset:0; background: radial-gradient(85% 60% at 30% 30%, rgba(20,30,55,.0) 0%, rgba(8,16,33,.48) 68%, rgba(8,16,33,.86) 100%); z-index:1; }
+.hero-content { position:absolute; inset:0; z-index:2; display:flex; align-items:center; padding:0 8vw; color:#e8eefc; }
 .kicker{ color:#cfe7ff; opacity:.92; font-weight:600; margin-bottom:10px; }
 h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 12px 0; }
 .highlight{ color:#34d399; }
 .hero-sub{ font-size: clamp(16px, 2.2vw, 20px); color:#b9c6e6; max-width: 70ch; }
 .hero-actions{ margin-top:22px; display:flex; gap:14px; flex-wrap:wrap; }
-.btn {
-  display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700;
-  border:1px solid rgba(255,255,255,.18); color:#e6eefc; background: rgba(255,255,255,.06);
-}
+.btn{ display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700; border:1px solid rgba(255,255,255,.18); color:#e6eefc; background: rgba(255,255,255,.06); }
 .btn:hover{ background: rgba(255,255,255,.12); }
 
 /* Seções */
 .section { padding:72px 8vw; border-top:1px solid rgba(255,255,255,.07); }
 .lead { color:#b9c6e6; }
+
+/* Logo na seção Empresa */
+.brand-block { text-align:center; margin-bottom:24px; }
+.brand-block img { max-width: 360px; width: 40vw; height:auto; display:inline-block; filter:drop-shadow(0 6px 18px rgba(0,0,0,.35)); }
+.brand-caption { color:#b9c6e6; margin-top:8px; font-size:14px; opacity:.85; }
+
 .card {border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:18px; background:#0f1830;}
 .grid3 { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
 
@@ -88,7 +67,7 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 </style>
 """, unsafe_allow_html=True)
 
-# ================== NAVBAR ==================
+# ====== NAVBAR ======
 st.markdown("""
 <div class="navbar">
   <div class="nav-left">
@@ -103,18 +82,14 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ================== HERO YouTube ==================
+# ====== HERO (YouTube) ======
 st.markdown(f"""
 <div class="hero-wrapper">
   <iframe id="yt-hero"
       src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&playlist={YOUTUBE_ID}"
-      title="MAVIPE hero"
-      frameborder="0"
-      allow="autoplay; fullscreen; picture-in-picture">
+      title="MAVIPE hero" frameborder="0" allow="autoplay; fullscreen; picture-in-picture">
   </iframe>
-
   <div class="hero-overlay"></div>
-
   <div class="hero-content">
     <div>
       <div class="kicker">GeoINT • InSAR • Metano (OGMP 2.0 L5)</div>
@@ -133,13 +108,26 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# ================== SEÇÕES ==================
+# ====== SEÇÃO EMPRESA (com logo em destaque) ======
 st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
+# bloco da logo
+logo_path = Path(LOGO_FILE)
+if logo_path.exists():
+    st.markdown(f"""
+    <div class="brand-block">
+      <img src="{LOGO_FILE}" alt="MAVIPE Space Systems logo"/>
+      <div class="brand-caption">MAVIPE Space Systems</div>
+    </div>
+    """, unsafe_allow_html=True)
+else:
+    st.info("ℹ️ Adicione o arquivo de logo na raiz do repositório como **logo-mavipe.jpeg** (ou troque a variável LOGO_FILE).")
+
 st.header("Empresa")
 st.markdown("<p class='lead'>Unimos experiência em operações de satélites, GeoINT e análise avançada para transformar dados em resultados práticos.</p>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
+# ====== SOLUÇÃO ======
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Solução — DAP ATLAS")
@@ -152,13 +140,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
+# ====== SETORES ======
 st.markdown('<div id="setores"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Setores / Casos de uso")
 st.markdown("- Óleo & Gás • Portos e Costas • Mineração • Defesa & Segurança • Monitoramento Ambiental.")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ================== CONTATO ==================
+# ====== CONTATO ======
 st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Agendar demo")
@@ -176,3 +165,4 @@ if st.button("Enviar e-mail"):
   st.success("Clique abaixo para abrir seu e-mail:")
   st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
+
