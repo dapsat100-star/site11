@@ -1,8 +1,7 @@
-# app.py — MAVIPE Space Systems · Landing com HERO em vídeo (full-bleed, estilo DAP)
-# Coloque na MESMA pasta: app.py, hero.mp4, logo-mavipe.png
+# app.py — MAVIPE Space Systems · Landing com HERO YouTube (full-bleed, estilo DAP)
+# Coloque na MESMA pasta: app.py, logo-mavipe.png
 import streamlit as st
 from urllib.parse import quote
-from pathlib import Path
 
 st.set_page_config(
     page_title="MAVIPE Space Systems — DAP ATLAS",
@@ -11,15 +10,8 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# (opcional) diagnóstico rápido — mude para True se quiser ver na sidebar
-DEBUG = False
-if DEBUG:
-    p = Path("hero.mp4")
-    with st.sidebar:
-        st.write("🎬 hero.mp4 existe?", p.exists())
-        st.write("Tamanho (MB):", round(p.stat().st_size/(1024*1024), 2) if p.exists() else "—")
-        if p.exists() and p.stat().st_size > 0:
-            st.video("hero.mp4")
+# ========= CONFIG DO VÍDEO (YouTube) =========
+YOUTUBE_ID = "Ulrl6TFaWtA"  # do link https://youtu.be/Ulrl6TFaWtA
 
 # ================== CSS ==================
 st.markdown("""
@@ -28,7 +20,7 @@ html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221
 #MainMenu, header, footer {visibility:hidden;}
 .block-container { padding:0 !important; max-width:100% !important; }
 
-/* Navbar (estilo DAP) */
+/* Navbar */
 .navbar {
   position: fixed; top:0; left:0; right:0; z-index:1000;
   display:flex; align-items:center; justify-content:space-between;
@@ -47,31 +39,32 @@ html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221
   background:#34d399; color:#05131a; font-weight:700;
   padding:10px 16px; border-radius:12px; text-decoration:none;
 }
-.cta:hover{ filter:brightness(1.05); }
+.cta:hover { filter:brightness(1.05); }
 
-/* HERO full-bleed */
-.hero {
-  position:relative; height:100vh; min-height:640px; overflow:hidden;
-  width:100vw; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw;
+/* HERO YouTube full-bleed */
+.hero-wrapper {
+  position:relative; height:100vh; min-height:640px; width:100vw;
+  left:50%; right:50%; margin-left:-50vw; margin-right:-50vw; overflow:hidden;
 }
-.hero video {
-  position:absolute; top:50%; left:50%;
-  min-width:100%; min-height:100%; width:auto; height:auto;
-  transform:translate(-50%, -50%); object-fit:cover;
-  filter:brightness(.58);
+/* O iframe precisa cobrir toda a tela mantendo proporção 16:9 — truque de 177.777vw */
+#yt-hero {
+  position: absolute; top:50%; left:50%;
+  width: 177.777vw; height: 100vh;  /* 100 * (16/9) = 177.777 */
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* desativa interação com o player */
 }
 .hero-overlay {
-  position:absolute; inset:0;
+  position: absolute; inset:0;
   background: radial-gradient(85% 60% at 30% 30%, rgba(20,30,55,.0) 0%, rgba(8,16,33,.48) 68%, rgba(8,16,33,.86) 100%);
-  z-index:1;
+  z-index:1; pointer-events:none;
 }
 .hero-content {
-  position:absolute; z-index:2; inset:0; display:flex; align-items:center;
+  position:absolute; inset:0; z-index:2; display:flex; align-items:center;
   padding:0 8vw; color:#e8eefc;
 }
 .kicker{ color:#cfe7ff; opacity:.92; font-weight:600; margin-bottom:10px; }
 h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 12px 0; }
-.highlight{ color:#34d399; }  /* cor de destaque (pode trocar) */
+.highlight{ color:#34d399; }
 .hero-sub{ font-size: clamp(16px, 2.2vw, 20px); color:#b9c6e6; max-width: 70ch; }
 .hero-actions{ margin-top:22px; display:flex; gap:14px; flex-wrap:wrap; }
 .btn {
@@ -86,7 +79,8 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 .card {border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:18px; background:#0f1830;}
 .grid3 { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
 
-@media (max-width: 980px){
+/* Responsivo */
+@media (max-width:980px){
   .grid3{ grid-template-columns:1fr; }
   .navbar{padding:12px 18px}
   .nav-right{gap:16px}
@@ -110,14 +104,18 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ================== HERO (vídeo) ==================
-# Se preferir usar um link em vez do arquivo local, troque src="hero.mp4" por um URL público (S3/CDN/etc).
-st.markdown("""
-<div class="hero">
-  <video autoplay loop muted playsinline preload="auto">
-    <source src="hero.mp4" type="video/mp4">
-  </video>
+# ================== HERO (YouTube embed) ==================
+st.markdown(f"""
+<div class="hero-wrapper">
+  <iframe id="yt-hero"
+      src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&playlist={YOUTUBE_ID}"
+      title="MAVIPE hero"
+      frameborder="0"
+      allow="autoplay; fullscreen; picture-in-picture">
+  </iframe>
+
   <div class="hero-overlay"></div>
+
   <div class="hero-content">
     <div>
       <div class="kicker">GeoINT • InSAR • Metano (OGMP 2.0 L5)</div>
