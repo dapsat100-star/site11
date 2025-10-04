@@ -1,60 +1,30 @@
 # -*- coding: utf-8 -*-
-# app.py — MAVIPE Space Systems · HERO YouTube + Logo robusta (diagnóstico + Base64)
+# app.py — MAVIPE Space Systems · HERO YouTube + logo na seção "Empresa" (st.image)
 
 import streamlit as st
 from urllib.parse import quote
 from pathlib import Path
-import base64
-import os
 
+# ================== CONFIG ==================
 st.set_page_config(
     page_title="MAVIPE Space Systems — DAP ATLAS",
-    page_icon=None,  # sem favicon por enquanto
+    page_icon=None,                 # sem favicon
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
-# ====== CONFIG ======
-YOUTUBE_ID = "Ulrl6TFaWtA"  # https://youtu.be/Ulrl6TFaWtA
-# Nomes candidatos que vamos testar automaticamente:
-LOGO_CANDIDATES = [
-    "logo-mavipe.png", "logo-mavipe.jpeg", "logo-mavipe.jpg",
-    "logomavipe.png",  "logomavipe.jpeg","logomavipe.jpg",
-    "logo_mavipe.png", "logo_mavipe.jpeg","logo_mavipe.jpg",
-]
+YOUTUBE_ID = "Ulrl6TFaWtA"         # https://youtu.be/Ulrl6TFaWtA
+# >>> Se sua logo for .png, troque o nome abaixo:
+LOGO_FILE  = "logo-mavipe.jpeg"
 
-# ====== UTIL ======
-def find_logo():
-    """Procura um arquivo de logo na raiz com nomes comuns."""
-    cwd = Path(".").resolve()
-    found = None
-    for name in LOGO_CANDIDATES:
-        p = cwd / name
-        if p.exists() and p.is_file() and p.stat().st_size > 0:
-            found = p
-            break
-    return found
-
-def data_uri_from_file(p: Path):
-    """Lê bytes e retorna data URI (inferindo mime por extensão)."""
-    ext = p.suffix.lower()
-    if ext in [".png"]:
-        mime = "image/png"
-    elif ext in [".jpg", ".jpeg"]:
-        mime = "image/jpeg"
-    else:
-        mime = "application/octet-stream"
-    b64 = base64.b64encode(p.read_bytes()).decode("utf-8")
-    return f"data:{mime};base64,{b64}"
-
-# ====== CSS ======
+# ================== CSS ==================
 st.markdown("""
 <style>
 html, body, [data-testid="stAppViewContainer"] { height:100%; background:#0b1221; overflow-x:hidden; }
 #MainMenu, header, footer {visibility:hidden;}
 .block-container { padding:0 !important; max-width:100% !important; }
 
-/* Navbar minimal (sem logo) */
+/* Navbar (sem logo) */
 .navbar { position: fixed; top:0; left:0; right:0; z-index:1000; display:flex; align-items:center; justify-content:space-between;
           padding:14px 36px; background: rgba(8,16,33,.35); backdrop-filter: saturate(160%) blur(10px);
           border-bottom:1px solid rgba(255,255,255,.08); }
@@ -82,15 +52,6 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 /* Seções */
 .section { padding:72px 8vw; border-top:1px solid rgba(255,255,255,.07); }
 .lead { color:#b9c6e6; }
-
-/* Logo block (seção Empresa) */
-.brand-block { text-align:center; margin-bottom:24px; }
-.brand-img { max-width: 420px; width: 50vw; height:auto; display:inline-block;
-             border:1px dashed rgba(255,255,255,.18); border-radius:12px; padding:12px;
-             background: rgba(255,255,255,.02); }
-.brand-caption { color:#b9c6e6; margin-top:8px; font-size:14px; opacity:.85; }
-
-/* Cards */
 .card {border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:18px; background:#0f1830;}
 .grid3 { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
 
@@ -102,7 +63,7 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 </style>
 """, unsafe_allow_html=True)
 
-# ====== NAVBAR ======
+# ================== NAVBAR ==================
 st.markdown("""
 <div class="navbar">
   <div class="nav-left">
@@ -117,7 +78,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ====== HERO (YouTube) ======
+# ================== HERO (YouTube) ==================
 st.markdown(f"""
 <div class="hero-wrapper">
   <iframe id="yt-hero"
@@ -143,40 +104,22 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# ====== EMPRESA (com diagnóstico e logo Base64) ======
+# ================== EMPRESA (logo com st.image) ==================
 st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 
-# Diagnóstico visível
-cwd = Path(".").resolve()
-files = sorted(os.listdir(cwd))
-st.subheader("Diagnóstico de logo")
-st.code(f"CWD: {cwd}\nArquivos na raiz:\n" + "\n".join(files[:100]))
-
-logo_path = find_logo()
-if logo_path:
-    size_mb = logo_path.stat().st_size / (1024*1024)
-    st.success(f"✅ Logo encontrada: {logo_path.name} — {size_mb:.2f} MB")
-    try:
-        data_uri = data_uri_from_file(logo_path)
-        st.markdown(f"""
-        <div class="brand-block">
-          <img class="brand-img" src="{data_uri}" alt="MAVIPE logo (embed Base64)"/>
-          <div class="brand-caption">Pré-visualização embutida via Base64 — arquivo: {logo_path.name}</div>
-        </div>
-        """, unsafe_allow_html=True)
-    except Exception as e:
-        st.error(f"Erro ao embutir a logo: {e}")
-        st.image(str(logo_path), caption=f"Preview direto: {logo_path.name}")
-else:
-    st.error("❌ Logo NÃO encontrada na raiz.\n\n"
-             "Tente renomear seu arquivo para **logo-mavipe.png** ou **logo-mavipe.jpeg** e colocar ao lado do app.py.")
-
 st.header("Empresa")
+
+# se existir, mostra a logo com Streamlit (robusto, sem CSS extra)
+if Path(LOGO_FILE).exists():
+    st.image(LOGO_FILE, use_column_width=False, width=320, caption="MAVIPE Space Systems")
+else:
+    st.info(f"ℹ️ Adicione o arquivo de logo na raiz do repositório como **{LOGO_FILE}**.")
+
 st.markdown("<p class='lead'>Unimos experiência em operações de satélites, GeoINT e análise avançada para transformar dados em resultados práticos.</p>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ====== SOLUÇÃO ======
+# ================== SOLUÇÃO ==================
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Solução — DAP ATLAS")
@@ -189,30 +132,29 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ====== SETORES ======
+# ================== SETORES ==================
 st.markdown('<div id="setores"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Setores / Casos de uso")
 st.markdown("- Óleo & Gás • Portos e Costas • Mineração • Defesa & Segurança • Monitoramento Ambiental.")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ====== CONTATO ======
+# ================== CONTATO ==================
 st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Agendar demo")
 col1, col2 = st.columns(2)
 with col1:
-  nome = st.text_input("Seu nome")
-  email = st.text_input("E-mail corporativo")
+    nome = st.text_input("Seu nome")
+    email = st.text_input("E-mail corporativo")
 with col2:
-  org = st.text_input("Organização")
-  phone = st.text_input("WhatsApp/Telefone (opcional)")
+    org = st.text_input("Organização")
+    phone = st.text_input("WhatsApp/Telefone (opcional)")
 msg = st.text_area("Qual desafio você quer resolver?")
 if st.button("Enviar e-mail"):
-  subject = "MAVIPE — Agendar demo"
-  body = f"Nome: {nome}\\nEmail: {email}\\nOrg: {org}\\nTelefone: {phone}\\nMensagem:\\n{msg}"
-  st.success("Clique abaixo para abrir seu e-mail:")
-  st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
+    subject = "MAVIPE — Agendar demo"
+    body = f"Nome: {nome}\\nEmail: {email}\\nOrg: {org}\\nTelefone: {phone}\\nMensagem:\\n{msg}"
+    st.success("Clique abaixo para abrir seu e-mail:")
+    st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
-
 
