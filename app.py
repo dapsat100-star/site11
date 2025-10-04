@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# app.py — MAVIPE Space Systems · Landing com HERO YouTube + logo JPEG
+# app.py — MAVIPE Space Systems · Landing com HERO YouTube (sem logo)
 
 import streamlit as st
 from urllib.parse import quote
@@ -7,7 +7,7 @@ from urllib.parse import quote
 # ================== CONFIG ==================
 st.set_page_config(
     page_title="MAVIPE Space Systems — DAP ATLAS",
-    page_icon="logo-mavipe.jpeg",  # ✅ logo jpeg
+    page_icon=None,  # ❌ logo removida
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -33,7 +33,6 @@ html, body, [data-testid="stAppViewContainer"] {
   border-bottom:1px solid rgba(255,255,255,.08);
 }
 .nav-left {display:flex; align-items:center; gap:14px;}
-.nav-left img {height: 44px; width:auto;}
 .nav-left .brand {line-height:1; color:#e6eefc; font-weight:700; letter-spacing:.5px;}
 .nav-right {display:flex; align-items:center; gap:28px;}
 .nav-link {color:#d6def5; text-decoration:none; font-weight:500;}
@@ -93,7 +92,6 @@ h1.hero-title{ font-size: clamp(36px, 6vw, 64px); line-height:1.05; margin:0 0 1
 st.markdown("""
 <div class="navbar">
   <div class="nav-left">
-    <img src="logo-mavipe.jpeg" alt="logo"/>  <!-- ✅ aqui .jpeg -->
     <div class="brand">MAVIPE Space Systems</div>
   </div>
   <div class="nav-right">
