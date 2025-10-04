@@ -1,4 +1,4 @@
-# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Empresa com Carrossel AUTO)
+# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Empresa com Carrossel AUTO + Thumbnails)
 import base64
 import time
 from pathlib import Path
@@ -11,7 +11,7 @@ st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=No
 # ================== CONFIG ==================
 YOUTUBE_ID = "Ulrl6TFaWtA"
 LOGO_CANDIDATES = ["logo-mavipe.png", "logo-mavipe.jpeg", "logo-mavipe.jpg"]
-CAROUSEL_INTERVAL_SEC = 3  # troca automática
+CAROUSEL_INTERVAL_SEC = 3  # intervalo do autoplay
 
 # ================== UTILS ==================
 def find_first(candidates) -> str | None:
@@ -29,11 +29,11 @@ def as_data_uri(path_str: str) -> str:
     b64 = base64.b64encode(p.read_bytes()).decode("utf-8")
     return f"data:{guess_mime(p)};base64,{b64}"
 
-def gather_empresa_images() -> list[str]:
-    """Coleta imagens para o carrossel:
-       - prioridade para empresa1/2/3 (jpg/jpeg/png)
-       - depois qualquer arquivo 'empresa*.jpg|jpeg|png'
-       - remove duplicatas e mantém ordem estável
+def gather_empresa_images(max_n: int = 3) -> list[str]:
+    """Coleta até max_n imagens para o carrossel:
+       1) prioridade para empresa1/2/3 (jpg/jpeg/png)
+       2) depois qualquer arquivo 'empresa*.jpg|jpeg|png'
+       remove duplicatas e mantém ordem estável
     """
     base_candidates = [
         "empresa1.jpg","empresa1.jpeg","empresa1.png",
@@ -48,12 +48,30 @@ def gather_empresa_images() -> list[str]:
             if p.is_file() and p.stat().st_size > 0:
                 extras.append(str(p))
 
-    seen = set()
-    ordered = []
+    seen, ordered = set(), []
     for p in found + extras:
         if p not in seen:
             ordered.append(p); seen.add(p)
+        if len(ordered) >= max_n:
+            break
     return ordered
+
+def get_query_param(name: str, default=None):
+    # Compatível com versões novas/antigas do Streamlit
+    try:
+        params = st.query_params
+        val = params.get(name, default)
+        return val
+    except Exception:
+        params = st.experimental_get_query_params()
+        vals = params.get(name, [default])
+        return vals[0] if isinstance(vals, list) else vals
+
+def set_query_param(**kwargs):
+    try:
+        st.query_params.update(kwargs)
+    except Exception:
+        st.experimental_set_query_params(**kwargs)
 
 # ================== CSS (desktop + mobile) ==================
 st.markdown("""
@@ -74,7 +92,7 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 .hero iframe{position:absolute; top:50%; left:50%; width:177.777vw; height:100vh; transform:translate(-50%,-50%); pointer-events:none}
 .hero .overlay{position:absolute; inset:0; background:radial-gradient(85% 60% at 30% 30%, rgba(20,30,55,.0) 0%, rgba(8,16,33,.48) 68%, rgba(8,16,33,.86) 100%); z-index:1}
 
-/* LOGO no topo direito, acima do overlay/vídeo */
+/* LOGO no topo direito */
 .hero .logo{
   position:absolute; z-index:3; top:18px; right:28px;
   width: clamp(110px, 12vw, 200px); height:auto;
@@ -118,10 +136,22 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
   .nav-right a{margin-left:14px;}
 }
 
-/* Dots do carrossel */
+/* Dots e thumbnails do carrossel */
 .carousel-dots{display:flex; gap:8px; justify-content:center; margin-top:10px}
 .carousel-dots span{width:8px; height:8px; border-radius:50%; background:#5d6a8b; display:inline-block; opacity:.6}
 .carousel-dots span.active{background:#e6eefc; opacity:1}
+
+.thumbs{display:flex; gap:12px; justify-content:center; margin-top:10px; flex-wrap:wrap}
+.thumb{
+  display:inline-block; width:120px; height:70px; overflow:hidden; border-radius:8px;
+  border:2px solid transparent; opacity:.85; transition:all .2s ease-in-out;
+}
+.thumb img{width:100%; height:100%; object-fit:cover; display:block}
+.thumb:hover{opacity:1; transform:translateY(-2px)}
+.thumb.active{border-color:#34d399; box-shadow:0 0 0 2px rgba(52,211,153,.35) inset;}
+@media (max-width:768px){
+  .thumb{width:92px; height:56px;}
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -166,7 +196,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# ================== EMPRESA (texto + CARROSSEL AUTO) ==================
+# ================== EMPRESA (texto + CARROSSEL AUTO + THUMBS) ==================
 st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 
@@ -194,15 +224,29 @@ with col_text:
     )
 
 with col_img:
-    imgs = gather_empresa_images()
+    imgs = gather_empresa_images(max_n=3)
+
+    # --- leitura de clique via query param (thumbnails) ---
+    thumb_param = get_query_param("thumb", None)
     if "emp_idx" not in st.session_state:
         st.session_state.emp_idx = 0
     if "emp_last_tick" not in st.session_state:
         st.session_state.emp_last_tick = time.time()
 
+    if thumb_param is not None:
+        try:
+            new_idx = int(thumb_param)
+            if imgs:
+                st.session_state.emp_idx = new_idx % len(imgs)
+                st.session_state.emp_last_tick = time.time()   # pausa autoplay momentaneamente
+        except Exception:
+            pass  # ignora valores inválidos
+
     if imgs:
         n = len(imgs)
         idx = st.session_state.emp_idx % n
+
+        # imagem principal
         uri = as_data_uri(imgs[idx])
         st.markdown(
             f"<img src='{uri}' alt='Empresa {idx+1}/{n}' "
@@ -210,6 +254,7 @@ with col_img:
             unsafe_allow_html=True,
         )
 
+        # setas
         bcol1, bcol2, bcol3 = st.columns([1, 6, 1])
         with bcol1:
             if st.button("◀", key="emp_prev"):
@@ -227,17 +272,26 @@ with col_img:
             )
             st.markdown(f"<div class='carousel-dots'>{dots}</div>", unsafe_allow_html=True)
 
-        # ===== AUTO-PLAY (opção 1: auto + controles) =====
-        # Se passaram >= CAROUSEL_INTERVAL_SEC desde o último avanço, avança e rerun.
+        # thumbnails clicáveis (usam query param ?thumb=i)
+        # geramos data URIs para exibir inline
+        thumbs_html = "<div class='thumbs'>"
+        for i, pth in enumerate(imgs):
+            t_uri = as_data_uri(pth)
+            active_cls = "active" if i == idx else ""
+            thumbs_html += f"<a class='thumb {active_cls}' href='?thumb={i}' title='Imagem {i+1}'>" \
+                           f"<img src='{t_uri}' alt='thumb {i+1}' /></a>"
+        thumbs_html += "</div>"
+        st.markdown(thumbs_html, unsafe_allow_html=True)
+
+        # ---- autoplay: avança a cada CAROUSEL_INTERVAL_SEC ----
         now = time.time()
         if now - st.session_state.emp_last_tick >= CAROUSEL_INTERVAL_SEC:
             st.session_state.emp_idx = (idx + 1) % n
             st.session_state.emp_last_tick = now
-            # pequena pausa evita loop muito rápido caso o navegador faça reruns em sequência
             time.sleep(0.05)
             st.experimental_rerun()
     else:
-        st.info("Coloque imagens com nomes começando por 'empresa' (ex.: empresa1.jpg, empresa2.png, empresa3.jpeg).")
+        st.info("Coloque 3 imagens com nomes começando por 'empresa' (ex.: empresa1.jpg, empresa2.png, empresa3.jpeg).")
 
 st.markdown('</div>', unsafe_allow_html=True)
 
