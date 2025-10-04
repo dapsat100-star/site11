@@ -153,6 +153,3 @@ if st.button("Send email"):
     subject = "DAP Ocean Framework — Contact"
     body = f"Name: {name}\\nEmail: {email}\\nOrg: {org}\\nPhone: {phone}\\nMessage:\\n{msg}"
     st.success("Click the link below to open your email client:")
-    st.markdown(f"[Compose email](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
-st.caption("© DAP Space Systems · DAP Ocean Framework™")
-
