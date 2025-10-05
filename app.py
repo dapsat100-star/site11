@@ -1,10 +1,9 @@
-# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Carrossel com Legenda Automática/Manual)
+# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Carrossel com Legenda Manual)
 import base64
 import time
 import re
 from pathlib import Path
 from urllib.parse import quote
-
 import streamlit as st
 
 st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=None, layout="wide")
@@ -14,15 +13,13 @@ YOUTUBE_ID = "Ulrl6TFaWtA"
 LOGO_CANDIDATES = ["logo-mavipe.png", "logo-mavipe.jpeg", "logo-mavipe.jpg"]
 CAROUSEL_INTERVAL_SEC = 3  # autoplay
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# LEGENDA MANUAL (Empresa) — defina aqui, sem depender dos nomes de arquivo
+# <<< LEGENDA MANUAL DA EMPRESA (ordem dos slides) >>>
 EMPRESA_CAPTIONS = [
-    "DAP ATLAS — visão geral",            # slide 1
-    "Detecção de metano (OGMP 2.0 L5)",   # slide 2
-    "GeoINT & InSAR — integridade",       # slide 3
+    "DAP ATLAS — visão geral",            # slide 1 (empresa1.*)
+    "Detecção de metano (OGMP 2.0 L5)",   # slide 2 (empresa2.*)
+    "GeoINT & InSAR — integridade",       # slide 3 (empresa3.*)
     # adicione mais linhas se tiver mais imagens
 ]
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # ================== UTILS ==================
 def find_first(candidates) -> str | None:
@@ -71,35 +68,23 @@ def get_query_param(name: str, default=None):
         vals = params.get(name, [default])
         return vals[0] if isinstance(vals, list) else vals
 
-def set_query_param(**kwargs):
-    try:
-        st.query_params.update(kwargs)
-    except Exception:
-        st.experimental_set_query_params(**kwargs)
-
 def caption_from_path(path_str: str) -> str:
-    """Gera legenda amigável do nome do arquivo: remove extensão, substitui _ e - por espaço, capitaliza."""
+    """Fallback: legenda do nome do arquivo."""
     name = Path(path_str).stem
     name = re.sub(r"[_\-]+", " ", name).strip()
     caption = " ".join(w.capitalize() for w in name.split())
     return caption if caption else "Imagem"
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 def empresa_caption(idx: int, path_str: str) -> str:
-    """
-    Legenda final da Empresa:
-      1) usa EMPRESA_CAPTIONS[idx], se existir e não for vazio
-      2) senão, fallback para legenda automática pelo nome do arquivo
-    """
+    """1) Usa EMPRESA_CAPTIONS[idx] se existir; 2) senão, usa caption_from_path."""
     if 0 <= idx < len(EMPRESA_CAPTIONS):
         cap = (EMPRESA_CAPTIONS[idx] or "").strip()
         if cap:
             return cap
     return caption_from_path(path_str)
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 # ================== CSS ==================
-st.markdown("""
+st.markdown('''
 <style>
 html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hidden;}
 #MainMenu, header, footer {visibility:hidden;}
@@ -165,5 +150,216 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .carousel-dots{display:flex; gap:8px; justify-content:center; margin-top:10px}
 .carousel-dots span{width:8px; height:8px; border-radius:50%; background:#5d6a8b; display:inline-block; opacity:.6}
 .carousel-dots span.active{background:#e6eefc; opacity:1}
+
+.thumbs{display:flex; gap:12px; justify-content:center; margin-top:10px; flex-wrap:wrap}
+.thumb{
+  display:inline-block; width:120px; height:70px; overflow:hidden; border-radius:8px;
+  border:2px solid transparent; opacity:.85; transition:all .2s ease-in-out;
+}
+.thumb img{width:100%; height:100%; object-fit:cover; display:block}
+.thumb:hover{opacity:1; transform:translateY(-2px)}
+.thumb.active{border-color:#34d399; box-shadow:0 0 0 2px rgba(52,211,153,.35) inset;}
+@media (max-width:768px){
+  .thumb{width:92px; height:56px;}
+}
+
+/* Slide principal com tamanho uniforme */
+.carousel-main{
+  width:100%;
+  height:400px;            /* desktop */
+  object-fit:cover;
+  border-radius:12px;
+  box-shadow:0 8px 28px rgba(0,0,0,.35);
+}
+@media (max-width:768px){
+  .carousel-main{ height:240px; }  /* mobile */
+}
+
+/* Legenda abaixo do slide principal */
+.carousel-caption{
+  text-align:center;
+  color:#b9c6e6;
+  font-size:0.95rem;
+  margin-top:8px;
+}
+</style>
+''', unsafe_allow_html=True)
+
+# ================== NAVBAR ==================
+st.markdown('''
+<div class="navbar">
+  <div class="nav-left"><div class="brand">MAVIPE Space Systems</div></div>
+  <div class="nav-right">
+    <a href="#empresa">Empresa</a>
+    <a href="#solucao">Solução</a>
+    <a href="#setores">Setores</a>
+    <a class="cta" href="#contato">Agendar demo</a>
+  </div>
+</div>
+''', unsafe_allow_html=True)
+
+# ================== HERO (vídeo + logo Base64) ==================
+logo_path = find_first(LOGO_CANDIDATES)
+logo_tag = f'<img class="logo" src="{as_data_uri(logo_path)}" alt="MAVIPE logo"/>' if logo_path else ""
+if not logo_path:
+    st.warning(f"Logo não encontrada. Adicione um dos arquivos: {', '.join(LOGO_CANDIDATES)}")
+
+st.markdown(f'''
+<div class="hero">
+  <iframe src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&playlist={YOUTUBE_ID}"
+          title="MAVIPE hero" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"></iframe>
+  <div class="overlay"></div>
+  {logo_tag}
+  <div class="content">
+    <div>
+      <div class="kicker">GeoINT • InSAR • Metano (OGMP 2.0 L5)</div>
+      <h1 class="hero-title">Transformando dados geoespaciais em <span class="highlight">informações acionáveis</span></h1>
+      <div class="hero-sub">A MAVIPE integra <b>IA</b>, <b>imagens de satélite</b> (ópticas e SAR) e dados operacionais para entregar
+        <b>insights confiáveis</b> em monitoramento ambiental, emissões de metano e integridade de ativos — no ritmo da sua operação.</div>
+      <div style="margin-top:22px">
+        <a class="cta" href="#contato">Agendar demo</a>
+        <a class="btn" href="#solucao">Explorar solução</a>
+        <a class="btn" href="#setores">Casos de uso</a>
+      </div>
+    </div>
+  </div>
+</div>
+''', unsafe_allow_html=True)
+
+# ================== EMPRESA (texto + CARROSSEL com legenda) ==================
+st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section">', unsafe_allow_html=True)
+
+col_text, col_img = st.columns([1, 1])
+
+with col_text:
+    st.markdown(
+        "<h1 style='font-size:2.2rem; font-weight:700; color:#e6eefc; margin-bottom:12px;'>DAP Space Systems</h1>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        """
+        <p style="color:#b9c6e6; line-height:1.6; font-size:1rem;">
+        We are a startup company that develops cutting-edge technological solutions for the automated analysis of satellite images
+        with optical and SAR-type sensors through its <b>DAP Ocean Framework™</b>. Our company is capable of performing automated
+        analytics from any supplier of satellite images on the market for the provision of <b>Maritime Domain Awareness (MDA)</b> and
+        <b>Ground Domain Awareness (GDA)</b>, either on the defense or private markets.
+        </p>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "<a href='#contato' style='display:inline-block; margin-top:18px; background:#34d399; color:#05131a; font-weight:600; padding:12px 20px; border-radius:10px; text-decoration:none;'>Know more</a>",
+        unsafe_allow_html=True,
+    )
+
+with col_img:
+    imgs = gather_empresa_images(max_n=3)
+
+    # Estado do carrossel
+    if "emp_idx" not in st.session_state:
+        st.session_state.emp_idx = 0
+    if "emp_last_tick" not in st.session_state:
+        st.session_state.emp_last_tick = time.time()
+
+    # Clique via query param (thumbnails)
+    thumb_param = get_query_param("thumb", None)
+    if thumb_param is not None:
+        try:
+            new_idx = int(thumb_param)
+            if imgs:
+                st.session_state.emp_idx = new_idx % len(imgs)
+                st.session_state.emp_last_tick = time.time()
+        except Exception:
+            pass
+
+    if imgs:
+        n = len(imgs)
+        idx = st.session_state.emp_idx % n
+
+        # imagem principal (tamanho uniforme) + legenda MANUAL (ou fallback)
+        uri = as_data_uri(imgs[idx])
+        st.markdown(f"<img class='carousel-main' src='{uri}' alt='Empresa {idx+1}/{n}'/>", unsafe_allow_html=True)
+        st.markdown(f"<div class='carousel-caption'>{empresa_caption(idx, imgs[idx])}</div>", unsafe_allow_html=True)
+
+        # setas
+        bcol1, bcol2, bcol3 = st.columns([1, 6, 1])
+        with bcol1:
+            if st.button("◀", key="emp_prev"):
+                st.session_state.emp_idx = (idx - 1) % n
+                st.session_state.emp_last_tick = time.time()
+                st.rerun()
+        with bcol3:
+            if st.button("▶", key="emp_next"):
+                st.session_state.emp_idx = (idx + 1) % n
+                st.session_state.emp_last_tick = time.time()
+                st.rerun()
+        with bcol2:
+            dots = "".join(
+                f"<span class='{'active' if i==idx else ''}'></span>" for i in range(n)
+            )
+            st.markdown(f"<div class='carousel-dots'>{dots}</div>", unsafe_allow_html=True)
+
+        # thumbnails clicáveis (?thumb=i)
+        thumbs_html = "<div class='thumbs'>"
+        for i, pth in enumerate(imgs):
+            t_uri = as_data_uri(pth)
+            active_cls = "active" if i == idx else ""
+            thumbs_html += (
+                f"<a class='thumb {active_cls}' href='?thumb={i}' title='{caption_from_path(pth)}'>"
+                f"<img src='{t_uri}' alt='thumb {i+1}' /></a>"
+            )
+        thumbs_html += "</div>"
+        st.markdown(thumbs_html, unsafe_allow_html=True)
+
+        # autoplay
+        now = time.time()
+        if now - st.session_state.emp_last_tick >= CAROUSEL_INTERVAL_SEC:
+            st.session_state.emp_idx = (idx + 1) % n
+            st.session_state.emp_last_tick = now
+            time.sleep(0.05)
+            st.rerun()
+    else:
+        st.info("Coloque 3 imagens com nomes começando por 'empresa' (ex.: empresa1.jpg, empresa2.png, empresa3.jpeg).")
+
+st.markdown('</div>', unsafe_allow_html=True)
+
+# ================== SOLUÇÃO ==================
+st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section">', unsafe_allow_html=True)
+st.header("Solução — DAP ATLAS")
+st.markdown("- Metano (OGMP 2.0 L5): detecção por fonte, fluxo (kg/h), incerteza e Q/C; relatórios georreferenciados.")
+st.markdown("- InSAR: deformação (mm/mês), mapas de risco e recomendações para integridade de ativos.")
+st.markdown("- GeoINT: camadas contextuais, alertas e dashboards; exportações e integrações por API/CSV.")
+st.markdown("</div>", unsafe_allow_html=True)
+
+# ================== SETORES ==================
+st.markdown('<div id="setores"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section">', unsafe_allow_html=True)
+st.header("Setores / Casos de uso")
+st.markdown("- Óleo & Gás • Portos & Costas • Mineração • Defesa & Segurança • Monitoramento Ambiental.")
+st.markdown("</div>", unsafe_allow_html=True)
+
+# ================== CONTATO ==================
+st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section">', unsafe_allow_html=True)
+st.header("Agendar demo")
+
+c1, c2 = st.columns(2)
+with c1:
+    nome = st.text_input("Seu nome")
+    email = st.text_input("E-mail corporativo")
+with c2:
+    org = st.text_input("Organização")
+    phone = st.text_input("WhatsApp/Telefone (opcional)")
+msg = st.text_area("Qual desafio você quer resolver?")
+
+if st.button("Enviar e-mail"):
+    subject = "MAVIPE — Agendar demo"
+    body = f"Nome: {nome}\\nEmail: {email}\\nOrg: {org}\\nTelefone: {phone}\\nMensagem:\\n{msg}"
+    st.success("Clique abaixo para abrir seu e-mail:")
+    st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
+
+st.caption("© MAVIPE Space Systems · DAP ATLAS")
 
 
