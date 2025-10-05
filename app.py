@@ -458,9 +458,9 @@ st.markdown('''
     <h3>Oil &amp; Gas</h3>
     <p>Integridade de ativos e segurança operacional com imagens SAR e ópticas.</p>
     <ul>
-      <li>InSAR: deformação (mm/mês) e mapas de risco</li>
-      <li>Detecção de vazamentos / plumas e inspeção remota</li>
-      <li>Integrações por API/CSV para sistemas corporativos</li>
+      <li>Monitoramento de Emissão de Metano - Dashboards para OGMP 2.0 Nível 5 </li>
+      <li>Deformação/subsidência em dutos, tanques (fundação), well pads, taludes, pilhas</li>
+      <li>Derrames/manchas de óleos</li>
     </ul>
   </div>
 </div>
