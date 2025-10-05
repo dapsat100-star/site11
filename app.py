@@ -440,7 +440,7 @@ st.markdown('''
     <ul>
       <li>Vigilância marítima (AIS+SAR/Óptico) e detecção de anomalias</li>
       <li>Vigilância de Área Econômica Exclusiva, combate à pesca ilegal e contrabando</li>
-      <li>GeoINT tático: camadas contextuais e exportação por API</li>
+      <li>Detecção de mudanças em fronteiras e áreas sensíveis</li>
     </ul>
   </div>
 
