@@ -1,4 +1,4 @@
-# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Carrossel com Legenda Manual + Parceiros)
+# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Carrosséis + Setores com Âncoras + Industries)
 import base64
 import time
 import re
@@ -18,7 +18,7 @@ PARTNER_INTERVAL_SEC  = 3      # autoplay Parceiros
 EMPRESA_CAPTIONS = [
     "Empresa Estratégica de Defesa  - Certificação do Ministério da Defesa",            # slide 1 (empresa1.*)
     "Plataforma Geoespacial DAP ATLAS - Multipropósito, Proprietária e Certificada como Produto Estratégico de Defesa",   # slide 2 (empresa2.*)
-    "GeoINT & InSAR — integridade",       # slide 3 (empresa3.*)
+    "GeoINT & InSAR — integridade",                                                    # slide 3 (empresa3.*)
     # adicione mais linhas se tiver mais imagens
 ]
 
@@ -204,6 +204,58 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .carousel-main.partner{ object-fit:contain; background:rgba(255,255,255,.03); }
 .thumbs.partner .thumb{ background:rgba(255,255,255,.02); }
 .thumbs.partner .thumb img{ object-fit:contain; background:transparent; }
+
+/* === Industries bar (abaixo de Setores) === */
+.industries-bar{
+  display:flex; align-items:center; justify-content:space-between; gap:18px;
+  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08);
+  border-radius:14px; padding:16px 18px; margin-top:16px;
+}
+.industries-left{display:flex; align-items:center; gap:18px}
+.ind-label{opacity:.85; font-weight:700; letter-spacing:.2px}
+.drop{position:relative}
+.drop>button{
+  background:transparent; border:1px solid rgba(255,255,255,.12);
+  color:#e6eefc; padding:10px 14px; border-radius:10px; cursor:pointer
+}
+.menu{
+  position:absolute; top:calc(100% + 8px); left:0; min-width:240px;
+  background:#161b2a; border:1px solid rgba(255,255,255,.08);
+  border-radius:12px; padding:6px 0;
+  box-shadow:0 12px 30px rgba(0,0,0,.35);
+  opacity:0; pointer-events:none; transform:translateY(-6px);
+  transition:all .18s ease;
+}
+.menu a{display:block; padding:10px 14px; color:#e6eefc; text-decoration:none}
+.menu a:hover{background:rgba(255,255,255,.06)}
+.drop:hover .menu,
+.drop:focus-within .menu{opacity:1; pointer-events:auto; transform:translateY(0)}
+.drop>button:focus{outline:2px solid #34d399; outline-offset:2px}
+
+.ind-cta{
+  background:#34d399; color:#05131a; font-weight:800;
+  padding:12px 16px; border-radius:12px; text-decoration:none;
+}
+@media (max-width:768px){
+  .industries-bar{flex-direction:column; align-items:stretch; gap:12px}
+  .ind-cta{display:block; text-align:center}
+}
+
+/* === Setores: cards com âncoras === */
+.sectors-grid{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px; margin-top:18px
+}
+.sector-card{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px; padding:16px 18px;
+}
+.sector-card h3{margin:0 0 8px 0; color:#e6eefc}
+.sector-card p{margin:0 0 8px 0; color:#b9c6e6}
+.sector-card ul{margin:8px 0 0 18px; color:#c7d3f0}
+.sector-card li{margin:4px 0}
+@media (max-width:980px){ .sectors-grid{grid-template-columns:1fr} }
 </style>
 ''', unsafe_allow_html=True)
 
@@ -279,13 +331,11 @@ with col_text:
 with col_img:
     imgs = gather_empresa_images(max_n=3)
 
-    # Estado do carrossel
     if "emp_idx" not in st.session_state:
         st.session_state.emp_idx = 0
     if "emp_last_tick" not in st.session_state:
         st.session_state.emp_last_tick = time.time()
 
-    # Clique via query param (thumbnails)
     thumb_param = get_query_param("thumb", None)
     if thumb_param is not None:
         try:
@@ -299,13 +349,10 @@ with col_img:
     if imgs:
         n = len(imgs)
         idx = st.session_state.emp_idx % n
-
-        # imagem principal (tamanho uniforme) + legenda MANUAL (ou fallback)
         uri = as_data_uri(imgs[idx])
         st.markdown(f"<img class='carousel-main' src='{uri}' alt='Empresa {idx+1}/{n}'/>", unsafe_allow_html=True)
         st.markdown(f"<div class='carousel-caption'>{empresa_caption(idx, imgs[idx])}</div>", unsafe_allow_html=True)
 
-        # setas
         bcol1, bcol2, bcol3 = st.columns([1, 6, 1])
         with bcol1:
             if st.button("◀", key="emp_prev"):
@@ -318,12 +365,9 @@ with col_img:
                 st.session_state.emp_last_tick = time.time()
                 st.rerun()
         with bcol2:
-            dots = "".join(
-                f"<span class='{'active' if i==idx else ''}'></span>" for i in range(n)
-            )
+            dots = "".join(f"<span class='{'active' if i==idx else ''}'></span>" for i in range(n))
             st.markdown(f"<div class='carousel-dots'>{dots}</div>", unsafe_allow_html=True)
 
-        # thumbnails clicáveis (?thumb=i)
         thumbs_html = "<div class='thumbs'>"
         for i, pth in enumerate(imgs):
             t_uri = as_data_uri(pth)
@@ -335,7 +379,6 @@ with col_img:
         thumbs_html += "</div>"
         st.markdown(thumbs_html, unsafe_allow_html=True)
 
-        # autoplay
         now = time.time()
         if now - st.session_state.emp_last_tick >= CAROUSEL_INTERVAL_SEC:
             st.session_state.emp_idx = (idx + 1) % n
@@ -399,7 +442,6 @@ if logos:
         dots2 = "".join(f"<span class='{'active' if k==j else ''}'></span>" for k in range(n2))
         st.markdown(f"<div class='carousel-dots'>{dots2}</div>", unsafe_allow_html=True)
 
-    # thumbnails clicáveis (?pthumb=i)
     pthumbs = "<div class='thumbs partner'>"
     for k, p in enumerate(logos):
         t_uri = as_data_uri(p)
@@ -408,7 +450,6 @@ if logos:
     pthumbs += "</div>"
     st.markdown(pthumbs, unsafe_allow_html=True)
 
-    # autoplay
     now = time.time()
     if now - st.session_state.part_last_tick >= PARTNER_INTERVAL_SEC:
         st.session_state.part_idx = (j + 1) % n2
@@ -425,6 +466,60 @@ st.markdown('<div id="setores"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Setores / Casos de uso")
 st.markdown("- Óleo & Gás • Portos & Costas • Mineração • Defesa & Segurança • Monitoramento Ambiental.")
+
+# Cards com âncoras
+st.markdown('''
+<div class="sectors-grid">
+  <div id="defesa" class="sector-card">
+    <h3>Defense & Security</h3>
+    <p>Maritime & Ground Domain Awareness com alertas e análise assistida por IA.</p>
+    <ul>
+      <li>Vigilância marítima (AIS+SAR/Óptico) e detecção de anomalias</li>
+      <li>Reconhecimento de padrões (tráfego, embarcações, fronteiras)</li>
+      <li>GeoINT tático: camadas contextuais e exportação por API</li>
+    </ul>
+  </div>
+
+  <div id="ambiental" class="sector-card">
+    <h3>Environmental</h3>
+    <p>Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.</p>
+    <ul>
+      <li>Metano (OGMP 2.0 L5): quantificação por fonte e incerteza</li>
+      <li>Cobertura do solo, queimadas e portos &amp; costas</li>
+      <li>Dashboards e relatórios georreferenciados</li>
+    </ul>
+  </div>
+
+  <div id="oleoegas" class="sector-card">
+    <h3>Oil &amp; Gas</h3>
+    <p>Integridade de ativos e segurança operacional com imagens SAR e ópticas.</p>
+    <ul>
+      <li>InSAR: deformação (mm/mês) e mapas de risco</li>
+      <li>Detecção de vazamentos / plumas e inspeção remota</li>
+      <li>Integrações por API/CSV para sistemas corporativos</li>
+    </ul>
+  </div>
+</div>
+''', unsafe_allow_html=True)
+
+# Barra "Industries" com dropdown + CTA (aponta para as âncoras)
+st.markdown('''
+<div class="industries-bar">
+  <div class="industries-left">
+    <div class="ind-label">Industries</div>
+    <div class="drop">
+      <button>Industries ▾</button>
+      <div class="menu">
+        <a href="#defesa">Defense &amp; Security</a>
+        <a href="#ambiental">Environmental</a>
+        <a href="#oleoegas">Oil &amp; Gas</a>
+      </div>
+    </div>
+  </div>
+  <a class="ind-cta" href="#contato">Contact Sales</a>
+</div>
+''', unsafe_allow_html=True)
+
 st.markdown("</div>", unsafe_allow_html=True)
 
 # ================== CONTATO ==================
@@ -448,6 +543,5 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
-
 
 
