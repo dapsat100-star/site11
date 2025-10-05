@@ -275,7 +275,7 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 # ================== NAVBAR ==================
 st.markdown('''
 <div class="navbar">
-  <div class="nav-left"><div class="brand">MAVIPE Space Systems</div></div>
+  <div class="nav-left"><div class="brand">MAVIPE Sistemas Espaciais</div></div>
   <div class="nav-right">
     <a href="#empresa">Empresa</a>
     <a href="#solucao">Solução</a>
