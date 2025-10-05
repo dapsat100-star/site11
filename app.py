@@ -1,4 +1,4 @@
-# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Carrosséis + Setores com Âncoras)
+# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Carrosséis + Newsroom + Setores)
 import base64
 import time
 import re
@@ -16,10 +16,36 @@ PARTNER_INTERVAL_SEC  = 3      # autoplay Parceiros
 
 # <<< LEGENDA MANUAL DA EMPRESA (ordem dos slides) >>>
 EMPRESA_CAPTIONS = [
-    "Empresa Estratégica de Defesa  - Certificação do Ministério da Defesa",  # slide 1 (empresa1.*)
-    "Plataforma Geoespacial DAP ATLAS - Multipropósito, Proprietária e Certificada como Produto Estratégico de Defesa",  # slide 2 (empresa2.*)
-    "GeoINT & InSAR — integridade",                                           # slide 3 (empresa3.*)
-    # adicione mais linhas se tiver mais imagens
+    "Empresa Estratégica de Defesa  - Certificação do Ministério da Defesa",
+    "Plataforma Geoespacial DAP ATLAS - Multipropósito, Proprietária e Certificada como Produto Estratégico de Defesa",
+    "GeoINT & InSAR — integridade",
+]
+
+# <<< NEWSROOM: edite aqui as suas notícias >>>
+# Campos: title, date (string), summary, link (URL), image (opcional: caminho local p/ thumb)
+NEWS_ITEMS = [
+    {
+        "title": "MAVIPE lança módulo OGMP 2.0 Nível 5",
+        "date": "2025-09-15",
+        "summary": "Quantificação por fonte, incerteza e Q/C com dashboards e API.",
+        "link": "https://example.com/noticia1",
+        "image": "news1.jpg",
+    },
+    {
+        "title": "Parceria para InSAR de alta cadência",
+        "date": "2025-08-22",
+        "summary": "Monitoramento de deformação em dutos, tanques e taludes.",
+        "link": "https://example.com/noticia2",
+        "image": "news2.jpg",
+    },
+    {
+        "title": "DAP ATLAS integra alertas marítimos",
+        "date": "2025-07-02",
+        "summary": "Detecção de navios não colaborativos, spoofing e rendezvous.",
+        "link": "https://example.com/noticia3",
+        "image": "news3.png",
+    },
+    # adicione mais itens conforme necessário
 ]
 
 # ================== UTILS ==================
@@ -39,7 +65,6 @@ def as_data_uri(path_str: str) -> str:
     return f"data:{guess_mime(p)};base64,{b64}"
 
 def gather_empresa_images(max_n: int = 3) -> list[str]:
-    """Coleta até max_n imagens p/ o carrossel (empresa1/2/3 prioritárias, depois empresa*)."""
     base_candidates = [
         "empresa1.jpg","empresa1.jpeg","empresa1.png",
         "empresa2.jpg","empresa2.jpeg","empresa2.png",
@@ -60,7 +85,6 @@ def gather_empresa_images(max_n: int = 3) -> list[str]:
     return ordered
 
 def gather_partner_images(max_n: int = 24) -> list[str]:
-    """Coleta logos para o carrossel de Parceiros/Certificações."""
     patterns = [
         "parceiro*.png","parceiro*.jpg","parceiro*.jpeg",
         "certificacao*.png","certificacao*.jpg","certificacao*.jpeg",
@@ -86,19 +110,25 @@ def get_query_param(name: str, default=None):
         return vals[0] if isinstance(vals, list) else vals
 
 def caption_from_path(path_str: str) -> str:
-    """Fallback: legenda do nome do arquivo."""
     name = Path(path_str).stem
     name = re.sub(r"[_\-]+", " ", name).strip()
     caption = " ".join(w.capitalize() for w in name.split())
     return caption if caption else "Imagem"
 
 def empresa_caption(idx: int, path_str: str) -> str:
-    """1) Usa EMPRESA_CAPTIONS[idx] se existir; 2) senão, usa caption_from_path."""
     if 0 <= idx < len(EMPRESA_CAPTIONS):
         cap = (EMPRESA_CAPTIONS[idx] or "").strip()
         if cap:
             return cap
     return caption_from_path(path_str)
+
+def news_thumbnail_src(path_str: str | None) -> str | None:
+    if not path_str:
+        return None
+    p = Path(path_str)
+    if p.exists() and p.stat().st_size > 0:
+        return as_data_uri(str(p))
+    return None
 
 # ================== CSS ==================
 st.markdown('''
@@ -189,7 +219,7 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
   box-shadow:0 8px 28px rgba(0,0,0,.35);
 }
 @media (max-width:768px){
-  .carousel-main{ height:240px; }  /* mobile */
+  .carousel-main{ height:240px; }
 }
 
 /* Legenda abaixo do slide principal */
@@ -220,6 +250,25 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .sector-card ul{margin:8px 0 0 18px; color:#c7d3f0}
 .sector-card li{margin:4px 0}
 @media (max-width:980px){ .sectors-grid{grid-template-columns:1fr} }
+
+/* === Newsroom === */
+.news-grid{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px; margin-top:18px;
+}
+.news-card{
+  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08);
+  border-radius:16px; overflow:hidden; display:flex; flex-direction:column;
+}
+.news-thumb{width:100%; height:160px; object-fit:cover; background:rgba(255,255,255,.02)}
+.news-body{padding:14px 16px}
+.news-title{color:#e6eefc; font-weight:700; margin:0 0 6px 0}
+.news-meta{color:#9fb0d4; font-size:.85rem; margin-bottom:6px}
+.news-summary{color:#cbd6f2; font-size:.95rem; margin-bottom:10px}
+.news-actions{padding:0 16px 14px 16px}
+.news-actions a{display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none;
+  background:#34d399; color:#05131a; font-weight:700}
+@media (max-width:980px){ .news-grid{grid-template-columns:1fr} }
 </style>
 ''', unsafe_allow_html=True)
 
@@ -231,6 +280,7 @@ st.markdown('''
     <a href="#empresa">Empresa</a>
     <a href="#solucao">Solução</a>
     <a href="#parceiros">Parceiros</a>
+    <a href="#newsroom">Newsroom</a>
     <a href="#setores">Setores</a>
     <a class="cta" href="#contato">Agendar demo</a>
   </div>
@@ -265,7 +315,7 @@ st.markdown(f'''
 </div>
 ''', unsafe_allow_html=True)
 
-# ================== EMPRESA (texto + CARROSSEL com legenda) ==================
+# ================== EMPRESA ==================
 st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 
@@ -294,11 +344,8 @@ with col_text:
 
 with col_img:
     imgs = gather_empresa_images(max_n=3)
-
-    if "emp_idx" not in st.session_state:
-        st.session_state.emp_idx = 0
-    if "emp_last_tick" not in st.session_state:
-        st.session_state.emp_last_tick = time.time()
+    if "emp_idx" not in st.session_state: st.session_state.emp_idx = 0
+    if "emp_last_tick" not in st.session_state: st.session_state.emp_last_tick = time.time()
 
     thumb_param = get_query_param("thumb", None)
     if thumb_param is not None:
@@ -369,11 +416,8 @@ st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Parceiros")
 
 logos = gather_partner_images(max_n=24)
-
-if "part_idx" not in st.session_state:
-    st.session_state.part_idx = 0
-if "part_last_tick" not in st.session_state:
-    st.session_state.part_last_tick = time.time()
+if "part_idx" not in st.session_state: st.session_state.part_idx = 0
+if "part_last_tick" not in st.session_state: st.session_state.part_last_tick = time.time()
 
 pthumb_param = get_query_param("pthumb", None)
 if pthumb_param is not None and logos:
@@ -425,13 +469,50 @@ else:
 
 st.markdown("</div>", unsafe_allow_html=True)
 
+# ================== NEWSROOM ==================
+st.markdown('<div id="newsroom"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section">', unsafe_allow_html=True)
+st.header("Newsroom")
+
+if not NEWS_ITEMS:
+    st.info("Adicione notícias em NEWS_ITEMS no topo do arquivo.")
+else:
+    # Ordena por data (string ISO desc, se informado)
+    def sort_key(item): return item.get("date", ""), item.get("title","")
+    items = sorted(NEWS_ITEMS, key=sort_key, reverse=True)
+
+    html = '<div class="news-grid">'
+    for it in items:
+        title   = it.get("title","")
+        date    = it.get("date","")
+        summary = it.get("summary","")
+        link    = it.get("link","#")
+        img_src = news_thumbnail_src(it.get("image"))
+        thumb   = f"<img class='news-thumb' src='{img_src}' alt='thumb'/>" if img_src else "<div class='news-thumb'></div>"
+        html += f"""
+        <div class="news-card">
+          {thumb}
+          <div class="news-body">
+            <div class="news-title">{title}</div>
+            <div class="news-meta">{date}</div>
+            <div class="news-summary">{summary}</div>
+          </div>
+          <div class="news-actions">
+            <a href="{link}" target="_blank" rel="noopener">Ler mais</a>
+          </div>
+        </div>
+        """
+    html += "</div>"
+    st.markdown(html, unsafe_allow_html=True)
+
+st.markdown("</div>", unsafe_allow_html=True)
+
 # ================== SETORES ==================
 st.markdown('<div id="setores"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Setores / Casos de uso")
 st.markdown("- Óleo & Gás • Portos & Costas • Mineração • Defesa & Segurança • Monitoramento Ambiental.")
 
-# Cards com âncoras
 st.markdown('''
 <div class="sectors-grid">
   <div id="defesa" class="sector-card">
@@ -458,7 +539,7 @@ st.markdown('''
     <h3>Oil &amp; Gas</h3>
     <p>Integridade de ativos e segurança operacional com imagens SAR e ópticas.</p>
     <ul>
-      <li>Monitoramento de Emissão de Metano - Dashboards para OGMP 2.0 Nível 5 </li>
+      <li>Monitoramento de Emissão de Metano - Dashboards para OGMP 2.0 Nível 5</li>
       <li>Deformação/subsidência em dutos, tanques (fundação), well pads, taludes, pilhas</li>
       <li>Derrames/manchas de óleos</li>
     </ul>
@@ -489,6 +570,3 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
-
-
-
