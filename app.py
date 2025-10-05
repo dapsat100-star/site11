@@ -1,4 +1,4 @@
-# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Empresa com Carrossel AUTO + Thumbnails)
+# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Empresa com Carrossel AUTO + Thumbnails) — Streamlit moderno
 import base64
 import time
 from pathlib import Path
@@ -11,7 +11,7 @@ st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=No
 # ================== CONFIG ==================
 YOUTUBE_ID = "Ulrl6TFaWtA"
 LOGO_CANDIDATES = ["logo-mavipe.png", "logo-mavipe.jpeg", "logo-mavipe.jpg"]
-CAROUSEL_INTERVAL_SEC = 3  # intervalo do autoplay
+CAROUSEL_INTERVAL_SEC = 3  # intervalo do autoplay (segundos)
 
 # ================== UTILS ==================
 def find_first(candidates) -> str | None:
@@ -33,7 +33,7 @@ def gather_empresa_images(max_n: int = 3) -> list[str]:
     """Coleta até max_n imagens para o carrossel:
        1) prioridade para empresa1/2/3 (jpg/jpeg/png)
        2) depois qualquer arquivo 'empresa*.jpg|jpeg|png'
-       remove duplicatas e mantém ordem estável
+       Remove duplicatas e mantém ordem estável.
     """
     base_candidates = [
         "empresa1.jpg","empresa1.jpeg","empresa1.png",
@@ -226,19 +226,20 @@ with col_text:
 with col_img:
     imgs = gather_empresa_images(max_n=3)
 
-    # --- leitura de clique via query param (thumbnails) ---
-    thumb_param = get_query_param("thumb", None)
+    # Estado do carrossel
     if "emp_idx" not in st.session_state:
         st.session_state.emp_idx = 0
     if "emp_last_tick" not in st.session_state:
         st.session_state.emp_last_tick = time.time()
 
+    # Leitura de clique via query param (thumbnails)
+    thumb_param = get_query_param("thumb", None)
     if thumb_param is not None:
         try:
             new_idx = int(thumb_param)
             if imgs:
                 st.session_state.emp_idx = new_idx % len(imgs)
-                st.session_state.emp_last_tick = time.time()   # pausa autoplay momentaneamente
+                st.session_state.emp_last_tick = time.time()   # pausa temporária do autoplay
         except Exception:
             pass  # ignora valores inválidos
 
@@ -260,12 +261,12 @@ with col_img:
             if st.button("◀", key="emp_prev"):
                 st.session_state.emp_idx = (idx - 1) % n
                 st.session_state.emp_last_tick = time.time()
-                st.experimental_rerun()
+                st.rerun()
         with bcol3:
             if st.button("▶", key="emp_next"):
                 st.session_state.emp_idx = (idx + 1) % n
                 st.session_state.emp_last_tick = time.time()
-                st.experimental_rerun()
+                st.rerun()
         with bcol2:
             dots = "".join(
                 f"<span class='{'active' if i==idx else ''}'></span>" for i in range(n)
@@ -273,13 +274,14 @@ with col_img:
             st.markdown(f"<div class='carousel-dots'>{dots}</div>", unsafe_allow_html=True)
 
         # thumbnails clicáveis (usam query param ?thumb=i)
-        # geramos data URIs para exibir inline
         thumbs_html = "<div class='thumbs'>"
         for i, pth in enumerate(imgs):
             t_uri = as_data_uri(pth)
             active_cls = "active" if i == idx else ""
-            thumbs_html += f"<a class='thumb {active_cls}' href='?thumb={i}' title='Imagem {i+1}'>" \
-                           f"<img src='{t_uri}' alt='thumb {i+1}' /></a>"
+            thumbs_html += (
+                f"<a class='thumb {active_cls}' href='?thumb={i}' title='Imagem {i+1}'>"
+                f"<img src='{t_uri}' alt='thumb {i+1}' /></a>"
+            )
         thumbs_html += "</div>"
         st.markdown(thumbs_html, unsafe_allow_html=True)
 
@@ -289,7 +291,7 @@ with col_img:
             st.session_state.emp_idx = (idx + 1) % n
             st.session_state.emp_last_tick = now
             time.sleep(0.05)
-            st.experimental_rerun()
+            st.rerun()
     else:
         st.info("Coloque 3 imagens com nomes começando por 'empresa' (ex.: empresa1.jpg, empresa2.png, empresa3.jpeg).")
 
