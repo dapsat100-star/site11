@@ -438,7 +438,7 @@ st.markdown('''
     <h3>Defense & Security</h3>
     <p>Maritime & Ground Domain Awareness com alertas e análise assistida por IA.</p>
     <ul>
-      <li>Vigilância marítima (AIS+SAR/Óptico) e detecção de anomalias</li>
+      <li>Contagem de aeronaves/veículos e novas estruturas em instalações</li>
       <li>Vigilância de Área Econômica Exclusiva, combate à pesca ilegal e contrabando</li>
       <li>Detecção de mudanças em fronteiras e áreas sensíveis</li>
     </ul>
