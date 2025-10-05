@@ -1,4 +1,6 @@
-# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Carrossel com Legenda Automática)
+
+ # app.py — MAVIPE Landing Page
+# Hero YouTube + Logo Base64 • Empresa (Carrossel c/ legenda) • Parceiros & Certificações (Carrossel de logos)
 import base64
 import time
 import re
@@ -12,7 +14,11 @@ st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=No
 # ================== CONFIG ==================
 YOUTUBE_ID = "Ulrl6TFaWtA"
 LOGO_CANDIDATES = ["logo-mavipe.png", "logo-mavipe.jpeg", "logo-mavipe.jpg"]
-CAROUSEL_INTERVAL_SEC = 3  # autoplay
+
+CAROUSEL_INTERVAL_SEC = 3       # autoplay do carrossel "Empresa"
+PARTNER_INTERVAL_SEC = 2        # autoplay do carrossel "Parceiros"
+PARTNER_WINDOW = 6              # quantos logos mostrar por vez
+PARTNER_MAX = 12                # máximo de logos carregados
 
 # ================== UTILS ==================
 def find_first(candidates) -> str | None:
@@ -31,7 +37,6 @@ def as_data_uri(path_str: str) -> str:
     return f"data:{guess_mime(p)};base64,{b64}"
 
 def gather_empresa_images(max_n: int = 3) -> list[str]:
-    """Coleta até max_n imagens p/ o carrossel (empresa1/2/3 prioritárias, depois empresa*)."""
     base_candidates = [
         "empresa1.jpg","empresa1.jpeg","empresa1.png",
         "empresa2.jpg","empresa2.jpeg","empresa2.png",
@@ -45,6 +50,31 @@ def gather_empresa_images(max_n: int = 3) -> list[str]:
                 extras.append(str(p))
     seen, ordered = set(), []
     for p in found + extras:
+        if p not in seen:
+            ordered.append(p); seen.add(p)
+        if len(ordered) >= max_n:
+            break
+    return ordered
+
+def gather_partner_logos(max_n: int = PARTNER_MAX) -> list[str]:
+    """Procura arquivos de logos de parceiros/certificações em padrões comuns."""
+    patterns = [
+        "parceiro*.png","parceiro*.jpg","parceiro*.jpeg",
+        "parceiros*.png","parceiros*.jpg","parceiros*.jpeg",
+        "certificacao*.png","certificacao*.jpg","certificacao*.jpeg",
+        "certificacoes*.png","certificacoes*.jpg","certificacoes*.jpeg",
+        "logo_parceiro*.png","logo_parceiro*.jpg","logo_parceiro*.jpeg",
+        "logo_cert*.png","logo_cert*.jpg","logo_cert*.jpeg",
+        "logo_*.png","logo_*.jpg","logo_*.jpeg",
+    ]
+    results = []
+    for pat in patterns:
+        for p in sorted(Path(".").glob(pat)):
+            if p.is_file() and p.stat().st_size > 0:
+                results.append(str(p))
+    # dedup e corta no máximo
+    seen, ordered = set(), []
+    for p in results:
         if p not in seen:
             ordered.append(p); seen.add(p)
         if len(ordered) >= max_n:
@@ -68,14 +98,12 @@ def set_query_param(**kwargs):
         st.experimental_set_query_params(**kwargs)
 
 def caption_from_path(path_str: str) -> str:
-    """Gera legenda amigável do nome do arquivo: remove extensão, substitui _ e - por espaço, capitaliza."""
     name = Path(path_str).stem
     name = re.sub(r"[_\-]+", " ", name).strip()
-    # Capitaliza cada palavra (inclui números se houver)
     caption = " ".join(w.capitalize() for w in name.split())
     return caption if caption else "Imagem"
 
-# ================== CSS ==================
+# ================== CSS (desktop + mobile) ==================
 st.markdown("""
 <style>
 html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hidden;}
@@ -138,7 +166,7 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
   .nav-right a{margin-left:14px;}
 }
 
-/* Dots e thumbnails */
+/* Dots e thumbnails — Empresa */
 .carousel-dots{display:flex; gap:8px; justify-content:center; margin-top:10px}
 .carousel-dots span{width:8px; height:8px; border-radius:50%; background:#5d6a8b; display:inline-block; opacity:.6}
 .carousel-dots span.active{background:#e6eefc; opacity:1}
@@ -155,7 +183,7 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
   .thumb{width:92px; height:56px;}
 }
 
-/* Slide principal com tamanho uniforme */
+/* Slide principal uniforme + legenda */
 .carousel-main{
   width:100%;
   height:400px;            /* desktop */
@@ -166,13 +194,32 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 @media (max-width:768px){
   .carousel-main{ height:240px; }  /* mobile */
 }
-
-/* Legenda abaixo do slide principal */
 .carousel-caption{
   text-align:center;
   color:#b9c6e6;
   font-size:0.95rem;
   margin-top:8px;
+}
+
+/* ===== Parceiros & Certificações (carrossel de logos) ===== */
+.partner-wrap{
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.03);
+  border-radius:14px;
+  padding:18px 16px;
+}
+.partner-rail{
+  display:flex; gap:24px; align-items:center; justify-content:center; flex-wrap:wrap;
+  min-height:90px;
+}
+.partner-logo{
+  height:56px;            /* altura uniforme do logo (desktop) */
+  max-width:160px;
+  object-fit:contain;     /* não distorce o logo */
+  filter: saturate(0.85) brightness(0.98);
+}
+@media (max-width:768px){
+  .partner-logo{ height:44px; max-width:140px; }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -183,7 +230,8 @@ st.markdown("""
   <div class="nav-left"><div class="brand">MAVIPE Space Systems</div></div>
   <div class="nav-right">
     <a href="#empresa">Empresa</a>
-    <a href="#solucao">Produtos</a>
+    <a href="#solucao">Solução</a>
+    <a href="#parceiros">Parceiros</a>
     <a href="#setores">Setores</a>
     <a class="cta" href="#contato">Agendar demo</a>
   </div>
@@ -248,13 +296,11 @@ with col_text:
 with col_img:
     imgs = gather_empresa_images(max_n=3)
 
-    # Estado do carrossel
     if "emp_idx" not in st.session_state:
         st.session_state.emp_idx = 0
     if "emp_last_tick" not in st.session_state:
         st.session_state.emp_last_tick = time.time()
 
-    # Clique via query param (thumbnails)
     thumb_param = get_query_param("thumb", None)
     if thumb_param is not None:
         try:
@@ -269,12 +315,10 @@ with col_img:
         n = len(imgs)
         idx = st.session_state.emp_idx % n
 
-        # imagem principal (tamanho uniforme) + legenda automática
         uri = as_data_uri(imgs[idx])
         st.markdown(f"<img class='carousel-main' src='{uri}' alt='Empresa {idx+1}/{n}'/>", unsafe_allow_html=True)
         st.markdown(f"<div class='carousel-caption'>{caption_from_path(imgs[idx])}</div>", unsafe_allow_html=True)
 
-        # setas
         bcol1, bcol2, bcol3 = st.columns([1, 6, 1])
         with bcol1:
             if st.button("◀", key="emp_prev"):
@@ -292,7 +336,6 @@ with col_img:
             )
             st.markdown(f"<div class='carousel-dots'>{dots}</div>", unsafe_allow_html=True)
 
-        # thumbnails clicáveis (?thumb=i)
         thumbs_html = "<div class='thumbs'>"
         for i, pth in enumerate(imgs):
             t_uri = as_data_uri(pth)
@@ -304,7 +347,6 @@ with col_img:
         thumbs_html += "</div>"
         st.markdown(thumbs_html, unsafe_allow_html=True)
 
-        # autoplay
         now = time.time()
         if now - st.session_state.emp_last_tick >= CAROUSEL_INTERVAL_SEC:
             st.session_state.emp_idx = (idx + 1) % n
@@ -323,6 +365,60 @@ st.header("Solução — DAP ATLAS")
 st.markdown("- Metano (OGMP 2.0 L5): detecção por fonte, fluxo (kg/h), incerteza e Q/C; relatórios georreferenciados.")
 st.markdown("- InSAR: deformação (mm/mês), mapas de risco e recomendações para integridade de ativos.")
 st.markdown("- GeoINT: camadas contextuais, alertas e dashboards; exportações e integrações por API/CSV.")
+st.markdown("</div>", unsafe_allow_html=True)
+
+# ================== PARCEIROS & CERTIFICAÇÕES (carrossel de logos) ==================
+st.markdown('<div id="parceiros"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section">', unsafe_allow_html=True)
+st.header("Parceiros e Certificações")
+
+logos = gather_partner_logos(PARTNER_MAX)
+
+if "part_idx" not in st.session_state:
+    st.session_state.part_idx = 0
+if "part_last_tick" not in st.session_state:
+    st.session_state.part_last_tick = time.time()
+
+if logos:
+    n = len(logos)
+    idx = st.session_state.part_idx % n
+
+    # janela de PARTNER_WINDOW logos com wrap-around
+    window = []
+    for k in range(PARTNER_WINDOW):
+        window.append(logos[(idx + k) % n])
+
+    st.markdown("<div class='partner-wrap'>", unsafe_allow_html=True)
+    rail_html = "<div class='partner-rail'>"
+    for pth in window:
+        rail_html += f"<img class='partner-logo' src='{as_data_uri(pth)}' alt='logo'/>"
+    rail_html += "</div>"
+    st.markdown(rail_html, unsafe_allow_html=True)
+
+    # controles
+    cL, cM, cR = st.columns([1, 6, 1])
+    with cL:
+        if st.button("◀", key="part_prev"):
+            st.session_state.part_idx = (idx - PARTNER_WINDOW) % n
+            st.session_state.part_last_tick = time.time()
+            st.rerun()
+    with cR:
+        if st.button("▶", key="part_next"):
+            st.session_state.part_idx = (idx + PARTNER_WINDOW) % n
+            st.session_state.part_last_tick = time.time()
+            st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    # autoplay do carrossel de logos
+    now = time.time()
+    if now - st.session_state.part_last_tick >= PARTNER_INTERVAL_SEC:
+        st.session_state.part_idx = (idx + PARTNER_WINDOW) % n
+        st.session_state.part_last_tick = now
+        time.sleep(0.05)
+        st.rerun()
+else:
+    st.info("Adicione logos como 'parceiro*.png' ou 'certificacao*.png' (também aceitamos 'logo_parceiro*', 'logo_cert*').")
+
 st.markdown("</div>", unsafe_allow_html=True)
 
 # ================== SETORES ==================
