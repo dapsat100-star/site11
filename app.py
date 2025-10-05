@@ -1,4 +1,4 @@
-# app.py — MAVIPE Landing Page (com edição de legendas no carrossel da Empresa)
+# app.py — MAVIPE Landing Page (com edição de legendas em Empresa e Parceiros)
 import base64
 import time
 import re
@@ -13,9 +13,12 @@ st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=No
 # ================== CONFIG ==================
 YOUTUBE_ID = "Ulrl6TFaWtA"
 LOGO_CANDIDATES = ["logo-mavipe.png", "logo-mavipe.jpeg", "logo-mavipe.jpg"]
-CAROUSEL_INTERVAL_SEC = 3
-PARTNER_INTERVAL_SEC = 3
+
+CAROUSEL_INTERVAL_SEC = 3      # autoplay Empresa
+PARTNER_INTERVAL_SEC = 3       # autoplay Parceiros
+
 CAPTIONS_FILE = "empresa_captions.json"
+PART_CAPTIONS_FILE = "parceiros_captions.json"
 
 # ================== UTILS ==================
 def find_first(candidates) -> str | None:
@@ -40,11 +43,13 @@ def gather_empresa_images(max_n: int = 3) -> list[str]:
         "empresa3.jpg","empresa3.jpeg","empresa3.png",
     ]
     found = [p for p in base_candidates if Path(p).exists() and Path(p).stat().st_size > 0]
+
     extras = []
     for pat in ("empresa*.jpg", "empresa*.jpeg", "empresa*.png"):
         for p in sorted(Path(".").glob(pat)):
             if p.is_file() and p.stat().st_size > 0:
                 extras.append(str(p))
+
     seen, ordered = set(), []
     for p in found + extras:
         if p not in seen:
@@ -77,6 +82,7 @@ def gather_partner_images(max_n: int = 12) -> list[str]:
     return ordered
 
 def get_query_param(name: str, default=None):
+    # Compat com versões diferentes do Streamlit
     try:
         params = st.query_params
         val = params.get(name, default)
@@ -87,10 +93,12 @@ def get_query_param(name: str, default=None):
         return vals[0] if isinstance(vals, list) else vals
 
 def caption_from_path(path_str: str) -> str:
+    """Legenda automática: nome de arquivo → título bonitinho."""
     name = Path(path_str).stem
     name = re.sub(r"[_\-]+", " ", name).strip()
     return " ".join(w.capitalize() for w in name.split()) or "Imagem"
 
+# ------- Legendas (Empresa) -------
 def load_emp_captions() -> dict:
     try:
         p = Path(CAPTIONS_FILE)
@@ -103,6 +111,21 @@ def load_emp_captions() -> dict:
 def caption_for(path_str: str) -> str:
     key = Path(path_str).stem
     overrides = st.session_state.get("emp_captions", {})
+    return overrides.get(key) or caption_from_path(path_str)
+
+# ------- Legendas (Parceiros) -------
+def load_part_captions() -> dict:
+    try:
+        p = Path(PART_CAPTIONS_FILE)
+        if p.exists():
+            return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        pass
+    return {}
+
+def caption_for_partner(path_str: str) -> str:
+    key = Path(path_str).stem
+    overrides = st.session_state.get("part_captions", {})
     return overrides.get(key) or caption_from_path(path_str)
 
 # ================== CSS ==================
@@ -132,7 +155,7 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
   pointer-events:none;
 }
 
-/* Conteúdo Hero */
+/* Conteúdo do Hero */
 .hero .content{position:absolute; z-index:2; inset:0; display:flex; align-items:center; padding:0 8vw; color:#e8eefc}
 .kicker{color:#cfe7ff; font-weight:600; margin-bottom:10px}
 h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
@@ -144,16 +167,14 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .section{padding:72px 8vw; border-top:1px solid rgba(255,255,255,.07)}
 .lead{color:#b9c6e6}
 
-/* MOBILE tweaks */
+/* MOBILE */
 :root{
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
 }
-.navbar{
-  padding: max(12px, calc(12px + var(--safe-top))) max(24px, calc(24px + var(--safe-right))) 12px max(24px, calc(24px + var(--safe-left)));
-}
+.navbar{ padding: max(12px, calc(12px + var(--safe-top))) max(24px, calc(24px + var(--safe-right))) 12px max(24px, calc(24px + var(--safe-left))); }
 .cta, .btn{min-height:44px; line-height:1.15; margin-bottom:10px;}
 .hero{height:100svh;}
 @supports (height:100dvh){.hero{height:100dvh;}}
@@ -181,29 +202,17 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .thumb img{width:100%; height:100%; object-fit:cover; display:block}
 .thumb:hover{opacity:1; transform:translateY(-2px)}
 .thumb.active{border-color:#34d399; box-shadow:0 0 0 2px rgba(52,211,153,.35) inset;}
-@media (max-width:768px){
-  .thumb{width:92px; height:56px;}
-}
+@media (max-width:768px){ .thumb{width:92px; height:56px;} }
 
 /* Slide principal uniforme + legenda */
 .carousel-main{
-  width:100%;
-  height:400px;            /* desktop */
-  object-fit:cover;
-  border-radius:12px;
-  box-shadow:0 8px 28px rgba(0,0,0,.35);
+  width:100%; height:400px; object-fit:cover;
+  border-radius:12px; box-shadow:0 8px 28px rgba(0,0,0,.35);
 }
-@media (max-width:768px){
-  .carousel-main{ height:240px; }  /* mobile */
-}
-.carousel-caption{
-  text-align:center;
-  color:#b9c6e6;
-  font-size:0.95rem;
-  margin-top:8px;
-}
+@media (max-width:768px){ .carousel-main{ height:240px; } }
+.carousel-caption{ text-align:center; color:#b9c6e6; font-size:0.95rem; margin-top:8px; }
 
-/* Parceiros: mesmo layout mas preservando logos */
+/* Parceiros: preservar logos (não cortar) */
 .carousel-main.partner{ object-fit:contain; background:rgba(255,255,255,.03); }
 .thumbs.partner .thumb{ background:rgba(255,255,255,.02); }
 </style>
@@ -251,7 +260,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# ================== EMPRESA (carrossel + legenda editável) ==================
+# ================== EMPRESA (carrossel + editor de legendas) ==================
 st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 
@@ -279,6 +288,7 @@ with col_img:
     if "emp_last_tick" not in st.session_state:
         st.session_state.emp_last_tick = time.time()
 
+    # Thumbnails via query param
     thumb_param = get_query_param("thumb", None)
     if thumb_param is not None:
         try:
@@ -322,6 +332,7 @@ with col_img:
         thumbs_html += "</div>"
         st.markdown(thumbs_html, unsafe_allow_html=True)
 
+        # Editor de legendas (Empresa)
         with st.expander("✎ Editar legendas do carrossel (Empresa)"):
             new_caps = {}
             for i, pth in enumerate(imgs):
@@ -334,16 +345,23 @@ with col_img:
                 if st.button("Salvar legendas"):
                     st.session_state.emp_captions.update(new_caps)
                     try:
-                        Path(CAPTIONS_FILE).write_text(json.dumps(st.session_state.emp_captions, ensure_ascii=False, indent=2), encoding="utf-8")
+                        Path(CAPTIONS_FILE).write_text(
+                            json.dumps(st.session_state.emp_captions, ensure_ascii=False, indent=2),
+                            encoding="utf-8"
+                        )
                         st.success(f"Legendas salvas em {CAPTIONS_FILE}")
                     except Exception:
                         st.info("Sem permissão para gravar arquivo. Use o botão ao lado para baixar o JSON.")
                     st.rerun()
             with c2:
-                st.download_button("Baixar JSON de legendas",
+                st.download_button(
+                    "Baixar JSON de legendas",
                     data=json.dumps(st.session_state.emp_captions, ensure_ascii=False, indent=2),
-                    file_name=CAPTIONS_FILE, mime="application/json")
+                    file_name=CAPTIONS_FILE,
+                    mime="application/json",
+                )
 
+        # autoplay
         now = time.time()
         if now - st.session_state.emp_last_tick >= CAROUSEL_INTERVAL_SEC:
             st.session_state.emp_idx = (idx + 1) % n
@@ -364,7 +382,7 @@ st.markdown("- InSAR: deformação (mm/mês), mapas de risco e recomendações p
 st.markdown("- GeoINT: camadas contextuais, alertas e dashboards; exportações e integrações por API/CSV.")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ================== PARCEIROS & CERTIFICAÇÕES (carrossel igual ao da Empresa) ==================
+# ================== PARCEIROS & CERTIFICAÇÕES (carrossel + editor) ==================
 st.markdown('<div id="parceiros"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Parceiros e Certificações")
@@ -374,6 +392,9 @@ with pcol_text:
     st.markdown("<p class='lead'>Tecnologia validada com parceiros estratégicos e certificações do setor.</p>", unsafe_allow_html=True)
 
 with pcol_img:
+    if "part_captions" not in st.session_state:
+        st.session_state.part_captions = load_part_captions()
+
     logos = gather_partner_images(max_n=12)
 
     if "part_idx" not in st.session_state:
@@ -381,7 +402,7 @@ with pcol_img:
     if "part_last_tick" not in st.session_state:
         st.session_state.part_last_tick = time.time()
 
-    pthumb_param = get_query_param("pthumb", None)
+    pthumb_param = get_query_param("pthumb", None)  # param diferente do da Empresa
     if pthumb_param is not None:
         try:
             new_idx = int(pthumb_param)
@@ -397,7 +418,7 @@ with pcol_img:
 
         p_uri = as_data_uri(logos[pidx])
         st.markdown(f"<img class='carousel-main partner' src='{p_uri}' alt='Parceiro {pidx+1}/{n}'/>", unsafe_allow_html=True)
-        st.markdown(f"<div class='carousel-caption'>{caption_from_path(logos[pidx])}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='carousel-caption'>{caption_for_partner(logos[pidx])}</div>", unsafe_allow_html=True)
 
         b1, b2, b3 = st.columns([1, 6, 1])
         with b1:
@@ -418,11 +439,41 @@ with pcol_img:
         for i, pth in enumerate(logos):
             t_uri = as_data_uri(pth)
             active_cls = "active" if i == pidx else ""
-            pthumbs_html += (f"<a class='thumb {active_cls}' href='?pthumb={i}' title='{caption_from_path(pth)}'>"
+            pthumbs_html += (f"<a class='thumb {active_cls}' href='?pthumb={i}' title='{caption_for_partner(pth)}'>"
                              f"<img src='{t_uri}' alt='logo {i+1}' /></a>")
         pthumbs_html += "</div>"
         st.markdown(pthumbs_html, unsafe_allow_html=True)
 
+        # Editor de legendas (Parceiros)
+        with st.expander("✎ Editar legendas do carrossel (Parceiros)"):
+            new_pcaps = {}
+            for i, pth in enumerate(logos):
+                key = Path(pth).stem
+                cur = st.session_state.part_captions.get(key, caption_from_path(pth))
+                val = st.text_input(f"Legenda do logo {i+1} — {key}", value=cur, key=f"pcap_in_{i}")
+                new_pcaps[key] = val.strip()
+            c1, c2, _ = st.columns([1,1,2])
+            with c1:
+                if st.button("Salvar legendas (Parceiros)"):
+                    st.session_state.part_captions.update(new_pcaps)
+                    try:
+                        Path(PART_CAPTIONS_FILE).write_text(
+                            json.dumps(st.session_state.part_captions, ensure_ascii=False, indent=2),
+                            encoding="utf-8"
+                        )
+                        st.success(f"Legendas salvas em {PART_CAPTIONS_FILE}")
+                    except Exception:
+                        st.info("Sem permissão para gravar arquivo. Use o botão ao lado para baixar o JSON.")
+                    st.rerun()
+            with c2:
+                st.download_button(
+                    "Baixar JSON (Parceiros)",
+                    data=json.dumps(st.session_state.part_captions, ensure_ascii=False, indent=2),
+                    file_name=PART_CAPTIONS_FILE,
+                    mime="application/json",
+                )
+
+        # autoplay
         now = time.time()
         if now - st.session_state.part_last_tick >= PARTNER_INTERVAL_SEC:
             st.session_state.part_idx = (pidx + 1) % n
@@ -462,4 +513,3 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
-
