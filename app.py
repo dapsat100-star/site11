@@ -471,7 +471,7 @@ st.markdown("- Óleo & Gás • Portos & Costas • Mineração • Defesa & Seg
 st.markdown('''
 <div class="sectors-grid">
   <div id="defesa" class="sector-card">
-    <h3>Defense & Security</h3>
+    <h3>Óleo & Gás</h3>
     <p>Maritime & Ground Domain Awareness com alertas e análise assistida por IA.</p>
     <ul>
       <li>Vigilância marítima (AIS+SAR/Óptico) e detecção de anomalias</li>
@@ -481,7 +481,7 @@ st.markdown('''
   </div>
 
   <div id="ambiental" class="sector-card">
-    <h3>Environmental</h3>
+    <h3>Meio Ambiente</h3>
     <p>Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.</p>
     <ul>
       <li>Metano (OGMP 2.0 L5): quantificação por fonte e incerteza</li>
@@ -491,7 +491,7 @@ st.markdown('''
   </div>
 
   <div id="oleoegas" class="sector-card">
-    <h3>Oil &amp; Gas</h3>
+    <h3>Defesa & Segurança</h3>
     <p>Integridade de ativos e segurança operacional com imagens SAR e ópticas.</p>
     <ul>
       <li>InSAR: deformação (mm/mês) e mapas de risco</li>
