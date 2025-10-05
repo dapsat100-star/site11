@@ -1,4 +1,4 @@
-# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Carrossel com Legenda Manual)
+# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Carrossel com Legenda Manual + Parceiros)
 import base64
 import time
 import re
@@ -11,7 +11,8 @@ st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=No
 # ================== CONFIG ==================
 YOUTUBE_ID = "Ulrl6TFaWtA"
 LOGO_CANDIDATES = ["logo-mavipe.png", "logo-mavipe.jpeg", "logo-mavipe.jpg"]
-CAROUSEL_INTERVAL_SEC = 3  # autoplay
+CAROUSEL_INTERVAL_SEC = 3      # autoplay Empresa
+PARTNER_INTERVAL_SEC  = 3      # autoplay Parceiros
 
 # <<< LEGENDA MANUAL DA EMPRESA (ordem dos slides) >>>
 EMPRESA_CAPTIONS = [
@@ -57,6 +58,22 @@ def gather_empresa_images(max_n: int = 3) -> list[str]:
         if len(ordered) >= max_n:
             break
     return ordered
+
+def gather_partner_images(max_n: int = 24) -> list[str]:
+    """Coleta logos para o carrossel de Parceiros/Certificações."""
+    patterns = [
+        "parceiro*.png","parceiro*.jpg","parceiro*.jpeg",
+        "certificacao*.png","certificacao*.jpg","certificacao*.jpeg",
+        "logo*.png","logo*.jpg","logo*.jpeg",
+    ]
+    results = []
+    for pat in patterns:
+        for p in sorted(Path(".").glob(pat)):
+            if p.is_file() and p.stat().st_size > 0:
+                s = str(p)
+                if s not in results:
+                    results.append(s)
+    return results[:max_n]
 
 def get_query_param(name: str, default=None):
     try:
@@ -182,6 +199,11 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
   font-size:0.95rem;
   margin-top:8px;
 }
+
+/* Parceiros: preservar proporção dos logos */
+.carousel-main.partner{ object-fit:contain; background:rgba(255,255,255,.03); }
+.thumbs.partner .thumb{ background:rgba(255,255,255,.02); }
+.thumbs.partner .thumb img{ object-fit:contain; background:transparent; }
 </style>
 ''', unsafe_allow_html=True)
 
@@ -192,6 +214,7 @@ st.markdown('''
   <div class="nav-right">
     <a href="#empresa">Empresa</a>
     <a href="#solucao">Solução</a>
+    <a href="#parceiros">Parceiros</a>
     <a href="#setores">Setores</a>
     <a class="cta" href="#contato">Agendar demo</a>
   </div>
@@ -333,6 +356,70 @@ st.markdown("- InSAR: deformação (mm/mês), mapas de risco e recomendações p
 st.markdown("- GeoINT: camadas contextuais, alertas e dashboards; exportações e integrações por API/CSV.")
 st.markdown("</div>", unsafe_allow_html=True)
 
+# ================== PARCEIROS ==================
+st.markdown('<div id="parceiros"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section">', unsafe_allow_html=True)
+st.header("Parceiros")
+
+logos = gather_partner_images(max_n=24)
+
+if "part_idx" not in st.session_state:
+    st.session_state.part_idx = 0
+if "part_last_tick" not in st.session_state:
+    st.session_state.part_last_tick = time.time()
+
+pthumb_param = get_query_param("pthumb", None)
+if pthumb_param is not None and logos:
+    try:
+        st.session_state.part_idx = int(pthumb_param) % len(logos)
+        st.session_state.part_last_tick = time.time()
+    except Exception:
+        pass
+
+if logos:
+    n2 = len(logos)
+    j = st.session_state.part_idx % n2
+    p_uri = as_data_uri(logos[j])
+
+    st.markdown(f"<img class='carousel-main partner' src='{p_uri}' alt='Parceiro {j+1}/{n2}'/>", unsafe_allow_html=True)
+    st.markdown(f"<div class='carousel-caption'>{caption_from_path(logos[j])}</div>", unsafe_allow_html=True)
+
+    d1, d2, d3 = st.columns([1, 6, 1])
+    with d1:
+        if st.button("◀", key="part_prev"):
+            st.session_state.part_idx = (j - 1) % n2
+            st.session_state.part_last_tick = time.time()
+            st.rerun()
+    with d3:
+        if st.button("▶", key="part_next"):
+            st.session_state.part_idx = (j + 1) % n2
+            st.session_state.part_last_tick = time.time()
+            st.rerun()
+    with d2:
+        dots2 = "".join(f"<span class='{'active' if k==j else ''}'></span>" for k in range(n2))
+        st.markdown(f"<div class='carousel-dots'>{dots2}</div>", unsafe_allow_html=True)
+
+    # thumbnails clicáveis (?pthumb=i)
+    pthumbs = "<div class='thumbs partner'>"
+    for k, p in enumerate(logos):
+        t_uri = as_data_uri(p)
+        active = "active" if k == j else ""
+        pthumbs += f"<a class='thumb {active}' href='?pthumb={k}' title='{caption_from_path(p)}'><img src='{t_uri}' alt='logo {k+1}'/></a>"
+    pthumbs += "</div>"
+    st.markdown(pthumbs, unsafe_allow_html=True)
+
+    # autoplay
+    now = time.time()
+    if now - st.session_state.part_last_tick >= PARTNER_INTERVAL_SEC:
+        st.session_state.part_idx = (j + 1) % n2
+        st.session_state.part_last_tick = now
+        time.sleep(0.05)
+        st.rerun()
+else:
+    st.info("Adicione logos na pasta: parceiro*.png/jpg/jpeg, certificacao*.png/jpg/jpeg ou logo*.png/jpg/jpeg.")
+
+st.markdown("</div>", unsafe_allow_html=True)
+
 # ================== SETORES ==================
 st.markdown('<div id="setores"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
@@ -361,5 +448,6 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
+
 
 
