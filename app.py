@@ -16,7 +16,7 @@ CAROUSEL_INTERVAL_SEC = 3  # autoplay
 # <<< LEGENDA MANUAL DA EMPRESA (ordem dos slides) >>>
 EMPRESA_CAPTIONS = [
     "Empresa Estratégica de Defesa  - Certificação do Ministério da Defesa",            # slide 1 (empresa1.*)
-    "Plataforma Geoespacial DAP ATLAS - Multipropósito, Propreitária e Certificada como Produto Estratégico de Defesa",   # slide 2 (empresa2.*)
+    "Plataforma Geoespacial DAP ATLAS - Multipropósito, Proprietária e Certificada como Produto Estratégico de Defesa",   # slide 2 (empresa2.*)
     "GeoINT & InSAR — integridade",       # slide 3 (empresa3.*)
     # adicione mais linhas se tiver mais imagens
 ]
