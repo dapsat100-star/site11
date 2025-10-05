@@ -1,4 +1,4 @@
-# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Empresa com Carrossel AUTO + Thumbnails) — Streamlit moderno
+# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Empresa com Carrossel AUTO + Thumbnails)
 import base64
 import time
 from pathlib import Path
@@ -11,7 +11,7 @@ st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=No
 # ================== CONFIG ==================
 YOUTUBE_ID = "Ulrl6TFaWtA"
 LOGO_CANDIDATES = ["logo-mavipe.png", "logo-mavipe.jpeg", "logo-mavipe.jpg"]
-CAROUSEL_INTERVAL_SEC = 3  # intervalo do autoplay (segundos)
+CAROUSEL_INTERVAL_SEC = 3  # intervalo do autoplay em segundos
 
 # ================== UTILS ==================
 def find_first(candidates) -> str | None:
@@ -152,6 +152,18 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 @media (max-width:768px){
   .thumb{width:92px; height:56px;}
 }
+
+/* Tamanho fixo e uniforme do slide principal do carrossel */
+.carousel-main{
+  width:100%;
+  height:400px;            /* altura fixa no desktop */
+  object-fit:cover;        /* corta mantendo proporção */
+  border-radius:12px;
+  box-shadow:0 8px 28px rgba(0,0,0,.35);
+}
+@media (max-width:768px){
+  .carousel-main{ height:240px; }  /* altura fixa no mobile */
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -247,11 +259,10 @@ with col_img:
         n = len(imgs)
         idx = st.session_state.emp_idx % n
 
-        # imagem principal
+        # imagem principal — tamanho uniforme
         uri = as_data_uri(imgs[idx])
         st.markdown(
-            f"<img src='{uri}' alt='Empresa {idx+1}/{n}' "
-            "style='width:100%; border-radius:12px; box-shadow:0 8px 28px rgba(0,0,0,.35);'/>",
+            f"<img class='carousel-main' src='{uri}' alt='Empresa {idx+1}/{n}'/>",
             unsafe_allow_html=True,
         )
 
@@ -334,3 +345,4 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
+
