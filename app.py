@@ -1,4 +1,4 @@
-# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Carrosséis + Setores com Âncoras + Industries)
+# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Carrosséis + Setores com Âncoras)
 import base64
 import time
 import re
@@ -16,9 +16,9 @@ PARTNER_INTERVAL_SEC  = 3      # autoplay Parceiros
 
 # <<< LEGENDA MANUAL DA EMPRESA (ordem dos slides) >>>
 EMPRESA_CAPTIONS = [
-    "Empresa Estratégica de Defesa  - Certificação do Ministério da Defesa",            # slide 1 (empresa1.*)
-    "Plataforma Geoespacial DAP ATLAS - Multipropósito, Proprietária e Certificada como Produto Estratégico de Defesa",   # slide 2 (empresa2.*)
-    "GeoINT & InSAR — integridade",                                                    # slide 3 (empresa3.*)
+    "Empresa Estratégica de Defesa  - Certificação do Ministério da Defesa",  # slide 1 (empresa1.*)
+    "Plataforma Geoespacial DAP ATLAS - Multipropósito, Proprietária e Certificada como Produto Estratégico de Defesa",  # slide 2 (empresa2.*)
+    "GeoINT & InSAR — integridade",                                           # slide 3 (empresa3.*)
     # adicione mais linhas se tiver mais imagens
 ]
 
@@ -204,42 +204,6 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .carousel-main.partner{ object-fit:contain; background:rgba(255,255,255,.03); }
 .thumbs.partner .thumb{ background:rgba(255,255,255,.02); }
 .thumbs.partner .thumb img{ object-fit:contain; background:transparent; }
-
-/* === Industries bar (abaixo de Setores) === */
-.industries-bar{
-  display:flex; align-items:center; justify-content:space-between; gap:18px;
-  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08);
-  border-radius:14px; padding:16px 18px; margin-top:16px;
-}
-.industries-left{display:flex; align-items:center; gap:18px}
-.ind-label{opacity:.85; font-weight:700; letter-spacing:.2px}
-.drop{position:relative}
-.drop>button{
-  background:transparent; border:1px solid rgba(255,255,255,.12);
-  color:#e6eefc; padding:10px 14px; border-radius:10px; cursor:pointer
-}
-.menu{
-  position:absolute; top:calc(100% + 8px); left:0; min-width:240px;
-  background:#161b2a; border:1px solid rgba(255,255,255,.08);
-  border-radius:12px; padding:6px 0;
-  box-shadow:0 12px 30px rgba(0,0,0,.35);
-  opacity:0; pointer-events:none; transform:translateY(-6px);
-  transition:all .18s ease;
-}
-.menu a{display:block; padding:10px 14px; color:#e6eefc; text-decoration:none}
-.menu a:hover{background:rgba(255,255,255,.06)}
-.drop:hover .menu,
-.drop:focus-within .menu{opacity:1; pointer-events:auto; transform:translateY(0)}
-.drop>button:focus{outline:2px solid #34d399; outline-offset:2px}
-
-.ind-cta{
-  background:#34d399; color:#05131a; font-weight:800;
-  padding:12px 16px; border-radius:12px; text-decoration:none;
-}
-@media (max-width:768px){
-  .industries-bar{flex-direction:column; align-items:stretch; gap:12px}
-  .ind-cta{display:block; text-align:center}
-}
 
 /* === Setores: cards com âncoras === */
 .sectors-grid{
@@ -471,7 +435,7 @@ st.markdown("- Óleo & Gás • Portos & Costas • Mineração • Defesa & Seg
 st.markdown('''
 <div class="sectors-grid">
   <div id="defesa" class="sector-card">
-    <h3>Óleo & Gás</h3>
+    <h3>Defense & Security</h3>
     <p>Maritime & Ground Domain Awareness com alertas e análise assistida por IA.</p>
     <ul>
       <li>Vigilância marítima (AIS+SAR/Óptico) e detecção de anomalias</li>
@@ -481,7 +445,7 @@ st.markdown('''
   </div>
 
   <div id="ambiental" class="sector-card">
-    <h3>Meio Ambiente</h3>
+    <h3>Environmental</h3>
     <p>Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.</p>
     <ul>
       <li>Metano (OGMP 2.0 L5): quantificação por fonte e incerteza</li>
@@ -491,7 +455,7 @@ st.markdown('''
   </div>
 
   <div id="oleoegas" class="sector-card">
-    <h3>Defesa & Segurança</h3>
+    <h3>Oil &amp; Gas</h3>
     <p>Integridade de ativos e segurança operacional com imagens SAR e ópticas.</p>
     <ul>
       <li>InSAR: deformação (mm/mês) e mapas de risco</li>
@@ -499,24 +463,6 @@ st.markdown('''
       <li>Integrações por API/CSV para sistemas corporativos</li>
     </ul>
   </div>
-</div>
-''', unsafe_allow_html=True)
-
-# Barra "Industries" com dropdown + CTA (aponta para as âncoras)
-st.markdown('''
-<div class="industries-bar">
-  <div class="industries-left">
-    <div class="ind-label">Industries</div>
-    <div class="drop">
-      <button>Industries ▾</button>
-      <div class="menu">
-        <a href="#defesa">Defense &amp; Security</a>
-        <a href="#ambiental">Environmental</a>
-        <a href="#oleoegas">Oil &amp; Gas</a>
-      </div>
-    </div>
-  </div>
-  <a class="ind-cta" href="#contato">Contact Sales</a>
 </div>
 ''', unsafe_allow_html=True)
 
@@ -543,5 +489,6 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
+
 
 
