@@ -143,7 +143,7 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 .nav-right a{color:#d6def5; text-decoration:none; margin-left:22px}
 
 /* Logo na navbar — AUMENTADO (80px) */
-.nav-logo{height:80px; width:auto; display:block; filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));}
+.nav-logo{height:100px; width:auto; display:block; filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));}
 @media (max-width:768px){ .nav-logo{height:64px;} }
 
 /* Hero YouTube */
