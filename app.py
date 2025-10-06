@@ -531,7 +531,7 @@ def sector_icon_data_uri(slug: str) -> str | None:
 
 SECTORS = [
     {"slug":"oleogas","title":"Óleo & Gás",
-     "desc":"Integridade de ativos e segurança operacional com imagens SAR e ópticas.",
+     "desc":"Monitoramento de Emissão de Metano e Monitoramento de Ativos Críticos ",
      "bullets":[
         "Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5",
         "Detecção & Monitoramento de Ativos Críticos: Supervisão contínua de dutos, instalações industriais e outras infraestruturas estratégicas, com detecção de anomalias",
