@@ -1,360 +1,3 @@
- corrija pfv
-ChatGPT said:
-Thought for 1m 57s
-
-Boa! O problema na sua seção era ID duplicado (id="setores"), título repetido e div sem fechamento, o que bagunça a âncora e estilos. Abaixo vai um bloco corrigido e único para a seção Setores & Aplicações. Substitua todo o trecho atual de “SETORES” por este (e apague o outro id="setores" que estava duplicado):
-
-# ================== SETORES & APLICAÇÕES (FIX) ==================
-# Deixe APENAS este bloco para a seção. Não duplique <div id="setores">.
-
-# CSS da seção (força contraste e remove heranças indesejadas)
-st.markdown("""
-<style>
-  /* Título */
-  #setores.section h2{
-    color:#ffffff !important;
-    opacity:1 !important;
-    font-size:2rem !important;
-    font-weight:700 !important;
-    text-align:center !important;
-    margin:0 0 .6rem 0 !important;
-    letter-spacing:.5px;
-    position:relative;
-    display:inline-block;
-  }
-  #setores.section h2::after{
-    content:"";
-    display:block; width:60px; height:3px;
-    background:#4EA8DE; margin:.6rem auto 0; border-radius:3px;
-  }
-
-  /* Subtítulo */
-  #setores .subtitle{
-    color:#f1f1f1 !important;
-    opacity:1 !important;
-    font-weight:400;
-    font-size:1.05rem !important;
-    text-align:center !important;
-    letter-spacing:.3px;
-    margin:0 0 1.5rem 0 !important;
-  }
-
-  /* Grid */
-  #setores .sectors-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
-    gap:1.5rem; margin:2rem 0;
-  }
-
-  /* Cards */
-  #setores .sector-card{
-    background:#1e1e1e; color:#f1f1f1;
-    padding:1.5rem; border-radius:16px;
-    border:1px solid rgba(255,255,255,.06);
-    box-shadow:0 4px 20px rgba(0,0,0,.4);
-    transition:transform .2s, box-shadow .2s;
-    font-family:"Segoe UI", Roboto, sans-serif;
-  }
-  #setores .sector-card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 8px 24px rgba(0,0,0,.5);
-  }
-  #setores .sector-card h3{
-    margin:0 0 .5rem 0; font-size:1.3rem; font-weight:600; color:#e6eefc;
-  }
-  #setores .sector-card p{
-    margin:0 0 .8rem 0; color:#eaeaea; line-height:1.5;
-  }
-  #setores .sector-card ul{ margin:8px 0 0 18px; color:#cbd6f2; }
-  #setores .sector-card li{ margin:4px 0; font-size:.95rem; line-height:1.4; }
-  #setores .sector-card li strong{ color:#fff; font-weight:600; }
-
-  @media (max-width:980px){
-    #setores .sectors-grid{ grid-template-columns:1fr; }
-  }
-</style>
-""", unsafe_allow_html=True)
-
-# Wrapper ÚNICO da seção
-st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
-st.header("Setores & Aplicações")
-st.markdown(
-    '<p class="subtitle">Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental</p>',
-    unsafe_allow_html=True
-)
-
-# Grid (3 cards)
-st.markdown('''
-<div class="sectors-grid">
-
-  <!-- ÓLEO & GÁS -->
-  <div id="oleoegas" class="sector-card">
-    <h3>Óleo &amp; Gás</h3>
-    <p>Monitoramento de emissões de metano OGMP 2.0, detecção de mudanças e resposta a incidentes ambientais.</p>
-    <ul>
-      <li>
-        <strong>Monitoramento de Metano — OGMP 2.0 Nível 5:</strong>
-        quantificação de emissões, identificação de superemissores e relatórios em conformidade com padrões internacionais.
-      </li>
-      <li>
-        <strong>Detecção de Mudanças em Ativos e Infraestrutura:</strong>
-        acompanhamento de obras, ampliações e movimentações em áreas operacionais por meio de imagens ópticas e SAR.
-      </li>
-      <li>
-        <strong>Resposta a Incidentes Ambientais:</strong>
-        detecção de derrames e manchas de óleo em áreas operacionais e de risco.
-      </li>
-    </ul>
-  </div>
-
-  <!-- MEIO-AMBIENTE -->
-  <div id="ambiental" class="sector-card">
-    <h3>Meio-Ambiente</h3>
-    <p>Monitoramento de emissões e riscos ambientais por meio de tecnologias avançadas de Observação da Terra.</p>
-    <ul>
-      <li><strong>Emissões em Resíduos:</strong> detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros e áreas de manejo de resíduos.</li>
-      <li><strong>Cobertura do Solo e Queimadas:</strong> acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.</li>
-      <li><strong>Desastres Ambientais:</strong> monitoramento de eventos extremos, como enchentes e derramamentos de óleo.</li>
-    </ul>
-  </div>
-
-  <!-- DEFESA & SEGURANÇA -->
-  <div id="defesa" class="sector-card">
-    <h3>Defesa &amp; Segurança</h3>
-    <p>Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA.</p>
-    <ul>
-      <li><strong>Contagem e Detecção de Ativos:</strong> aeronaves, veículos e novas estruturas em instalações estratégicas.</li>
-      <li><strong>Vigilância Marítima e Costeira:</strong> monitoramento da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando.</li>
-      <li><strong>Detecção de Mudanças em Áreas Sensíveis:</strong> alterações em fronteiras, infraestrutura crítica e zonas de interesse estratégico.</li>
-    </ul>
-  </div>
-
-</div>
-''', unsafe_allow_html=True)
-
-# FECHA a seção
-st.markdown('</div>', unsafe_allow_html=True)
-
-
-Notas rápidas:
-
-Removi o segundo <div id="setores"...> e o segundo st.header(...) (eram duplicados).
-
-Garanti fechamento </div> no final da seção.
-
-Usei seletores com #setores ... e !important pra forçar contraste e evitar heranças do tema.
-
-Se você tiver CSS antigo para .sectors-grid/.sector-card mais acima, pode apagar para evitar conflito.
-
-You said:
-me de o app todo pfv
-ChatGPT said:
-Stopped thinking
-You said:
-isso me incomoda queor branco visivel
-ChatGPT said:
-
-Perfeito 👌
-A causa exata do título “Setores & Aplicações” estar apagado é que o Streamlit aplica estilos automáticos aos st.header() com opacidade reduzida e color herdada do tema escuro. Mesmo que você use CSS, se o seletor não tiver especificidade suficiente ou !important, ele continua “apagando” o título.
-
-A seguir está o app completo corrigido, com:
-
-✅ Título da seção em branco puro, visível e elegante
-
-✨ Linha decorativa azul embaixo do título
-
-🧭 CSS mais limpo (sem duplicar #setores)
-
-📐 Grid responsivo com cartões para os setores
-
-📝 app.py — Versão corrigida com título visível
-# app.py — MAVIPE Landing Page (com título “Setores & Aplicações” corrigido)
-import base64
-import time
-import re
-from pathlib import Path
-from urllib.parse import quote
-import streamlit as st
-
-st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", layout="wide")
-
-# =============== UTILS ===============
-def find_first(candidates):
-    for name in candidates:
-        p = Path(name)
-        if p.exists() and p.stat().st_size > 0:
-            return str(p)
-    return None
-
-def guess_mime(path: Path) -> str:
-    ext = path.suffix.lower()
-    if ext == ".png": return "image/png"
-    if ext in (".jpg", ".jpeg"): return "image/jpeg"
-    if ext == ".svg": return "image/svg+xml"
-    return "application/octet-stream"
-
-def as_data_uri(path_str: str) -> str:
-    p = Path(path_str)
-    b64 = base64.b64encode(p.read_bytes()).decode("utf-8")
-    return f"data:{guess_mime(p)};base64,{b64}"
-
-# =============== CSS GLOBAL ===============
-st.markdown("""
-<style>
-html, body, [data-testid="stAppViewContainer"] {
-  background: #0b1221;
-  overflow-x: hidden;
-}
-#MainMenu, header, footer {visibility:hidden;}
-.block-container{padding:0!important; max-width:100%!important}
-
-/* ======== Seção SETORES corrigida ======== */
-#setores.section h2 {
-  color: #ffffff !important;       /* branco puro */
-  opacity: 1 !important;
-  font-size: 2rem !important;
-  font-weight: 700 !important;
-  text-align: center !important;
-  margin: 0 0 0.6rem 0 !important;
-  letter-spacing: 0.5px;
-  position: relative;
-  display: inline-block;
-  width: 100%;
-}
-#setores.section h2::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 3px;
-  background: #4EA8DE;  /* linha decorativa azul */
-  margin: 0.6rem auto 0 auto;
-  border-radius: 3px;
-}
-
-#setores .subtitle {
-  color: #f1f1f1 !important;
-  opacity: 1 !important;
-  font-weight: 400;
-  font-size: 1.05rem !important;
-  text-align: center !important;
-  letter-spacing: 0.3px;
-  margin: 0 0 1.5rem 0 !important;
-}
-
-#setores .sectors-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-#setores .sector-card {
-  background: #1e1e1e;
-  color: #f1f1f1;
-  padding: 1.5rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.06);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  transition: transform .2s, box-shadow .2s;
-  font-family: "Segoe UI", Roboto, sans-serif;
-}
-#setores .sector-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-}
-#setores .sector-card h3 {
-  margin: 0 0 .5rem 0;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #e6eefc;
-}
-#setores .sector-card p {
-  margin: 0 0 .8rem 0;
-  color: #eaeaea;
-  line-height: 1.5;
-}
-#setores .sector-card ul {
-  margin: 8px 0 0 18px;
-  color: #cbd6f2;
-}
-#setores .sector-card li {
-  margin: 4px 0;
-  font-size: .95rem;
-  line-height: 1.4;
-}
-#setores .sector-card li strong {
-  color: #fff;
-  font-weight: 600;
-}
-
-@media (max-width:980px){
-  #setores .sectors-grid{ grid-template-columns:1fr; }
-}
-</style>
-""", unsafe_allow_html=True)
-
-# =============== SETORES & APLICAÇÕES ===============
-st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
-st.header("Setores & Aplicações")
-st.markdown(
-    '<p class="subtitle">Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental</p>',
-    unsafe_allow_html=True
-)
-
-st.markdown('''
-<div class="sectors-grid">
-
-  <!-- ÓLEO & GÁS -->
-  <div id="oleoegas" class="sector-card">
-    <h3>Óleo &amp; Gás</h3>
-    <p>Monitoramento de emissões de metano OGMP 2.0, detecção de mudanças e resposta a incidentes ambientais.</p>
-    <ul>
-      <li><strong>Monitoramento de Metano — OGMP 2.0 Nível 5:</strong> quantificação de emissões, identificação de superemissores e relatórios em conformidade com padrões internacionais.</li>
-      <li><strong>Detecção de Mudanças em Ativos e Infraestrutura:</strong> acompanhamento de obras, ampliações e movimentações em áreas operacionais por meio de imagens ópticas e SAR.</li>
-      <li><strong>Resposta a Incidentes Ambientais:</strong> detecção de derrames e manchas de óleo em áreas operacionais e de risco.</li>
-    </ul>
-  </div>
-
-  <!-- MEIO-AMBIENTE -->
-  <div id="ambiental" class="sector-card">
-    <h3>Meio-Ambiente</h3>
-    <p>Monitoramento de emissões e riscos ambientais por meio de tecnologias avançadas de Observação da Terra.</p>
-    <ul>
-      <li><strong>Emissões em Resíduos:</strong> detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros e áreas de manejo de resíduos.</li>
-      <li><strong>Cobertura do Solo e Queimadas:</strong> acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.</li>
-      <li><strong>Desastres Ambientais:</strong> monitoramento de eventos extremos, como enchentes e derramamentos de óleo.</li>
-    </ul>
-  </div>
-
-  <!-- DEFESA & SEGURANÇA -->
-  <div id="defesa" class="sector-card">
-    <h3>Defesa &amp; Segurança</h3>
-    <p>Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA.</p>
-    <ul>
-      <li><strong>Contagem e Detecção de Ativos:</strong> aeronaves, veículos e novas estruturas em instalações estratégicas.</li>
-      <li><strong>Vigilância Marítima e Costeira:</strong> monitoramento da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando.</li>
-      <li><strong>Detecção de Mudanças em Áreas Sensíveis:</strong> alterações em fronteiras, infraestrutura crítica e zonas de interesse estratégico.</li>
-    </ul>
-  </div>
-
-</div>
-''', unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
-
-✅ Resultado esperado:
-
-🌟 Título “Setores & Aplicações” aparece branco, nítido e centralizado
-
-🟦 Linha decorativa elegante abaixo do título
-
-✨ Subtítulo legível e alinhado
-
-🧭 Cartões responsivos limpos
-
-Quer que eu te integre esse bloco com Navbar, Hero e Parceiros para virar a landing page completa de uma vez só? (com LinkedIn, carrosséis e CTA) 🚀
-
-You said:
 # app.py — MAVIPE Landing Page (Hero + Logo Retina + Carrosséis + Newsroom + Setores)
 import base64
 import time
@@ -377,26 +20,22 @@ LOGO_CANDIDATES = [
     "logo-mavipe@2x.jpeg",
 ]
 
-# ÍCONE LINKEDIN NA RAIZ (auto detecção com @2x e SVG/PNG/JPG)
 LINKEDIN_CANDIDATES = [
     "linkedin@2x.svg", "linkedin.svg",
     "linkedin@2x.png", "linkedin.png",
     "linkedin@2x.jpg", "linkedin.jpg",
-    # nomes que já geramos antes
     "linkedin_mono.svg", "linkedin_mono_green.svg",
 ]
 
 CAROUSEL_INTERVAL_SEC = 3
 PARTNER_INTERVAL_SEC  = 3
 
-# <<< LEGENDA MANUAL DA EMPRESA (ordem dos slides) >>>
 EMPRESA_CAPTIONS = [
     "Empresa Certificada do Ministério da Defesa",
     "Plataforma Geoespacial DAP ATLAS — Multipropósito, Proprietária e Certificada como Produto Estratégico de Defesa",
     "GeoINT & InSAR — Integridade",
 ]
 
-# <<< NEWSROOM (edite à vontade) >>>
 NEWS_ITEMS = [
     {
         "title": "MAVIPE lança módulo OGMP 2.0 Nível 5",
@@ -431,12 +70,9 @@ def find_first(candidates) -> str | None:
 
 def guess_mime(path: Path) -> str:
     ext = path.suffix.lower()
-    if ext == ".png":
-        return "image/png"
-    if ext in (".jpg", ".jpeg"):
-        return "image/jpeg"
-    if ext == ".svg":
-        return "image/svg+xml"
+    if ext == ".png": return "image/png"
+    if ext in (".jpg", ".jpeg"): return "image/jpeg"
+    if ext == ".svg": return "image/svg+xml"
     return "application/octet-stream"
 
 def as_data_uri(path_str: str) -> str:
@@ -482,8 +118,7 @@ def gather_partner_images(max_n: int = 24) -> list[str]:
 def get_query_param(name: str, default=None):
     try:
         params = st.query_params
-        val = params.get(name, default)
-        return val
+        return params.get(name, default)
     except Exception:
         params = st.experimental_get_query_params()
         vals = params.get(name, [default])
@@ -511,21 +146,16 @@ def news_thumbnail_src(path_str: str | None) -> str | None:
     return None
 
 def render_dots(n: int, active_index: int) -> str:
-    # Gera os "dots" sem ambiguidade de f-string
-    parts = []
-    for i in range(n):
-        cls = "active" if i == active_index else ""
-        parts.append(f"<span class='{cls}'></span>")
-    return "".join(parts)
+    return "".join(f"<span class='{'active' if i==active_index else ''}'></span>" for i in range(n))
 
-# ================== CSS ==================
+# ================== CSS (UNIFICADO) ==================
 st.markdown('''
 <style>
 html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hidden;}
 #MainMenu, header, footer {visibility:hidden;}
 .block-container{padding:0!important; max-width:100%!important}
 
-/* Navbar compacta e estável */
+/* Navbar */
 .navbar{
   position:fixed; top:0; left:0; right:0; z-index:1000;
   display:flex; justify-content:space-between; align-items:center;
@@ -536,39 +166,23 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 .nav-left{ position:relative; height:64px; display:flex; align-items:center; gap:12px; }
 .nav-right a{ color:#d6def5; text-decoration:none; margin-left:18px }
 
-/* Logo grande e “saltando” acima da barra */
+/* Logo */
 .nav-logo{
-  position:relative;
-  height:140px; /* ajuste conforme sua marca */
-  width:auto; display:block;
-  transform:translateY(3px);
-  image-rendering:auto;
+  position:relative; height:140px; width:auto; display:block;
+  transform:translateY(3px); image-rendering:auto;
   filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));
   z-index:2;
 }
 
-/* Hero YouTube */
+/* Hero */
 .hero{position:relative; height:100vh; min-height:640px; width:100vw; left:50%; margin-left:-50vw; overflow:hidden}
 .hero iframe{position:absolute; top:50%; left:50%; width:177.777vw; height:100vh; transform:translate(-50%,-50%); pointer-events:none}
 .hero .overlay{position:absolute; inset:0; background:radial-gradient(85% 60% at 30% 30%, rgba(20,30,55,.0) 0%, rgba(8,16,33,.48) 68%, rgba(8,16,33,.86) 100%); z-index:1}
-
-/* Garantir que nenhum logo extra apareça no hero */
-.hero .logo{ display:none }
-
-/* Conteúdo Hero */
 .hero .content{position:absolute; z-index:2; inset:0; display:flex; align-items:center; padding:0 8vw; color:#e8eefc}
 .kicker{color:#cfe7ff; font-weight:600; margin-bottom:10px}
 h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .highlight{color:#34d399}
-
-/* Parágrafo do hero — cabimento perfeito */
-.hero-sub{
-  font-size:clamp(16px,2.2vw,20px);
-  color:#b9c6e6;
-  max-width:70ch;
-  line-height:1.35;
-  text-wrap:balance;
-}
+.hero-sub{font-size:clamp(16px,2.2vw,20px); color:#b9c6e6; max-width:70ch; line-height:1.35; text-wrap:balance;}
 
 .cta, .btn{display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700; margin-right:10px}
 .cta{background:#34d399; color:#05131a}
@@ -576,49 +190,52 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .section{padding:72px 8vw; border-top:1px solid rgba(255,255,255,.07)}
 .lead{color:#b9c6e6}
 
-/* Botão social (LinkedIn) centralizado e com hover */
-.social{ display:flex; justify-content:center; margin-top:24px; }
-.social a{
-  display:inline-flex; align-items:center; justify-content:center;
-  width:52px; height:52px; border-radius:14px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.18);
-  backdrop-filter:saturate(140%) blur(6px);
-  text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-}
-.social a:hover{ transform:translateY(-2px); border-color:rgba(52,211,153,.65);
-  box-shadow:0 8px 18px rgba(0,0,0,.35), 0 0 0 4px rgba(52,211,153,.15) inset; }
-.social img{ width:26px; height:26px; display:block; }
-
-/* Dots e thumbnails */
+/* Carrossel */
 .carousel-dots{display:flex; gap:8px; justify-content:center; margin-top:10px}
 .carousel-dots span{width:8px; height:8px; border-radius:50%; background:#5d6a8b; display:inline-block; opacity:.6}
 .carousel-dots span.active{background:#e6eefc; opacity:1}
-
 .thumbs{display:flex; gap:12px; justify-content:center; margin-top:10px; flex-wrap:wrap}
 .thumb{ display:inline-block; width:120px; height:70px; overflow:hidden; border-radius:8px; border:2px solid transparent; opacity:.85; transition:all .2s ease-in-out; }
 .thumb img{width:100%; height:100%; object-fit:cover; display:block}
 .thumb:hover{opacity:1; transform:translateY(-2px)}
 .thumb.active{border-color:#34d399; box-shadow:0 0 0 2px rgba(52,211,153,.35) inset;}
-
-/* Slide principal com tamanho uniforme */
 .carousel-main{ width:100%; height:400px; object-fit:cover; border-radius:12px; box-shadow:0 8px 28px rgba(0,0,0,.35); }
-
-/* Legenda abaixo do slide principal */
 .carousel-caption{ text-align:center; color:#b9c6e6; font-size:0.95rem; margin-top:8px; }
 
-/* Parceiros: preservar proporção dos logos */
+/* Parceiros */
 .carousel-main.partner{ object-fit:contain; background:rgba(255,255,255,.03); }
 .thumbs.partner .thumb{ background:rgba(255,255,255,.02); }
 .thumbs.partner .thumb img{ object-fit:contain; background:transparent; }
 
-/* === Setores: cards com âncoras === */
-.sectors-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:18px }
-.sector-card{ background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:16px 18px; }
-.sector-card h3{margin:0 0 8px 0; color:#e6eefc}
-.sector-card p{margin:0 0 8px 0; color:#b9c6e6}
-.sector-card ul{margin:8px 0 0 18px; color:#c7d3f0}
-.sector-card li{margin:4px 0}
+/* ======== SETORES & APLICAÇÕES (título visível) ======== */
+#setores.section h2{
+  color:#ffffff !important; opacity:1 !important;
+  font-size:2rem !important; font-weight:700 !important;
+  text-align:center !important; margin:0 0 .6rem 0 !important;
+  letter-spacing:.5px; position:relative; display:inline-block; width:100%;
+}
+#setores.section h2::after{
+  content:""; display:block; width:60px; height:3px;
+  background:#4EA8DE; margin:.6rem auto 0; border-radius:3px;
+}
+#setores .subtitle{
+  color:#f1f1f1 !important; opacity:1 !important;
+  font-weight:400; font-size:1.05rem !important;
+  text-align:center !important; letter-spacing:.3px;
+  margin:0 0 1.5rem 0 !important;
+}
+#setores .sectors-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem; margin:2rem 0; }
+#setores .sector-card{
+  background:#1e1e1e; color:#f1f1f1; padding:1.5rem; border-radius:16px;
+  border:1px solid rgba(255,255,255,.06); box-shadow:0 4px 20px rgba(0,0,0,.4);
+  transition:transform .2s, box-shadow .2s; font-family:"Segoe UI", Roboto, sans-serif;
+}
+#setores .sector-card:hover{ transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,.5); }
+#setores .sector-card h3{ margin:0 0 .5rem 0; font-size:1.3rem; font-weight:600; color:#e6eefc; }
+#setores .sector-card p{ margin:0 0 .8rem 0; color:#eaeaea; line-height:1.5; }
+#setores .sector-card ul{ margin:8px 0 0 18px; color:#cbd6f2; }
+#setores .sector-card li{ margin:4px 0; font-size:.95rem; line-height:1.4; }
+#setores .sector-card li strong{ color:#fff; font-weight:600; }
 
 /* Newsroom */
 .news-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:18px; }
@@ -635,7 +252,7 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 :root{ --safe-top: env(safe-area-inset-top, 0px); --safe-right: env(safe-area-inset-right, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); --safe-left: env(safe-area-inset-left, 0px); }
 .navbar{ padding: max(8px, calc(8px + var(--safe-top))) max(8px, calc(8px + var(--safe-right))) 8px max(8px, calc(8px + var(--safe-left))) !important; }
 @media (max-width:980px){
-  .sectors-grid{grid-template-columns:1fr}
+  #setores .sectors-grid{grid-template-columns:1fr}
   .news-grid{grid-template-columns:1fr}
 }
 @media (max-width:768px){
@@ -647,29 +264,23 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
   .hero-sub{font-size:15px; max-width:100%;}
   .section{padding:56px 5vw;}
   .nav-right a{margin-left:12px;}
-  .social{ margin-top:18px; }
-  .social a{ width:48px; height:48px; border-radius:12px; }
-  .social img{ width:24px; height:24px; }
   .carousel-main{ height:240px; }
 }
 </style>
 ''', unsafe_allow_html=True)
 
-# ================== NAVBAR (com LOGO à esquerda) ==================
+# ================== NAVBAR ==================
 logo_2x = Path("logo-mavipe@2x.png")
 logo_1x = Path("logo-mavipe.png")
 def pick_logo_path() -> str | None:
-    if logo_2x.exists() and logo_2x.stat().st_size > 0:
-        return str(logo_2x)
-    if logo_1x.exists() and logo_1x.stat().st_size > 0:
-        return str(logo_1x)
+    if logo_2x.exists() and logo_2x.stat().st_size > 0: return str(logo_2x)
+    if logo_1x.exists() and logo_1x.stat().st_size > 0: return str(logo_1x)
     return find_first(LOGO_CANDIDATES)
 
 logo_path = pick_logo_path()
 logo_left_tag = (
-    f'<img src="{as_data_uri(logo_path)}" alt="MAVIPE logo" class="nav-logo"/>'
-    if logo_path else
-    '<div class="brand" style="color:#e6eefc; font-weight:700">MAVIPE</div>'
+    f'<img src="{as_data_uri(logo_path)}" alt="MAVIPE logo" class="nav-logo"/>' if logo_path
+    else '<div class="brand" style="color:#e6eefc; font-weight:700">MAVIPE</div>'
 )
 
 st.markdown(f'''
@@ -686,7 +297,7 @@ st.markdown(f'''
 </div>
 ''', unsafe_allow_html=True)
 
-# ================== HERO (vídeo sem logo duplicado) ==================
+# ================== HERO ==================
 st.markdown(f'''
 <div class="hero">
   <iframe src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&playlist={YOUTUBE_ID}"
@@ -697,7 +308,7 @@ st.markdown(f'''
       <div class="kicker">Monitoramento de Metano • Detecção de Mudanças • Monitoramento Terrestre e Marítimo • Imagens ópticas e SAR de alta resolução</div>
       <h1 class="hero-title">Transformando dados geoespaciais em <span class="highlight">informações acionáveis</span></h1>
       <div class="hero-sub">
-        A MAVIPE integra <b>IA</b>, <b>imagens de satélite</b> (ópticas e SAR), <b>dados operacionais de inteligência</b> e <b>dados meteoceanográficos</b> para entregar <b>informações confiáveis</b> de monitoramento por satélite para os setores <b>ambiental</b>, <b>petróleo e gás</b>, e <b>defesa e segurança</b>.
+        A MAVIPE integra <b>IA</b>, <b>imagens de satélite</b> (ópticas e SAR), <b>dados operacionais de inteligência</b> e <b>dados meteoceanográficos</b> para entregar <b>informações confiáveis</b> de monitoramento por satélite para os setores <b>ambiental</b>, <b>petróleo e gás</b> e <b>defesa e segurança</b>.
       </div>
     </div>
   </div>
@@ -720,15 +331,13 @@ with col_text:
         <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
         A <b>MAVIPE Sistemas Espaciais</b> é uma empresa de base tecnológica que emprega soluções próprias, no <b>estado-da-arte</b>, baseadas em <b>IA</b>, <b>aprendizado de máquinas</b> e <b>dados operacionais de inteligência</b> para a realização de <b>monitoramentos por satélite</b> em ambientes terrestre e marítimo, no <b>estado-da-arte</b> mundial.
         </p>
-
         <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
-        Seus profissionais possuem anos de experiência em atividades de <b>centros de operações espaciais</b>, pesquisa e desenvolvimento de projetos inovadores e gestão de ativos. A empresa possui expertise nos setores de <b>meio ambiente</b>, <b>petróleo e gás</b> e <b>defesa e segurança</b>.
+        Seus profissionais possuem anos de experiência em atividades de <b>centros de operações espaciais</b>, P&D e gestão de ativos. Expertise em <b>meio ambiente</b>, <b>petróleo e gás</b> e <b>defesa e segurança</b>.
         </p>
         """,
         unsafe_allow_html=True,
     )
 
-    # === LINKEDIN centralizado (usa arquivo na raiz; aceita @2x e .svg/.png/.jpg) ===
     linkedin_path = find_first(LINKEDIN_CANDIDATES)
     if linkedin_path:
         st.markdown(
@@ -742,25 +351,12 @@ with col_text:
             """,
             unsafe_allow_html=True,
         )
-    else:
-        st.markdown(
-            """
-            <div class="social">
-              <a href="https://www.linkedin.com/company/mavipe" target="_blank" rel="noopener"
-                 style="color:#9fc6ff; text-decoration:underline; width:auto; height:auto; background:transparent; border:none;">
-                 LinkedIn
-              </a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
 
 with col_img:
     imgs = gather_empresa_images(max_n=3)
     if "emp_idx" not in st.session_state: st.session_state.emp_idx = 0
     if "emp_last_tick" not in st.session_state: st.session_state.emp_last_tick = time.time()
 
-    # Suporte a navegação por query param
     thumb_param = get_query_param("thumb", None)
     if thumb_param is not None:
         try:
@@ -778,7 +374,6 @@ with col_img:
         st.markdown(f"<img class='carousel-main' src='{uri}' alt='Empresa {idx+1}/{n}'/>", unsafe_allow_html=True)
         st.markdown(f"<div class='carousel-caption'>{empresa_caption(idx, imgs[idx])}</div>", unsafe_allow_html=True)
 
-        # Controles
         bcol1, bcol2, bcol3 = st.columns([1, 6, 1])
         with bcol1:
             if st.button("◀", key="emp_prev"):
@@ -794,19 +389,6 @@ with col_img:
             dots_html = render_dots(n, idx)
             st.markdown(f"<div class='carousel-dots'>{dots_html}</div>", unsafe_allow_html=True)
 
-        # Thumbs
-        thumbs_html = "<div class='thumbs'>"
-        for i, pth in enumerate(imgs):
-            t_uri = as_data_uri(pth)
-            active_cls = "active" if i == idx else ""
-            thumbs_html += (
-                f"<a class='thumb {active_cls}' href='?thumb={i}' title='{caption_from_path(pth)}'>"
-                f"<img src='{t_uri}' alt='thumb {i+1}' /></a>"
-            )
-        thumbs_html += "</div>"
-        st.markdown(thumbs_html, unsafe_allow_html=True)
-
-        # Auto-play simples
         now = time.time()
         if now - st.session_state.emp_last_tick >= CAROUSEL_INTERVAL_SEC:
             st.session_state.emp_idx = (idx + 1) % n
@@ -875,7 +457,6 @@ if logos:
     pthumbs += "</div>"
     st.markdown(pthumbs, unsafe_allow_html=True)
 
-    # Auto-play parceiros
     now = time.time()
     if now - st.session_state.part_last_tick >= PARTNER_INTERVAL_SEC:
         st.session_state.part_idx = (j + 1) % n2
@@ -924,79 +505,7 @@ else:
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-import streamlit as st
-# ================== SETORES & APLICAÇÕES (FIX) ==================
-# Deixe APENAS este bloco para a seção. Não duplique <div id="setores">.
-
-# CSS da seção (força contraste e remove heranças indesejadas)
-st.markdown("""
-<style>
-  /* Título */
-  #setores.section h2{
-    color:#ffffff !important;
-    opacity:1 !important;
-    font-size:2rem !important;
-    font-weight:700 !important;
-    text-align:center !important;
-    margin:0 0 .6rem 0 !important;
-    letter-spacing:.5px;
-    position:relative;
-    display:inline-block;
-  }
-  #setores.section h2::after{
-    content:"";
-    display:block; width:60px; height:3px;
-    background:#4EA8DE; margin:.6rem auto 0; border-radius:3px;
-  }
-
-  /* Subtítulo */
-  #setores .subtitle{
-    color:#f1f1f1 !important;
-    opacity:1 !important;
-    font-weight:400;
-    font-size:1.05rem !important;
-    text-align:center !important;
-    letter-spacing:.3px;
-    margin:0 0 1.5rem 0 !important;
-  }
-
-  /* Grid */
-  #setores .sectors-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
-    gap:1.5rem; margin:2rem 0;
-  }
-
-  /* Cards */
-  #setores .sector-card{
-    background:#1e1e1e; color:#f1f1f1;
-    padding:1.5rem; border-radius:16px;
-    border:1px solid rgba(255,255,255,.06);
-    box-shadow:0 4px 20px rgba(0,0,0,.4);
-    transition:transform .2s, box-shadow .2s;
-    font-family:"Segoe UI", Roboto, sans-serif;
-  }
-  #setores .sector-card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 8px 24px rgba(0,0,0,.5);
-  }
-  #setores .sector-card h3{
-    margin:0 0 .5rem 0; font-size:1.3rem; font-weight:600; color:#e6eefc;
-  }
-  #setores .sector-card p{
-    margin:0 0 .8rem 0; color:#eaeaea; line-height:1.5;
-  }
-  #setores .sector-card ul{ margin:8px 0 0 18px; color:#cbd6f2; }
-  #setores .sector-card li{ margin:4px 0; font-size:.95rem; line-height:1.4; }
-  #setores .sector-card li strong{ color:#fff; font-weight:600; }
-
-  @media (max-width:980px){
-    #setores .sectors-grid{ grid-template-columns:1fr; }
-  }
-</style>
-""", unsafe_allow_html=True)
-
-# Wrapper ÚNICO da seção
+# ================== SETORES & APLICAÇÕES ==================
 st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
 st.header("Setores & Aplicações")
 st.markdown(
@@ -1004,7 +513,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Grid (3 cards)
 st.markdown('''
 <div class="sectors-grid">
 
@@ -1013,18 +521,9 @@ st.markdown('''
     <h3>Óleo &amp; Gás</h3>
     <p>Monitoramento de emissões de metano OGMP 2.0, detecção de mudanças e resposta a incidentes ambientais.</p>
     <ul>
-      <li>
-        <strong>Monitoramento de Metano — OGMP 2.0 Nível 5:</strong>
-        quantificação de emissões, identificação de superemissores e relatórios em conformidade com padrões internacionais.
-      </li>
-      <li>
-        <strong>Detecção de Mudanças em Ativos e Infraestrutura:</strong>
-        acompanhamento de obras, ampliações e movimentações em áreas operacionais por meio de imagens ópticas e SAR.
-      </li>
-      <li>
-        <strong>Resposta a Incidentes Ambientais:</strong>
-        detecção de derrames e manchas de óleo em áreas operacionais e de risco.
-      </li>
+      <li><strong>Monitoramento de Metano — OGMP 2.0 Nível 5:</strong> quantificação de emissões, identificação de superemissores e relatórios em conformidade com padrões internacionais.</li>
+      <li><strong>Detecção de Mudanças em Ativos e Infraestrutura:</strong> acompanhamento de obras, ampliações e movimentações em áreas operacionais por meio de imagens ópticas e SAR.</li>
+      <li><strong>Resposta a Incidentes Ambientais:</strong> detecção de derrames e manchas de óleo em áreas operacionais e de risco.</li>
     </ul>
   </div>
 
@@ -1053,10 +552,7 @@ st.markdown('''
 </div>
 ''', unsafe_allow_html=True)
 
-# FECHA a seção
 st.markdown('</div>', unsafe_allow_html=True)
-
-
 
 # ================== CONTATO ==================
 st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
@@ -1078,4 +574,5 @@ if st.button("Enviar e-mail"):
     st.success("Clique abaixo para abrir seu e-mail:")
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
-st.caption("© MAVIPE Space Systems · DAP ATLAS") 
+st.caption("© MAVIPE Space Systems · DAP ATLAS")
+
