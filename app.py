@@ -419,48 +419,22 @@ st.markdown('<div id="parceiros"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Parceiros")
 
-logos = gather_partner_images(max_n=24)
-if "part_idx" not in st.session_state: st.session_state.part_idx = 0
-if "part_last_tick" not in st.session_state: st.session_state.part_last_tick = time.time()
+# 👉 escolha aqui o arquivo único a exibir (ex.: um banner ou um logo)
+single_logo_path = "blacksky_logo_100px.png"  # mude para "petrobras_logo_100px.png", "ghgsat_logo_100px.png", etc.
 
-pthumb_param = get_query_param("pthumb", None)
-if pthumb_param is not None and logos:
-    try:
-        st.session_state.part_idx = int(pthumb_param) % len(logos)
-        st.session_state.part_last_tick = time.time()
-    except Exception:
-        pass
-
-if logos:
-    n2 = len(logos); j = st.session_state.part_idx % n2
-    p_uri = as_data_uri(logos[j])
-    st.markdown(f"<img class='carousel-main partner' src='{p_uri}' alt='Parceiro {j+1}/{n2}'/>", unsafe_allow_html=True)
-    st.markdown(f"<div class='carousel-caption'>{caption_from_path(logos[j])}</div>", unsafe_allow_html=True)
-
-    d1, d2, d3 = st.columns([1, 6, 1])
-    with d1:
-        if st.button("◀", key="part_prev"):
-            st.session_state.part_idx = (j - 1) % n2; st.session_state.part_last_tick = time.time(); st.rerun()
-    with d3:
-        if st.button("▶", key="part_next"):
-            st.session_state.part_idx = (j + 1) % n2; st.session_state.part_last_tick = time.time(); st.rerun()
-    with d2:
-        st.markdown(f"<div class='carousel-dots'>{render_dots(n2, j)}</div>", unsafe_allow_html=True)
-
-    thumbs = "<div class='thumbs partner'>"
-    for k, p in enumerate(logos):
-        t_uri = as_data_uri(p)
-        active = "active" if k == j else ""
-        thumbs += f"<a class='thumb {active}' href='?pthumb={k}' title='{caption_from_path(p)}'><img src='{t_uri}' alt='logo {k+1}'/></a>"
-    thumbs += "</div>"
-    st.markdown(thumbs, unsafe_allow_html=True)
-
-    now = time.time()
-    if now - st.session_state.part_last_tick >= PARTNER_INTERVAL_SEC:
-        st.session_state.part_idx = (j + 1) % n2; st.session_state.part_last_tick = now
-        time.sleep(0.05); st.rerun()
+from pathlib import Path
+if Path(single_logo_path).exists() and Path(single_logo_path).stat().st_size > 0:
+    img_uri = as_data_uri(single_logo_path)
+    st.markdown(
+        f"""
+        <div style="display:flex;justify-content:center;align-items:center;padding:30px 0;">
+            <img src="{img_uri}" alt="Parceiro" style="max-height:140px;width:auto;object-fit:contain;"/>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 else:
-    st.info("Adicione logos na pasta: parceiro*.png/jpg/jpeg, certificacao*.png/jpg/jpeg ou logo*.png/jpg/jpeg.")
+    st.info("Adicione a imagem única na pasta do app e atualize o nome em `single_logo_path`.")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
