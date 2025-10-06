@@ -595,7 +595,7 @@ st.markdown('''
     </li>
     <li>
       <strong>Resposta a Incidentes Ambientais:</strong>
-      identificação de derrames e manchas de óleo em áreas operacionais e de risco.
+      detecção de derrames e manchas de óleo em áreas operacionais e de risco.
     </li>
   </ul>
 </div>
@@ -628,7 +628,7 @@ st.markdown('''
   </p>
   <ul>
     <li>
-      <strong>Contagem e Identificação de Ativos:</strong>
+      <strong>Contagem e Detecção de Ativos:</strong>
       aeronaves, veículos e novas estruturas em instalações estratégicas.
     </li>
     <li>
