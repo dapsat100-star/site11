@@ -571,7 +571,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown('<div id="setores"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Setores / Casos de uso")
-st.markdown("- Óleo & Gás • Portos & Costas • Mineração • Defesa & Segurança • Monitoramento Ambiental.")
+#st.markdown("- Óleo & Gás • Portos & Costas • Mineração • Defesa & Segurança • Monitoramento Ambiental.")
 
 import streamlit as st
 
