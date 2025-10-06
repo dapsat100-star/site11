@@ -578,14 +578,7 @@ st.markdown('''
   
 
   <div id="ambiental" class="sector-card">
-    <h3>Meio-Ambiente</h3>
-    <p>Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.</p>
-    <ul>
-      <li>Metano (OGMP 2.0 L5): quantificação por fonte e incerteza</li>
-      <li>Cobertura do solo, queimadas e portos &amp; costas</li>
-      <li>Dashboards e relatórios georreferenciados</li>
-    </ul>
-  </div>
+    
 
   <div id="oleoegas" class="sector-card">
     <h3>Oil &amp; Gas</h3>
@@ -594,6 +587,14 @@ st.markdown('''
       <li>Monitoramento de Emissão de Metano — Dashboards para OGMP 2.0 Nível 5</li>
       <li>Deformação/subsidência em dutos, tanques (fundação), well pads, taludes, pilhas</li>
       <li>Derrames/manchas de óleo</li>
+    </ul>
+  </div>
+  <h3>Meio-Ambiente</h3>
+    <p>Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.</p>
+    <ul>
+      <li>Metano (OGMP 2.0 L5): quantificação por fonte e incerteza</li>
+      <li>Cobertura do solo, queimadas e portos &amp; costas</li>
+      <li>Dashboards e relatórios georreferenciados</li>
     </ul>
   </div>
   <div id="defesa" class="sector-card">
