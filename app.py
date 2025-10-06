@@ -323,11 +323,12 @@ with col_text:
     )
     st.markdown(
         """
-        <p style="color:#b9c6e6; line-height:1.6; font-size:1rem;">
-        We are a startup company that develops cutting-edge technological solutions for the automated analysis of satellite images
-        with optical and SAR-type sensors through its <b>DAP Ocean Framework™</b>. Our company is capable of performing automated
-        analytics from any supplier of satellite images on the market for the provision of <b>Maritime Domain Awareness (MDA)</b> and
-        <b>Ground Domain Awareness (GDA)</b>, either on the defense or private markets.
+        <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
+        A <b>MAVIPE Sistemas Espaciais</b> é uma empresa startup de base tecnológica que emprega soluções próprias, no estado da arte, baseadas em <b>IA</b>, <b>aprendizado de máquinas</b> e <b>dados operacionais de inteligência</b> para a realização de <b>monitoramentos por satélite</b> em ambientes terrestre e marítimo, no estado da arte mundial.
+        </p>
+
+        <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
+        Seus profissionais possuem anos de experiência em atividades de <b>centros de operações espaciais</b>, pesquisa e desenvolvimento de projetos inovadores e gestão de ativos. A empresa possui expertise nos setores de <b>meio ambiente</b>, <b>petróleo e gás</b> e <b>defesa e segurança</b>.
         </p>
         """,
         unsafe_allow_html=True,
