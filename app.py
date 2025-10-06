@@ -12,19 +12,16 @@ st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=No
 YOUTUBE_ID = "Ulrl6TFaWtA"
 
 LOGO_CANDIDATES = [
-    "logo-mavipe@2x.png",
-    "logo-mavipe.png",
-    "logo-mavipe@2x.jpg",
-    "logo-mavipe.jpg",
-    "logo-mavipe.jpeg",
-    "logo-mavipe@2x.jpeg",
+    "logo-mavipe@2x.png", "logo-mavipe.png",
+    "logo-mavipe@2x.jpg", "logo-mavipe.jpg",
+    "logo-mavipe.jpeg", "logo-mavipe@2x.jpeg",
 ]
 
 LINKEDIN_CANDIDATES = [
-    "linkedin@2x.svg", "linkedin.svg",
-    "linkedin@2x.png", "linkedin.png",
-    "linkedin@2x.jpg", "linkedin.jpg",
-    "linkedin_mono.svg", "linkedin_mono_green.svg",
+    "linkedin@2x.svg","linkedin.svg",
+    "linkedin@2x.png","linkedin.png",
+    "linkedin@2x.jpg","linkedin.jpg",
+    "linkedin_mono.svg","linkedin_mono_green.svg",
 ]
 
 CAROUSEL_INTERVAL_SEC = 3
@@ -37,27 +34,15 @@ EMPRESA_CAPTIONS = [
 ]
 
 NEWS_ITEMS = [
-    {
-        "title": "MAVIPE lança módulo OGMP 2.0 Nível 5",
-        "date": "2025-09-15",
-        "summary": "Quantificação por fonte, incerteza e Q/C com dashboards e API.",
-        "link": "https://example.com/noticia1",
-        "image": "news1.jpg",
-    },
-    {
-        "title": "Parceria para InSAR de alta cadência",
-        "date": "2025-08-22",
-        "summary": "Monitoramento de deformação em dutos, tanques e taludes.",
-        "link": "https://example.com/noticia2",
-        "image": "news2.jpg",
-    },
-    {
-        "title": "DAP ATLAS integra alertas marítimos",
-        "date": "2025-07-02",
-        "summary": "Detecção de navios não colaborativos, spoofing e rendezvous.",
-        "link": "https://example.com/noticia3",
-        "image": "news3.png",
-    },
+    {"title":"MAVIPE lança módulo OGMP 2.0 Nível 5","date":"2025-09-15",
+     "summary":"Quantificação por fonte, incerteza e Q/C com dashboards e API.",
+     "link":"https://example.com/noticia1","image":"news1.jpg"},
+    {"title":"Parceria para InSAR de alta cadência","date":"2025-08-22",
+     "summary":"Monitoramento de deformação em dutos, tanques e taludes.",
+     "link":"https://example.com/noticia2","image":"news2.jpg"},
+    {"title":"DAP ATLAS integra alertas marítimos","date":"2025-07-02",
+     "summary":"Detecção de navios não colaborativos, spoofing e rendezvous.",
+     "link":"https://example.com/noticia3","image":"news3.png"},
 ]
 
 # ================== UTILS ==================
@@ -71,7 +56,7 @@ def find_first(candidates) -> str | None:
 def guess_mime(path: Path) -> str:
     ext = path.suffix.lower()
     if ext == ".png": return "image/png"
-    if ext in (".jpg", ".jpeg"): return "image/jpeg"
+    if ext in (".jpg",".jpeg"): return "image/jpeg"
     if ext == ".svg": return "image/svg+xml"
     return "application/octet-stream"
 
@@ -81,14 +66,12 @@ def as_data_uri(path_str: str) -> str:
     return f"data:{guess_mime(p)};base64,{b64}"
 
 def gather_empresa_images(max_n: int = 3) -> list[str]:
-    base_candidates = [
-        "empresa1.jpg","empresa1.jpeg","empresa1.png",
-        "empresa2.jpg","empresa2.jpeg","empresa2.png",
-        "empresa3.jpg","empresa3.jpeg","empresa3.png",
-    ]
-    found = [p for p in base_candidates if Path(p).exists() and Path(p).stat().st_size > 0]
+    base = ["empresa1.jpg","empresa1.jpeg","empresa1.png",
+            "empresa2.jpg","empresa2.jpeg","empresa2.png",
+            "empresa3.jpg","empresa3.jpeg","empresa3.png"]
+    found = [p for p in base if Path(p).exists() and Path(p).stat().st_size > 0]
     extras = []
-    for pat in ("empresa*.jpg", "empresa*.jpeg", "empresa*.png"):
+    for pat in ("empresa*.jpg","empresa*.jpeg","empresa*.png"):
         for p in sorted(Path(".").glob(pat)):
             if p.is_file() and p.stat().st_size > 0:
                 extras.append(str(p))
@@ -96,59 +79,51 @@ def gather_empresa_images(max_n: int = 3) -> list[str]:
     for p in found + extras:
         if p not in seen:
             ordered.append(p); seen.add(p)
-        if len(ordered) >= max_n:
-            break
+        if len(ordered) >= max_n: break
     return ordered
 
 def gather_partner_images(max_n: int = 24) -> list[str]:
-    patterns = [
-        "parceiro*.png","parceiro*.jpg","parceiro*.jpeg",
-        "certificacao*.png","certificacao*.jpg","certificacao*.jpeg",
-        "logo*.png","logo*.jpg","logo*.jpeg",
-    ]
+    patterns = ["parceiro*.png","parceiro*.jpg","parceiro*.jpeg",
+                "certificacao*.png","certificacao*.jpg","certificacao*.jpeg",
+                "logo*.png","logo*.jpg","logo*.jpeg"]
     results = []
     for pat in patterns:
         for p in sorted(Path(".").glob(pat)):
             if p.is_file() and p.stat().st_size > 0:
                 s = str(p)
-                if s not in results:
-                    results.append(s)
+                if s not in results: results.append(s)
     return results[:max_n]
 
 def get_query_param(name: str, default=None):
     try:
-        params = st.query_params
-        return params.get(name, default)
+        return st.query_params.get(name, default)
     except Exception:
-        params = st.experimental_get_query_params()
-        vals = params.get(name, [default])
+        vals = st.experimental_get_query_params().get(name, [default])
         return vals[0] if isinstance(vals, list) else vals
 
 def caption_from_path(path_str: str) -> str:
     name = Path(path_str).stem
     name = re.sub(r"[_\-]+", " ", name).strip()
-    caption = " ".join(w.capitalize() for w in name.split())
-    return caption if caption else "Imagem"
+    return " ".join(w.capitalize() for w in name.split()) or "Imagem"
 
 def empresa_caption(idx: int, path_str: str) -> str:
-    if 0 <= idx < len(EMPRESA_CAPTIONS):
-        cap = (EMPRESA_CAPTIONS[idx] or "").strip()
-        if cap:
-            return cap
+    if 0 <= idx < len(EMPRESA_CAPTIONS) and (EMPRESA_CAPTIONS[idx] or "").strip():
+        return EMPRESA_CAPTIONS[idx].strip()
     return caption_from_path(path_str)
 
 def news_thumbnail_src(path_str: str | None) -> str | None:
-    if not path_str:
-        return None
+    if not path_str: return None
     p = Path(path_str)
-    if p.exists() and p.stat().st_size > 0:
-        return as_data_uri(str(p))
-    return None
+    return as_data_uri(str(p)) if p.exists() and p.stat().st_size > 0 else None
 
 def render_dots(n: int, active_index: int) -> str:
-    return "".join(f"<span class='{'active' if i==active_index else ''}'></span>" for i in range(n))
+    parts = []
+    for i in range(n):
+        cls = "active" if i == active_index else ""
+        parts.append(f"<span class='{cls}'></span>")
+    return "".join(parts)
 
-# ================== CSS (UNIFICADO) ==================
+# ================== CSS (UNIFICADO + HOTFIX SETORES) ==================
 st.markdown('''
 <style>
 html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hidden;}
@@ -207,35 +182,47 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .thumbs.partner .thumb{ background:rgba(255,255,255,.02); }
 .thumbs.partner .thumb img{ object-fit:contain; background:transparent; }
 
-/* ======== SETORES & APLICAÇÕES (título visível) ======== */
+/* ===== HOTFIX: Setores & Aplicações ===== */
+#setores{ position:relative; isolation:isolate; }
+#setores, #setores * { opacity:1 !important; } /* mata opacidades herdadas */
+
 #setores.section h2{
-  color:#ffffff !important; opacity:1 !important;
-  font-size:2rem !important; font-weight:700 !important;
-  text-align:center !important; margin:0 0 .6rem 0 !important;
-  letter-spacing:.5px; position:relative; display:inline-block; width:100%;
+  color:#ffffff !important; font-weight:800 !important;
+  font-size:2rem !important; text-align:center !important;
+  margin:0 0 .8rem 0 !important; letter-spacing:.4px;
+  position:relative; display:inline-block; width:100%;
 }
 #setores.section h2::after{
-  content:""; display:block; width:60px; height:3px;
-  background:#4EA8DE; margin:.6rem auto 0; border-radius:3px;
+  content:""; display:block; width:68px; height:3px;
+  background:#4EA8DE; margin:.65rem auto 0; border-radius:3px;
 }
+
 #setores .subtitle{
-  color:#f1f1f1 !important; opacity:1 !important;
-  font-weight:400; font-size:1.05rem !important;
-  text-align:center !important; letter-spacing:.3px;
-  margin:0 0 1.5rem 0 !important;
+  color:#f5f7ff !important; text-align:center !important;
+  font-size:1.06rem !important; margin:0 0 1.6rem 0 !important;
 }
-#setores .sectors-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem; margin:2rem 0; }
+
+#setores .sectors-grid{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
+  gap:20px; margin:24px 0 0 0;
+}
+
 #setores .sector-card{
-  background:#1e1e1e; color:#f1f1f1; padding:1.5rem; border-radius:16px;
-  border:1px solid rgba(255,255,255,.06); box-shadow:0 4px 20px rgba(0,0,0,.4);
-  transition:transform .2s, box-shadow .2s; font-family:"Segoe UI", Roboto, sans-serif;
+  background:rgba(255,255,255,.06) !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  border-radius:16px; padding:18px 20px;
+  box-shadow:0 10px 28px rgba(0,0,0,.45);
+  transition: transform .2s ease, box-shadow .2s ease;
 }
-#setores .sector-card:hover{ transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,.5); }
-#setores .sector-card h3{ margin:0 0 .5rem 0; font-size:1.3rem; font-weight:600; color:#e6eefc; }
-#setores .sector-card p{ margin:0 0 .8rem 0; color:#eaeaea; line-height:1.5; }
-#setores .sector-card ul{ margin:8px 0 0 18px; color:#cbd6f2; }
-#setores .sector-card li{ margin:4px 0; font-size:.95rem; line-height:1.4; }
-#setores .sector-card li strong{ color:#fff; font-weight:600; }
+#setores .sector-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0,0,0,.55);
+}
+#setores .sector-card h3{ color:#ffffff !important; margin:0 0 10px 0; }
+#setores .sector-card p{ color:#e9eefc !important; }
+#setores .sector-card ul{ color:#d5def6 !important; margin:10px 0 0 20px; }
+#setores .sector-card li{ margin:6px 0; font-size:.98rem; line-height:1.45; }
+#setores .sector-card li strong{ color:#ffffff !important; }
 
 /* Newsroom */
 .news-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:18px; }
@@ -248,23 +235,34 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .news-actions{padding:0 16px 14px 16px}
 .news-actions a{display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none; background:#34d399; color:#05131a; font-weight:700}
 
-/* MOBILE */
-:root{ --safe-top: env(safe-area-inset-top, 0px); --safe-right: env(safe-area-inset-right, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); --safe-left: env(safe-area-inset-left, 0px); }
-.navbar{ padding: max(8px, calc(8px + var(--safe-top))) max(8px, calc(8px + var(--safe-right))) 8px max(8px, calc(8px + var(--safe-left))) !important; }
+/* Social (LinkedIn) — ícone menor */
+.social{ display:flex; justify-content:center; margin-top:24px; }
+.social a{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:44px; height:44px; border-radius:12px;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:saturate(140%) blur(6px);
+  text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.social a:hover{ transform:translateY(-2px); border-color:rgba(52,211,153,.65);
+  box-shadow:0 8px 18px rgba(0,0,0,.35), 0 0 0 4px rgba(52,211,153,.15) inset; }
+.social img{ width:22px; height:22px; display:block; }
+
 @media (max-width:980px){
-  #setores .sectors-grid{grid-template-columns:1fr}
-  .news-grid{grid-template-columns:1fr}
+  #setores .sectors-grid{ grid-template-columns:1fr; }
+  .news-grid{ grid-template-columns:1fr; }
 }
 @media (max-width:768px){
   .navbar, .nav-left{ height:56px; }
   .nav-logo{ height:110px; transform:translateY(-10px); }
   .hero iframe{width:177.777vh; height:100vh; max-width:300vw;}
-  .kicker{font-size:14px;}
-  h1.hero-title{font-size:clamp(28px,8vw,36px);}
+  .kicker{font-size:14px;} h1.hero-title{font-size:clamp(28px,8vw,36px);}
   .hero-sub{font-size:15px; max-width:100%;}
   .section{padding:56px 5vw;}
   .nav-right a{margin-left:12px;}
   .carousel-main{ height:240px; }
+  .social a{ width:40px; height:40px; border-radius:10px; }
+  .social img{ width:20px; height:20px; }
 }
 </style>
 ''', unsafe_allow_html=True)
@@ -282,7 +280,6 @@ logo_left_tag = (
     f'<img src="{as_data_uri(logo_path)}" alt="MAVIPE logo" class="nav-logo"/>' if logo_path
     else '<div class="brand" style="color:#e6eefc; font-weight:700">MAVIPE</div>'
 )
-
 st.markdown(f'''
 <div class="navbar">
   <div class="nav-left">{logo_left_tag}</div>
@@ -329,10 +326,10 @@ with col_text:
     st.markdown(
         """
         <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
-        A <b>MAVIPE Sistemas Espaciais</b> é uma empresa de base tecnológica que emprega soluções próprias, no <b>estado-da-arte</b>, baseadas em <b>IA</b>, <b>aprendizado de máquinas</b> e <b>dados operacionais de inteligência</b> para a realização de <b>monitoramentos por satélite</b> em ambientes terrestre e marítimo, no <b>estado-da-arte</b> mundial.
+        A <b>MAVIPE Sistemas Espaciais</b> é uma empresa de base tecnológica que emprega soluções próprias, no <b>estado-da-arte</b>, baseadas em <b>IA</b>, <b>aprendizado de máquinas</b> e <b>dados operacionais de inteligência</b> para a realização de <b>monitoramentos por satélite</b> em ambientes terrestre e marítimo.
         </p>
         <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
-        Seus profissionais possuem anos de experiência em atividades de <b>centros de operações espaciais</b>, P&D e gestão de ativos. Expertise em <b>meio ambiente</b>, <b>petróleo e gás</b> e <b>defesa e segurança</b>.
+        Experiência em <b>centros de operações espaciais</b>, P&D e gestão de ativos. Expertise em <b>meio ambiente</b>, <b>petróleo e gás</b> e <b>defesa e segurança</b>.
         </p>
         """,
         unsafe_allow_html=True,
@@ -386,8 +383,7 @@ with col_img:
                 st.session_state.emp_last_tick = time.time()
                 st.rerun()
         with bcol2:
-            dots_html = render_dots(n, idx)
-            st.markdown(f"<div class='carousel-dots'>{dots_html}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='carousel-dots'>{render_dots(n, idx)}</div>", unsafe_allow_html=True)
 
         now = time.time()
         if now - st.session_state.emp_last_tick >= CAROUSEL_INTERVAL_SEC:
@@ -427,42 +423,33 @@ if pthumb_param is not None and logos:
         pass
 
 if logos:
-    n2 = len(logos)
-    j = st.session_state.part_idx % n2
+    n2 = len(logos); j = st.session_state.part_idx % n2
     p_uri = as_data_uri(logos[j])
-
     st.markdown(f"<img class='carousel-main partner' src='{p_uri}' alt='Parceiro {j+1}/{n2}'/>", unsafe_allow_html=True)
     st.markdown(f"<div class='carousel-caption'>{caption_from_path(logos[j])}</div>", unsafe_allow_html=True)
 
     d1, d2, d3 = st.columns([1, 6, 1])
     with d1:
         if st.button("◀", key="part_prev"):
-            st.session_state.part_idx = (j - 1) % n2
-            st.session_state.part_last_tick = time.time()
-            st.rerun()
+            st.session_state.part_idx = (j - 1) % n2; st.session_state.part_last_tick = time.time(); st.rerun()
     with d3:
         if st.button("▶", key="part_next"):
-            st.session_state.part_idx = (j + 1) % n2
-            st.session_state.part_last_tick = time.time()
-            st.rerun()
+            st.session_state.part_idx = (j + 1) % n2; st.session_state.part_last_tick = time.time(); st.rerun()
     with d2:
-        dots2_html = render_dots(n2, j)
-        st.markdown(f"<div class='carousel-dots'>{dots2_html}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='carousel-dots'>{render_dots(n2, j)}</div>", unsafe_allow_html=True)
 
-    pthumbs = "<div class='thumbs partner'>"
+    thumbs = "<div class='thumbs partner'>"
     for k, p in enumerate(logos):
         t_uri = as_data_uri(p)
         active = "active" if k == j else ""
-        pthumbs += f"<a class='thumb {active}' href='?pthumb={k}' title='{caption_from_path(p)}'><img src='{t_uri}' alt='logo {k+1}'/></a>"
-    pthumbs += "</div>"
-    st.markdown(pthumbs, unsafe_allow_html=True)
+        thumbs += f"<a class='thumb {active}' href='?pthumb={k}' title='{caption_from_path(p)}'><img src='{t_uri}' alt='logo {k+1}'/></a>"
+    thumbs += "</div>"
+    st.markdown(thumbs, unsafe_allow_html=True)
 
     now = time.time()
     if now - st.session_state.part_last_tick >= PARTNER_INTERVAL_SEC:
-        st.session_state.part_idx = (j + 1) % n2
-        st.session_state.part_last_tick = now
-        time.sleep(0.05)
-        st.rerun()
+        st.session_state.part_idx = (j + 1) % n2; st.session_state.part_last_tick = now
+        time.sleep(0.05); st.rerun()
 else:
     st.info("Adicione logos na pasta: parceiro*.png/jpg/jpeg, certificacao*.png/jpg/jpeg ou logo*.png/jpg/jpeg.")
 
@@ -476,17 +463,13 @@ st.header("Newsroom")
 if not NEWS_ITEMS:
     st.info("Adicione notícias em NEWS_ITEMS no topo do arquivo.")
 else:
-    def sort_key(item): return item.get("date", ""), item.get("title","")
-    items = sorted(NEWS_ITEMS, key=sort_key, reverse=True)
-
+    items = sorted(NEWS_ITEMS, key=lambda it: (it.get("date",""), it.get("title","")), reverse=True)
     html = '<div class="news-grid">'
     for it in items:
-        title   = it.get("title","")
-        date    = it.get("date","")
-        summary = it.get("summary","")
-        link    = it.get("link","#")
+        title = it.get("title",""); date = it.get("date","")
+        summary = it.get("summary",""); link = it.get("link","#")
         img_src = news_thumbnail_src(it.get("image"))
-        thumb   = f"<img class='news-thumb' src='{img_src}' alt='thumb'/>" if img_src else "<div class='news-thumb'></div>"
+        thumb = f"<img class='news-thumb' src='{img_src}' alt='thumb'/>" if img_src else "<div class='news-thumb'></div>"
         html += f"""
         <div class="news-card">
           {thumb}
@@ -498,8 +481,7 @@ else:
           <div class="news-actions">
             <a href="{link}" target="_blank" rel="noopener">Ler mais</a>
           </div>
-        </div>
-        """
+        </div>"""
     html += "</div>"
     st.markdown(html, unsafe_allow_html=True)
 
@@ -575,4 +557,3 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
-
