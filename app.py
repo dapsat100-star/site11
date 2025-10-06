@@ -557,7 +557,7 @@ SECTORS = [
      "fallback_emoji":"🌎"},
 ]    
 st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
-st.header("Setores & Casos de Uso")
+st.header("Setores & Aplicações")
 st.markdown(
     '<p class="subtitle">Óleo &amp; Gás • Defesa &amp; Segurança • Monitoramento Ambiental</p>',
     unsafe_allow_html=True
