@@ -542,9 +542,10 @@ SECTORS = [
     {"slug":"defesa","title":"Defesa & Segurança",
      "desc":"Maritime & Ground Domain Awareness com alertas e análise assistida por IA.",
      "bullets":[
-        "Contagem de aeronaves/veículos e novas estruturas em instalações",
-        "Vigilância de Área Econômica Exclusiva, combate à pesca ilegal e contrabando",
-        " ",
+        "Monitoramento de embarcações não-colaborativas (dark ships)",
+        "Monitoramento de fronteiras terrestres e marítimas",
+        "Monitoramento de fronteiras terrestres e marítimas",        
+        "Monitoramento de instalações civis e militares (edificações, portos, aeroportos,etc.) ",
      ],
      "fallback_emoji":"🛡️"},
     {"slug":"ambiental","title":"Ambiental",
