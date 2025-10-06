@@ -136,15 +136,23 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 .block-container{padding:0!important; max-width:100%!important}
 
 /* Navbar fixa */
-.navbar{position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between; align-items:center;
-  padding:8px 8px; background:rgba(8,16,33,.35); backdrop-filter:saturate(160%) blur(10px);
-  border-bottom:1px solid rgba(255,255,255,.08)}
+.navbar{position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between; align-items:center; padding:6px 24px; background:rgba(8,16,33,.35); backdrop-filter:saturate(160%) blur(10px); border-bottom:1px solid rgba(255,255,255,.08)}
 .nav-left{display:flex; align-items:center; gap:12px}
 .nav-right a{color:#d6def5; text-decoration:none; margin-left:22px}
 
 /* Logo na navbar — AUMENTADO (80px) */
-.nav-logo{height:120px; width:auto; display:block; filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));}
-@media (max-width:768px){ .nav-logo{height:64px;} }
+.nav-logo{height:80px; width:auto; display:block; filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));}
+@media (max-width:768px){
+  .nav-logo{height:60px;}
+  .hero .logo{display:none;} /* redundante, mas garante remoção em mobile */
+  .hero iframe{width:177.777vh; height:100vh; max-width:300vw;}
+  .kicker{font-size:14px;}
+  h1.hero-title{font-size:clamp(28px,8vw,36px);} 
+  .hero-sub{font-size:15px; max-width:100%;}
+  [data-testid="column"]{width:100%!important; flex:0 0 100%!important;}
+  .section{padding:56px 5vw;}
+  .nav-right a{margin-left:14px;}
+} }
 
 /* Hero YouTube */
 .hero{position:relative; height:100vh; min-height:640px; width:100vw; left:50%; margin-left:-50vw; overflow:hidden}
@@ -254,8 +262,10 @@ st.markdown(f'''
 ''', unsafe_allow_html=True)
 
 # ================== HERO (vídeo + logo Base64 no topo direito) ==================
-logo_tag = ""
-
+# ================== HERO (vídeo sem logo duplicado) ==================
+logo_tag = ""  # REMOVIDO para não duplicar logo no topo direito
+if not logo_path:
+    st.warning(f"Logo não encontrada. Adicione um dos arquivos: {', '.join(LOGO_CANDIDATES)}")}")
 
 st.markdown(f'''
 <div class="hero">
