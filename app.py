@@ -137,12 +137,12 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 
 /* Navbar fixa */
 .navbar{position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between; align-items:center; padding:8px 8px !important; background:rgba(8,16,33,.35); backdrop-filter:saturate(160%) blur(10px); border-bottom:1px solid rgba(255,255,255,.08)}
-.nav-left{display:flex; align-items:center; gap:12px}
+.nav-left{position:relative; display:flex; align-items:center; gap:12px}
 .nav-right a{color:#d6def5; text-decoration:none; margin-left:18px}
 
-/* Logo na navbar */
-.nav-logo{height:80px; width:auto; display:block; filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));}
-@media (max-width:768px){ .nav-logo{height:64px;} }
+/* Logo na navbar — flutuante (opção 3) */
+.nav-logo{position:absolute; top:-18px; left:0; height:100px; width:auto; display:block; filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));}
+@media (max-width:768px){ .nav-logo{top:-10px; height:80px;} }
 
 /* Hero YouTube */
 .hero{position:relative; height:100vh; min-height:640px; width:100vw; left:50%; margin-left:-50vw; overflow:hidden}
@@ -248,7 +248,9 @@ st.markdown(f'''
 # ================== HERO (vídeo sem logo duplicado) ==================
 logo_tag = ""  # logo do topo direito removido
 if not logo_path:
-    st.warning(f"Logo não encontrada. Adicione um dos arquivos: {', '.join(LOGO_CANDIDATES)}")
+    st.warning(
+        f"Logo não encontrada. Adicione um dos arquivos: {', '.join(LOGO_CANDIDATES)}"
+    )
 
 st.markdown(f'''
 <div class="hero">
@@ -526,5 +528,4 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
-
 
