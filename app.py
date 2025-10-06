@@ -568,37 +568,111 @@ else:
 st.markdown("</div>", unsafe_allow_html=True)
 
 # ================== SETORES ==================
-st.markdown('<div id="setores"></div>', unsafe_allow_html=True)
-st.markdown('<div class="section">', unsafe_allow_html=True)
+st.markdown("""
+<style>
+  /* ===== Título e subtítulo ===== */
+  .section h2, .section h3 {
+    color: #f5f7ff !important;
+    margin-bottom: .25rem;
+  }
+  .section .subtitle {
+    color: #f1f1f1;
+    opacity: 1;
+    font-weight: 400;
+    font-size: 1rem;
+    letter-spacing: .3px;
+    margin: 0 0 1.5rem 0;
+  }
+  @media (min-width: 768px){
+    .section .subtitle { font-size: 1.05rem; }
+  }
+
+  /* ===== Grid de setores ===== */
+  .sectors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  /* ===== Cartões individuais ===== */
+  .sector-card {
+    background: #1e1e1e;
+    color: #f1f1f1;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    font-family: "Segoe UI", Roboto, sans-serif;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .sector-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .sector-card h3 {
+    margin-top: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .sector-card p {
+    color: #eaeaea;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+  }
+  .sector-card ul {
+    padding-left: 1.2rem;
+    margin: 0;
+    list-style-type: disc;
+  }
+  .sector-card li {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  .sector-card li strong {
+    color: #ffffff;
+    font-weight: 600;
+  }
+</style>
+""", unsafe_allow_html=True)
+
+
+# ===== TÍTULO =====
+st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
 st.header("Setores / Casos de uso")
+st.markdown(
+    '<p class="subtitle">Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental</p>',
+    unsafe_allow_html=True
+)
 
 
-import streamlit as st
-
+# ===== GRID DE SETORES =====
 st.markdown('''
 <div class="sectors-grid">
 
   <!-- ÓLEO & GÁS -->
- <div id="oleoegas" class="sector-card">
-  <h3>Óleo &amp; Gás</h3>
-  <p>
-    Monitoramento de emissões de metano OGMP 2.0, detecção de mudanças e resposta a incidentes ambientais.
-  </p>
-  <ul>
-    <li>
-      <strong>Monitoramento de Metano — OGMP 2.0 Nível 5:</strong>
-      quantificação de emissões, identificação de superemissores e relatórios em conformidade com padrões internacionais.
-    </li>
-    <li>
-      <strong>Detecção de Mudanças em Ativos e Infraestrutura:</strong>
-      acompanhamento de obras, ampliações e movimentações em áreas operacionais por meio de imagens ópticas e SAR.
-    </li>
-    <li>
-      <strong>Resposta a Incidentes Ambientais:</strong>
-      detecção de derrames e manchas de óleo em áreas operacionais e de risco.
-    </li>
-  </ul>
-</div>
+  <div id="oleoegas" class="sector-card">
+    <h3>Óleo &amp; Gás</h3>
+    <p>
+      Monitoramento de emissões de metano OGMP 2.0, detecção de mudanças e resposta a incidentes ambientais.
+    </p>
+    <ul>
+      <li>
+        <strong>Monitoramento de Metano — OGMP 2.0 Nível 5:</strong>
+        quantificação de emissões, identificação de superemissores e relatórios em conformidade com padrões internacionais.
+      </li>
+      <li>
+        <strong>Detecção de Mudanças em Ativos e Infraestrutura:</strong>
+        acompanhamento de obras, ampliações e movimentações em áreas operacionais por meio de imagens ópticas e SAR.
+      </li>
+      <li>
+        <strong>Resposta a Incidentes Ambientais:</strong>
+        detecção de derrames e manchas de óleo em áreas operacionais e de risco.
+      </li>
+    </ul>
+  </div>
 
 
   <!-- MEIO-AMBIENTE -->
@@ -609,98 +683,42 @@ st.markdown('''
     </p>
     <ul>
       <li>
-        <strong>Emissões em Resíduos:</strong> Detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros sanitários e áreas de manejo de resíduos.
+        <strong>Emissões em Resíduos:</strong> detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros sanitários e áreas de manejo de resíduos.
       </li>
       <li>
-        <strong>Cobertura do Solo e Queimadas:</strong> Acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.
+        <strong>Cobertura do Solo e Queimadas:</strong> acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.
       </li>
       <li>
-        <strong>Desastres Ambientais:</strong> Monitoramento de eventos extremos, como enchentes e derramamentos de óleo.
+        <strong>Desastres Ambientais:</strong> monitoramento de eventos extremos, como enchentes e derramamentos de óleo.
       </li>
     </ul>
   </div>
 
+
   <!-- DEFESA & SEGURANÇA -->
-<div id="defesa" class="sector-card">
-  <h3>Defesa &amp; Segurança</h3>
-  <p>
-    Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA.
-  </p>
-  <ul>
-    <li>
-      <strong>Contagem e Detecção de Ativos:</strong>
-      aeronaves, veículos e novas estruturas em instalações estratégicas.
-    </li>
-    <li>
-      <strong>Vigilância Marítima e Costeira:</strong>
-      monitoramento da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando.
-    </li>
-    <li>
-      <strong>Detecção de Mudanças em Áreas Sensíveis:</strong>
-      identificação de alterações em fronteiras, infraestrutura crítica e zonas de interesse estratégico.
-    </li>
-  </ul>
+  <div id="defesa" class="sector-card">
+    <h3>Defesa &amp; Segurança</h3>
+    <p>
+      Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA.
+    </p>
+    <ul>
+      <li>
+        <strong>Contagem e Detecção de Ativos:</strong>
+        aeronaves, veículos e novas estruturas em instalações estratégicas.
+      </li>
+      <li>
+        <strong>Vigilância Marítima e Costeira:</strong>
+        monitoramento da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando.
+      </li>
+      <li>
+        <strong>Detecção de Mudanças em Áreas Sensíveis:</strong>
+        identificação de alterações em fronteiras, infraestrutura crítica e zonas de interesse estratégico.
+      </li>
+    </ul>
+  </div>
+
 </div>
-
-
-<style>
-  .sectors-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
-  }
-
-  .sector-card {
-    background: #1e1e1e;
-    color: #f1f1f1;
-    padding: 1.5rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    font-family: "Segoe UI", Roboto, sans-serif;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .sector-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-  }
-
-  .sector-card h3 {
-    margin-top: 0;
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  .sector-card p {
-    color: #eaeaea;
-    font-weight: 400;
-    line-height: 1.5;
-    margin-bottom: 0.8rem;
-  }
-
-  .sector-card ul {
-    padding-left: 1.2rem;
-    margin: 0;
-    list-style-type: disc;
-  }
-
-  .sector-card li {
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
-    line-height: 1.4;
-  }
-
-  .sector-card li strong {
-    color: #ffffff;
-    font-weight: 600;
-  }
-</style>
 ''', unsafe_allow_html=True)
-
-
-st.markdown("</div>", unsafe_allow_html=True)
 
 # ================== CONTATO ==================
 st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
