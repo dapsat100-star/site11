@@ -555,7 +555,7 @@ SECTORS = [
         "Dashboards e relatórios georreferenciados",
      ],
      "fallback_emoji":"🌎"},
-    
+]    
 st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
 st.header("Setores & Casos de Uso")
 st.markdown(
