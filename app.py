@@ -439,6 +439,8 @@ st.markdown("</div>", unsafe_allow_html=True)
 # ================== SETORES & APLICAÇÕES ==================
 # IMPORTANTE: toda a seção em um único bloco HTML para manter DOM correto.
 st.markdown('''
+# ================== SETORES & APLICAÇÕES ==================
+st.markdown('''
 <div id="setores" class="section" style="position:relative; isolation:isolate;">
   <h2 style="color:#fff; font-weight:800; text-align:center; margin:0 0 .8rem 0; letter-spacing:.4px;">
     Setores &amp; Aplicações
@@ -448,14 +450,8 @@ st.markdown('''
     Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental
   </p>
 
-  <div class="sectors-grid" style="
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
-      gap:20px; margin-top:24px;">
-    
-    <!-- ÓLEO & GÁS -->
-    <div id="oleoegas" class="sector-card" style="
-        background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
-        border-radius:16px; padding:18px 20px; box-shadow:0 10px 28px rgba(0,0,0,.45);">
+  <div class="sectors-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:20px; margin-top:24px;">
+    <div id="oleoegas" class="sector-card" style="background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:18px 20px; box-shadow:0 10px 28px rgba(0,0,0,.45);">
       <h3 style="color:#fff; margin:0 0 10px 0;">Óleo &amp; Gás</h3>
       <p style="color:#e9eefc;">Monitoramento de emissões de metano OGMP 2.0, detecção de mudanças e resposta a incidentes ambientais.</p>
       <ul style="color:#d5def6; margin:10px 0 0 20px;">
@@ -465,10 +461,7 @@ st.markdown('''
       </ul>
     </div>
 
-    <!-- MEIO-AMBIENTE -->
-    <div id="ambiental" class="sector-card" style="
-        background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
-        border-radius:16px; padding:18px 20px; box-shadow:0 10px 28px rgba(0,0,0,.45);">
+    <div id="ambiental" class="sector-card" style="background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:18px 20px; box-shadow:0 10px 28px rgba(0,0,0,.45);">
       <h3 style="color:#fff; margin:0 0 10px 0;">Meio-Ambiente</h3>
       <p style="color:#e9eefc;">Monitoramento de emissões e riscos ambientais por meio de tecnologias avançadas de Observação da Terra.</p>
       <ul style="color:#d5def6; margin:10px 0 0 20px;">
@@ -478,10 +471,7 @@ st.markdown('''
       </ul>
     </div>
 
-    <!-- DEFESA & SEGURANÇA -->
-    <div id="defesa" class="sector-card" style="
-        background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
-        border-radius:16px; padding:18px 20px; box-shadow:0 10px 28px rgba(0,0,0,.45);">
+    <div id="defesa" class="sector-card" style="background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18); border-radius:16px; padding:18px 20px; box-shadow:0 10px 28px rgba(0,0,0,.45);">
       <h3 style="color:#fff; margin:0 0 10px 0;">Defesa &amp; Segurança</h3>
       <p style="color:#e9eefc;">Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA.</p>
       <ul style="color:#d5def6; margin:10px 0 0 20px;">
@@ -490,10 +480,10 @@ st.markdown('''
         <li><strong style="color:#fff;">Detecção de Mudanças em Áreas Sensíveis:</strong> alterações em fronteiras, infraestrutura crítica e zonas de interesse estratégico.</li>
       </ul>
     </div>
-
   </div>
 </div>
 ''', unsafe_allow_html=True)
+
 
 # ================== CONTATO ==================
 st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
