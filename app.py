@@ -581,7 +581,7 @@ st.markdown('''
   <!-- ÓLEO & GÁS -->
   <div id="oleoegas" class="sector-card">
     <h3>Óleo &amp; Gás</h3>
-    <p>Integridade de ativos e segurança operacional com imagens SAR e ópticas.</p>
+    <p>Monitoramento de emissões de metano OGMP 2.0, aliado a análises de integridade e riscos operacionais com imagens SAR e ópticas.</p>
     <ul>
       <li>Monitoramento de Emissões de Metano — OGMP 2.0 Nível 5</li>
       <li>Deformação/subsidência em dutos, tanques (fundação), well pads, taludes e pilhas</li>
