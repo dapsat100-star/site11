@@ -437,7 +437,7 @@ else:
 st.markdown("</div>", unsafe_allow_html=True)
 
 # ================== SETORES & APLICAÇÕES (render seguro) ==================
-# ================== SETORES & APLICAÇÕES ==================
+
 st.markdown("""
 <style>
   #setores h2{
@@ -490,7 +490,7 @@ st.markdown("""
   <h2>Setores &amp; Aplicações</h2>
   <div class="bar"></div>
   <p class="subtitle">
-    Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental
+    Óleo &amp; Gás • Meio-Ambiente • Defesa &amp; Segurança 
   </p>
 
   <div class="sectors-grid">
