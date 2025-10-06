@@ -496,155 +496,66 @@ else:
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ================== SETORES & APLICAÇÕES (Cards com ícones) ==================
 # ================== SETORES & APLICAÇÕES ==================
-# CSS específico da seção
+import textwrap
+
+# ================== SETORES & APLICAÇÕES ==================
 st.markdown("""
 <style>
-#setores.section h2{
-  color:#ffffff!important;
-  opacity:1!important;
-  font-size:2rem!important;
-  font-weight:800!important;
-  text-align:center!important;
-  margin:0 0 .8rem 0!important;
-}
-#setores.section h2::after{
-  content:"";
-  display:block;
-  width:68px;
-  height:3px;
-  background:#4EA8DE;
-  margin:.65rem auto 0;
-  border-radius:3px;
-}
-#setores .subtitle{
-  color:#f5f7ff!important;
-  text-align:center!important;
-  font-size:1.05rem!important;
-  margin:0 0 1.6rem 0!important;
-  opacity:1!important;
-}
+#setores.section h2{color:#fff!important;opacity:1!important;font-size:2rem!important;font-weight:800!important;text-align:center!important;margin:0 0 .8rem}
+#setores.section h2::after{content:"";display:block;width:68px;height:3px;background:#4EA8DE;margin:.65rem auto 0;border-radius:3px}
+#setores .subtitle{color:#f5f7ff!important;text-align:center!important;font-size:1.05rem!important;margin:0 0 1.6rem 0!important;opacity:1!important}
 
-/* Grid responsivo */
-.sector-card-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:20px;
-}
-
-/* Cartões individuais */
-.sector-card {
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:16px;
-  padding:18px 20px;
-  box-shadow:0 10px 28px rgba(0,0,0,.45);
-  transition:transform .2s, box-shadow .2s;
-}
-.sector-card:hover {
-  transform:translateY(-4px);
-  box-shadow:0 16px 36px rgba(0,0,0,.55);
-}
-
-/* Cabeçalho do card */
-.sector-head {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:8px;
-}
-.sector-icon img {
-  width:24px;
-  height:24px;
-  display:block;
-}
-.sector-icon span {
-  font-size:20px;
-  display:inline-block;
-  line-height:1;
-}
-.sector-card h3 {
-  margin:0;
-  color:#ffffff;
-  font-size:1.25rem;
-  font-weight:600;
-}
-
-/* Corpo do card */
-.sector-card p {
-  color:#e9eefc;
-  margin:.4rem 0 .6rem 0;
-  line-height:1.5;
-}
-.sector-card ul {
-  color:#d5def6;
-  margin:.5rem 0 0 1.1rem;
-}
-.sector-card li {
-  margin:.35rem 0;
-  font-size:.96rem;
-  line-height:1.4;
-}
+.sector-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.sector-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:18px 20px;box-shadow:0 10px 28px rgba(0,0,0,.45);transition:transform .2s, box-shadow .2s}
+.sector-card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(0,0,0,.55)}
+.sector-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sector-icon img{width:24px;height:24px;display:block}
+.sector-icon span{font-size:20px;display:inline-block;line-height:1}
+.sector-card h3{margin:0;color:#fff;font-size:1.25rem;font-weight:600}
+.sector-card p{color:#e9eefc;margin:.4rem 0 .6rem;line-height:1.5}
+.sector-card ul{color:#d5def6;margin:.5rem 0 0 1.1rem}
+.sector-card li{margin:.35rem 0;font-size:.96rem;line-height:1.4}
 </style>
 """, unsafe_allow_html=True)
 
-
-# ==== Função para buscar ícone local ou fallback ====
 def sector_icon_data_uri(slug: str) -> str | None:
-    candidates = []
+    candidates=[]
     for ext in ("svg","png","jpg","jpeg"):
         candidates += [
-            f"icons/{slug}.{ext}",
-            f"icons/{slug}_icon.{ext}",
-            f"icons/icon-{slug}.{ext}",
-            f"{slug}.{ext}",
-            f"{slug}_icon.{ext}",
-            f"icon-{slug}.{ext}",
+            f"icons/{slug}.{ext}", f"icons/{slug}_icon.{ext}", f"icons/icon-{slug}.{ext}",
+            f"{slug}.{ext}", f"{slug}_icon.{ext}", f"icon-{slug}.{ext}",
         ]
     path = find_first(candidates)
     return as_data_uri(path) if path else None
 
-
-# ==== Dados dos setores ====
 SECTORS = [
-    {
-        "slug": "defesa",
-        "title": "Defesa & Segurança",
-        "desc": "Maritime & Ground Domain Awareness com alertas e análise assistida por IA.",
-        "bullets": [
-            "Contagem de aeronaves/veículos e novas estruturas em instalações",
-            "Vigilância de Área Econômica Exclusiva, combate à pesca ilegal e contrabando",
-            "Detecção de mudanças em fronteiras e áreas sensíveis",
-        ],
-        "fallback_emoji": "🛡️",
-    },
-    {
-        "slug": "ambiental",
-        "title": "Meio Ambiente",
-        "desc": "Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.",
-        "bullets": [
-            "Metano (OGMP 2.0 L5): quantificação por fonte e incerteza",
-            "Cobertura do solo, queimadas e portos & costas",
-            "Dashboards e relatórios georreferenciados",
-        ],
-        "fallback_emoji": "🌎",
-    },
-    {
-        "slug": "oleogas",
-        "title": "Óleo & Gás",
-        "desc": "Integridade de ativos e segurança operacional com imagens SAR e ópticas.",
-        "bullets": [
-            "Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5",
-            "Deformação/subsistência em dutos, tanques, taludes e fundações",
-            "Derrames e manchas de óleo",
-        ],
-        "fallback_emoji": "🛢️",
-    },
+    {"slug":"defesa","title":"Defesa & Segurança",
+     "desc":"Maritime & Ground Domain Awareness com alertas e análise assistida por IA.",
+     "bullets":[
+        "Contagem de aeronaves/veículos e novas estruturas em instalações",
+        "Vigilância de Área Econômica Exclusiva, combate à pesca ilegal e contrabando",
+        "Detecção de mudanças em fronteiras e áreas sensíveis",
+     ],
+     "fallback_emoji":"🛡️"},
+    {"slug":"ambiental","title":"Meio Ambiente",
+     "desc":"Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.",
+     "bullets":[
+        "Metano (OGMP 2.0 L5): quantificação por fonte e incerteza",
+        "Cobertura do solo, queimadas e portos & costas",
+        "Dashboards e relatórios georreferenciados",
+     ],
+     "fallback_emoji":"🌎"},
+    {"slug":"oleogas","title":"Óleo & Gás",
+     "desc":"Integridade de ativos e segurança operacional com imagens SAR e ópticas.",
+     "bullets":[
+        "Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5",
+        "Deformação/subsistência em dutos, tanques, taludes e fundações",
+        "Derrames e manchas de óleo",
+     ],
+     "fallback_emoji":"🛢️"},
 ]
 
-
-# ==== Renderização ====
 st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
 st.header("Setores & Casos de Uso")
 st.markdown(
@@ -652,30 +563,31 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-cards_html = ['<div class="sector-card-grid">']
+# Monta HTML sem indentação que crie bloco de código
+cards = ['<div class="sector-card-grid">']
 for s in SECTORS:
     data_uri = sector_icon_data_uri(s["slug"])
-    if data_uri:
-        icon_html = f'<div class="sector-icon"><img src="{data_uri}" alt="{s["slug"]}"/></div>'
-    else:
-        icon_html = f'<div class="sector-icon"><span>{s["fallback_emoji"]}</span></div>'
+    icon_html = (f'<div class="sector-icon"><img src="{data_uri}" alt="{s["slug"]}"/></div>'
+                 if data_uri else
+                 f'<div class="sector-icon"><span>{s["fallback_emoji"]}</span></div>')
+    bullets = "".join(f"<li>{b}</li>" for b in s["bullets"])
+    tpl = f"""
+<div id="{s["slug"]}" class="sector-card">
+  <div class="sector-head">
+    {icon_html}
+    <h3>{s["title"]}</h3>
+  </div>
+  <p>{s["desc"]}</p>
+  <ul>{bullets}</ul>
+</div>
+"""
+    cards.append(textwrap.dedent(tpl).strip())
+cards.append("</div>")
+html = "\n".join(cards)
 
-    bullets_html = "".join(f"<li>{b}</li>" for b in s["bullets"])
-    cards_html.append(f"""
-    <div id="{s["slug"]}" class="sector-card">
-      <div class="sector-head">
-        {icon_html}
-        <h3>{s["title"]}</h3>
-      </div>
-      <p>{s["desc"]}</p>
-      <ul>{bullets_html}</ul>
-    </div>
-    """)
-cards_html.append("</div>")
-
-st.markdown("\n".join(cards_html), unsafe_allow_html=True)
+# IMPORTANTE: unsafe_allow_html e sem indentação no início das linhas
+st.markdown(html, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
-
 
 # ================== CONTATO ==================
 st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
