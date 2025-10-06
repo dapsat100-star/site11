@@ -547,7 +547,7 @@ SECTORS = [
         "Detecção de mudanças em fronteiras e áreas sensíveis",
      ],
      "fallback_emoji":"🛡️"},
-    {"slug":"ambiental","title":"Meio Ambiente",
+    {"slug":"ambiental","title":"Ambiental",
      "desc":"Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.",
      "bullets":[
         "Metano (OGMP 2.0 L5): quantificação por fonte e incerteza",
