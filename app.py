@@ -10,7 +10,6 @@ st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=No
 
 # ================== CONFIG ==================
 YOUTUBE_ID = "Ulrl6TFaWtA"
-# Preferimos o @2x para ficar nítido em telas retina; depois 1x; por fim nomes antigos.
 LOGO_CANDIDATES = [
     "logo-mavipe@2x.png",
     "logo-mavipe.png",
@@ -18,10 +17,9 @@ LOGO_CANDIDATES = [
     "logo-mavipe.jpg",
     "logo-mavipe.jpeg",
     "logo-mavipe@2x.jpeg",
-    "logo-mavipe.png",  # repetido por compatibilidade, não atrapalha
 ]
-CAROUSEL_INTERVAL_SEC = 3      # autoplay Empresa
-PARTNER_INTERVAL_SEC  = 3      # autoplay Parceiros
+CAROUSEL_INTERVAL_SEC = 3
+PARTNER_INTERVAL_SEC  = 3
 
 # <<< LEGENDA MANUAL DA EMPRESA (ordem dos slides) >>>
 EMPRESA_CAPTIONS = [
@@ -30,7 +28,7 @@ EMPRESA_CAPTIONS = [
     "GeoINT & InSAR — integridade",
 ]
 
-# <<< NEWSROOM: edite aqui as suas notícias >>>
+# <<< NEWSROOM >>> (edite à vontade)
 NEWS_ITEMS = [
     {
         "title": "MAVIPE lança módulo OGMP 2.0 Nível 5",
@@ -165,7 +163,7 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
   position:relative;
   height:140px;         /* ajuste aqui para maior/menor */
   width:auto; display:block;
-  transform:translateY(2 px);
+  transform:translateY(-12px);
   image-rendering:auto;
   filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));
   z-index:2;
@@ -196,7 +194,7 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .navbar{ padding: max(8px, calc(8px + var(--safe-top))) max(8px, calc(8px + var(--safe-right))) 8px max(8px, calc(8px + var(--safe-left))) !important; }
 @media (max-width:768px){
   .navbar, .nav-left{ height:56px; }
-  .nav-logo{ height:110px; transform:translateY(-16px); }
+  .nav-logo{ height:110px; transform:translateY(-10px); }
   .hero iframe{width:177.777vh; height:100vh; max-width:300vw;}
   .kicker{font-size:14px;}
   h1.hero-title{font-size:clamp(28px,8vw,36px);}
@@ -253,17 +251,14 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 ''', unsafe_allow_html=True)
 
 # ================== NAVBAR (com LOGO à esquerda) ==================
-# Retina de verdade: se existir @2x usamos ele (embutido em base64), o CSS mantém altura/posicionamento.
 logo_2x = Path("logo-mavipe@2x.png")
 logo_1x = Path("logo-mavipe.png")
-fallback = find_first(LOGO_CANDIDATES)
-
 def pick_logo_path() -> str | None:
     if logo_2x.exists() and logo_2x.stat().st_size > 0:
         return str(logo_2x)
     if logo_1x.exists() and logo_1x.stat().st_size > 0:
         return str(logo_1x)
-    return fallback
+    return find_first(LOGO_CANDIDATES)
 
 logo_path = pick_logo_path()
 logo_left_tag = (
@@ -287,19 +282,11 @@ st.markdown(f'''
 ''', unsafe_allow_html=True)
 
 # ================== HERO (vídeo sem logo duplicado) ==================
-# Removemos o logo do topo direito para evitar duplicação.
-logo_tag = ""  # sem logo no hero
-if not logo_path:
-    st.warning(
-        f"Logo não encontrada. Adicione um dos arquivos: logo-mavipe@2x.png, logo-mavipe.png"
-    )
-
 st.markdown(f'''
 <div class="hero">
   <iframe src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&playlist={YOUTUBE_ID}"
           title="MAVIPE hero" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"></iframe>
   <div class="overlay"></div>
-  {logo_tag}
   <div class="content">
     <div>
       <div class="kicker">GeoINT • InSAR • Metano (OGMP 2.0 L5)</div>
@@ -338,8 +325,25 @@ with col_text:
         """,
         unsafe_allow_html=True,
     )
+    # === ÍCONE DO LINKEDIN (substitui "Know more") ===
     st.markdown(
-        "<a href='#contato' style='display:inline-block; margin-top:18px; background:#34d399; color:#05131a; font-weight:600; padding:12px 20px; border-radius:10px; text-decoration:none;'>Know more</a>",
+        """
+        <a href="https://www.linkedin.com/company/mavipe"
+           target="_blank" rel="noopener"
+           aria-label="LinkedIn da MAVIPE"
+           style="
+             display:inline-flex; align-items:center; justify-content:center;
+             margin-top:18px; width:48px; height:48px;
+             border-radius:12px;
+             background:rgba(255,255,255,.06);
+             border:1px solid rgba(255,255,255,.18);
+             text-decoration:none;
+           ">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="#0A66C2" aria-hidden="true">
+            <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8.5h4V24h-4V8.5zM8.5 8.5h3.8v2.1h.05c.53-1 1.8-2.1 3.7-2.1 4 0 4.75 2.6 4.75 6V24h-4v-8.5c0-2-.04-4.5-2.75-4.5-2.75 0-3.17 2.15-3.17 4.35V24h-4V8.5z"/>
+          </svg>
+        </a>
+        """,
         unsafe_allow_html=True,
     )
 
@@ -570,3 +574,4 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
+
