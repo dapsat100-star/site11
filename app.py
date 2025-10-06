@@ -579,15 +579,27 @@ st.markdown('''
 <div class="sectors-grid">
 
   <!-- ÓLEO & GÁS -->
-  <div id="oleoegas" class="sector-card">
-    <h3>Óleo &amp; Gás</h3>
-    <p>Monitoramento de emissões de metano OGMP 2.0, aliado a análises de integridade e riscos operacionais com imagens SAR e ópticas.</p>
-    <ul>
-      <li>Monitoramento de Emissões de Metano — OGMP 2.0 Nível 5</li>
-      <li>Deformação/subsidência em dutos, tanques (fundação), well pads, taludes e pilhas</li>
-      <li>Derrames e manchas de óleo</li>
-    </ul>
-  </div>
+ <div id="oleoegas" class="sector-card">
+  <h3>Óleo &amp; Gás</h3>
+  <p>
+    Monitoramento de emissões de metano OGMP 2.0, aliado a análises de integridade e riscos operacionais com imagens SAR e ópticas.
+  </p>
+  <ul>
+    <li>
+      <strong>Monitoramento de Metano — OGMP 2.0 Nível 5:</strong>
+      quantificação de emissões, identificação de superemissores e relatórios em conformidade com padrões internacionais.
+    </li>
+    <li>
+      <strong>Análises de Integridade e Estabilidade:</strong>
+      detecção de deformações e subsidência em dutos, tanques, well pads, taludes e pilhas por meio de séries temporais SAR.
+    </li>
+    <li>
+      <strong>Resposta a Incidentes Ambientais:</strong>
+      identificação de derrames e manchas de óleo em áreas operacionais e de risco.
+    </li>
+  </ul>
+</div>
+
 
   <!-- MEIO-AMBIENTE -->
   <div id="ambiental" class="sector-card">
