@@ -543,7 +543,6 @@ SECTORS = [
      "desc":"Maritime & Ground Domain Awareness com alertas e análise assistida por IA.",
      "bullets":[
         "Monitoramento de embarcações não-colaborativas (dark ships)",
-        "Monitoramento de fronteiras terrestres e marítimas",
         "Monitoramento de fronteiras terrestres e marítimas",        
         "Monitoramento de instalações civis e militares (edificações, portos, aeroportos,etc.) ",
      ],
