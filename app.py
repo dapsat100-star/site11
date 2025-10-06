@@ -573,50 +573,110 @@ st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Setores / Casos de uso")
 st.markdown("- Óleo & Gás • Portos & Costas • Mineração • Defesa & Segurança • Monitoramento Ambiental.")
 
+import streamlit as st
+
 st.markdown('''
 <div class="sectors-grid">
-  
 
-  
-    
-
+  <!-- ÓLEO & GÁS -->
   <div id="oleoegas" class="sector-card">
     <h3>Óleo &amp; Gás</h3>
     <p>Integridade de ativos e segurança operacional com imagens SAR e ópticas.</p>
     <ul>
-      <li>Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5</li>
-      <li>Deformação/subsidência em dutos, tanques (fundação), well pads, taludes, pilhas</li>
-      <li>Derrames/manchas de óleo</li>
+      <li>Monitoramento de Emissões de Metano — OGMP 2.0 Nível 5</li>
+      <li>Deformação/subsidência em dutos, tanques (fundação), well pads, taludes e pilhas</li>
+      <li>Derrames e manchas de óleo</li>
     </ul>
   </div>
+
+  <!-- MEIO-AMBIENTE -->
   <div id="ambiental" class="sector-card">
-  <h3>Meio-Ambiente</h3>
-  </p>
+    <h3>Meio-Ambiente</h3>
+    <p>
       Monitoramento de emissões e riscos ambientais por meio de tecnologias avançadas de Observação da Terra.
-</p>
-<ul>
-  <li>
-    <strong>Emissões em Resíduos:</strong> Detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros sanitários e áreas de manejo de resíduos.
-  </li>
-  <li>
-    <strong>Cobertura do Solo e Queimadas:</strong> Acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.
-  </li>
-  <li>
-    <strong>Desastres Ambientais:</strong> Monitoramento de eventos extremos, como enchentes e derramamentos de óleo.
-  </li>
-</ul>
-  </div>
-  <div id="defesa" class="sector-card">
-    <h3>Defense & Security</h3>
-    <p>Maritime & Ground Domain Awareness com alertas e análise assistida por IA.</p>
+    </p>
     <ul>
-      <li>Contagem de aeronaves/veículos e novas estruturas em instalações</li>
-      <li>Vigilância de Área Econômica Exclusiva, combate à pesca ilegal e contrabando</li>
+      <li>
+        <strong>Emissões em Resíduos:</strong> Detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros sanitários e áreas de manejo de resíduos.
+      </li>
+      <li>
+        <strong>Cobertura do Solo e Queimadas:</strong> Acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.
+      </li>
+      <li>
+        <strong>Desastres Ambientais:</strong> Monitoramento de eventos extremos, como enchentes e derramamentos de óleo.
+      </li>
+    </ul>
+  </div>
+
+  <!-- DEFESA & SEGURANÇA -->
+  <div id="defesa" class="sector-card">
+    <h3>Defesa &amp; Segurança</h3>
+    <p>Maritime &amp; Ground Domain Awareness com alertas e análise assistida por IA.</p>
+    <ul>
+      <li>Contagem de aeronaves, veículos e novas estruturas em instalações</li>
+      <li>Vigilância da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando</li>
       <li>Detecção de mudanças em fronteiras e áreas sensíveis</li>
     </ul>
   </div>
+
 </div>
+
+<style>
+  .sectors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .sector-card {
+    background: #1e1e1e;
+    color: #f1f1f1;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    font-family: "Segoe UI", Roboto, sans-serif;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .sector-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+
+  .sector-card h3 {
+    margin-top: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .sector-card p {
+    color: #eaeaea;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+  }
+
+  .sector-card ul {
+    padding-left: 1.2rem;
+    margin: 0;
+    list-style-type: disc;
+  }
+
+  .sector-card li {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .sector-card li strong {
+    color: #ffffff;
+    font-weight: 600;
+  }
+</style>
 ''', unsafe_allow_html=True)
+
 
 st.markdown("</div>", unsafe_allow_html=True)
 
