@@ -577,7 +577,7 @@ st.markdown('''
 <div class="sectors-grid">
   
 
-  <div id="ambiental" class="sector-card">
+  
     
 
   <div id="oleoegas" class="sector-card">
@@ -589,6 +589,7 @@ st.markdown('''
       <li>Derrames/manchas de óleo</li>
     </ul>
   </div>
+  <div id="ambiental" class="sector-card">
   <h3>Meio-Ambiente</h3>
     <p>Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.</p>
     <ul>
