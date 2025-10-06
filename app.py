@@ -548,11 +548,11 @@ SECTORS = [
      ],
      "fallback_emoji":"🛡️"},
     {"slug":"ambiental","title":"Ambiental",
-     "desc":"Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.",
+     "desc":"Monitoramento de emissões e riscos ambientais.",
      "bullets":[
-        "Emissões em Resíduos: Detecção de metanoem aterros sanitários e áreas de manejo de resíduos.",
+        "Emissões em Resíduos: Detecção de metano em aterros sanitários e áreas de manejo de resíduos.",
         "Cobertura do solo: Acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.",
-        "Desastres Ambientais: Monitoramwento de eventos extremos,como enchentes e derramamentos de óleo no mar",
+        "Desastres Ambientais: Monitoramento de eventos extremos,como enchentes e derramamentos de óleo no mar",
      ],
      "fallback_emoji":"🌎"},
 ]    
