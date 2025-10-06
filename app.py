@@ -136,20 +136,35 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 .block-container{padding:0!important; max-width:100%!important}
 
 /* Navbar fixa */
-.navbar{position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between; align-items:center; padding:8px 8px !important; background:rgba(8,16,33,.35); backdrop-filter:saturate(160%) blur(10px); border-bottom:1px solid rgba(255,255,255,.08)}
-.nav-left{position:relative; display:flex; align-items:center; gap:12px}
-.nav-right a{color:#d6def5; text-decoration:none; margin-left:18px}
+.navbar{
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:8px 8px !important; background:rgba(8,16,33,.35);
+  backdrop-filter:saturate(160%) blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  height:64px;            /* altura compacta fixa */
+  overflow:visible;       /* deixa o logo "passar" por cima */
+}
 
-/* Logo na navbar — flutuante (opção 3) */
-.nav-logo{position:relative; top:-18px; left:0; height:100px; width:auto; display:block; filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));}
-@media (max-width:768px){ .nav-logo{top:-10px; height:80px;} }
+/* LOGO flutuante seguro (relative + translate) */
+.nav-left{
+  position:relative; height:64px; display:flex; align-items:center; gap:12px;
+}
+.nav-logo{
+  position:relative; height:100px; width:auto; display:block;
+  transform:translateY(-18px); /* sobe sem sair do fluxo */
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));
+  z-index:2;
+}
+
+.nav-right a{color:#d6def5; text-decoration:none; margin-left:18px}
 
 /* Hero YouTube */
 .hero{position:relative; height:100vh; min-height:640px; width:100vw; left:50%; margin-left:-50vw; overflow:hidden}
 .hero iframe{position:absolute; top:50%; left:50%; width:177.777vw; height:100vh; transform:translate(-50%,-50%); pointer-events:none}
 .hero .overlay{position:absolute; inset:0; background:radial-gradient(85% 60% at 30% 30%, rgba(20,30,55,.0) 0%, rgba(8,16,33,.48) 68%, rgba(8,16,33,.86) 100%); z-index:1}
 
-/* (REMOVIDO) Logo no topo direito do vídeo — garantimos que não aparece */
+/* Garante que o logo do hero não apareça */
 .hero .logo{display:none}
 
 /* Conteúdo Hero */
@@ -167,15 +182,13 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 /* MOBILE */
 :root{ --safe-top: env(safe-area-inset-top, 0px); --safe-right: env(safe-area-inset-right, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); --safe-left: env(safe-area-inset-left, 0px); }
 .navbar{ padding: max(8px, calc(8px + var(--safe-top))) max(8px, calc(8px + var(--safe-right))) 8px max(8px, calc(8px + var(--safe-left))) !important; }
-.cta, .btn{min-height:44px; line-height:1.15; margin-bottom:10px;}
-.hero{height:100svh;}
-@supports (height:100dvh){.hero{height:100dvh;}}
 @media (max-width:768px){
+  .navbar, .nav-left{ height:56px; }
+  .nav-logo{ height:80px; transform:translateY(-10px); }
   .hero iframe{width:177.777vh; height:100vh; max-width:300vw;}
   .kicker{font-size:14px;}
   h1.hero-title{font-size:clamp(28px,8vw,36px);} 
   .hero-sub{font-size:15px; max-width:100%;}
-  [data-testid="column"]{width:100%!important; flex:0 0 100%!important;}
   .section{padding:56px 5vw;}
   .nav-right a{margin-left:12px;}
 }
