@@ -559,7 +559,7 @@ SECTORS = [
 st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
 st.header("Setores & Casos de Uso")
 st.markdown(
-    '<p class="subtitle">Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental</p>',
+    '<p class="subtitle">Óleo &amp; Gás • Defesa &amp; Segurança • Monitoramento Ambiental</p>',
     unsafe_allow_html=True
 )
 
