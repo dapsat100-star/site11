@@ -276,7 +276,7 @@ st.markdown(f'''
     <a href="#parceiros">Parceiros</a>
     <a href="#newsroom">Newsroom</a>
     <a href="#setores">Setores</a>
-    <a class="cta" href="#contato" style="background:#34d399; color:#05131a; font-weight:700; padding:10px 14px; border-radius:10px; text-decoration:none">Entre em Contato</a>
+    <a class="cta" href="#contato" style="background:#34d399; color:#05131a; font-weight:700; padding:10px 14px; border-radius:10px; text-decoration:none">Contato</a>
   </div>
 </div>
 ''', unsafe_allow_html=True)
