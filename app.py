@@ -581,7 +581,7 @@ st.markdown('''
     
 
   <div id="oleoegas" class="sector-card">
-    <h3>Oil &amp; Gas</h3>
+    <h3>Óleo &amp; Gás</h3>
     <p>Integridade de ativos e segurança operacional com imagens SAR e ópticas.</p>
     <ul>
       <li>Monitoramento de Emissão de Metano — Dashboards para OGMP 2.0 Nível 5</li>
