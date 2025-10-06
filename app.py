@@ -324,7 +324,7 @@ with col_text:
     st.markdown(
         """
         <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
-        A <b>MAVIPE Sistemas Espaciais</b> é uma empresa startup de base tecnológica que emprega soluções próprias, no estado da arte, baseadas em <b>IA</b>, <b>aprendizado de máquinas</b> e <b>dados operacionais de inteligência</b> para a realização de <b>monitoramentos por satélite</b> em ambientes terrestre e marítimo, no estado da arte mundial.
+        A <b>MAVIPE Sistemas Espaciais</b> é uma empresa de base tecnológica que emprega soluções próprias, no estado da arte, baseadas em <b>IA</b>, <b>aprendizado de máquinas</b> e <b>dados operacionais de inteligência</b> para a realização de <b>monitoramentos por satélite</b> em ambientes terrestre e marítimo, no estado-da-arte mundial.
         </p>
 
         <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
