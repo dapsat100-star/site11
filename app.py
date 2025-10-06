@@ -28,7 +28,7 @@ EMPRESA_CAPTIONS = [
     "GeoINT & InSAR — integridade",
 ]
 
-# <<< NEWSROOM >>> (edite à vontade)
+# <<<  >>> (edite à vontade)
 NEWS_ITEMS = [
     {
         "title": "MAVIPE lança módulo OGMP 2.0 Nível 5",
@@ -236,7 +236,7 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .sector-card li{margin:4px 0}
 @media (max-width:980px){ .sectors-grid{grid-template-columns:1fr} }
 
-/* === Newsroom === */
+/* ===  === */
 .news-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:18px; }
 .news-card{ background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; }
 .news-thumb{width:100%; height:160px; object-fit:cover; background:rgba(255,255,255,.02)}
@@ -274,7 +274,7 @@ st.markdown(f'''
     <a href="#empresa">Empresa</a>
     <a href="#solucao">Solução</a>
     <a href="#parceiros">Parceiros</a>
-    <a href="#newsroom">Newsroom</a>
+    <a href="#newsroom">Imprensa</a>
     <a href="#setores">Setores</a>
     <a class="cta" href="#contato" style="background:#34d399; color:#05131a; font-weight:700; padding:10px 14px; border-radius:10px; text-decoration:none">Contato</a>
   </div>
