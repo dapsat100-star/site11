@@ -165,7 +165,7 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
   position:relative;
   height:140px;         /* ajuste aqui para maior/menor */
   width:auto; display:block;
-  transform:translateY(-30px);
+  transform:translateY(2 px);
   image-rendering:auto;
   filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));
   z-index:2;
