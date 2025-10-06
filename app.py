@@ -1,4 +1,4 @@
-    # app.py — MAVIPE Landing Page (Hero + Logo Retina + Carrosséis + Newsroom + Setores)
+# app.py — MAVIPE Landing Page (Hero + Logo Retina + Carrosséis + Newsroom + Setores)
 import base64
 import time
 import re
@@ -10,6 +10,7 @@ st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=No
 
 # ================== CONFIG ==================
 YOUTUBE_ID = "Ulrl6TFaWtA"
+
 LOGO_CANDIDATES = [
     "logo-mavipe@2x.png",
     "logo-mavipe.png",
@@ -18,11 +19,14 @@ LOGO_CANDIDATES = [
     "logo-mavipe.jpeg",
     "logo-mavipe@2x.jpeg",
 ]
-# ÍCONE LINKEDIN NA RAIZ (auto detecção com @2x)
+
+# ÍCONE LINKEDIN NA RAIZ (auto detecção com @2x e SVG/PNG/JPG)
 LINKEDIN_CANDIDATES = [
-    "linkedin@2x.png", "linkedin.png",
     "linkedin@2x.svg", "linkedin.svg",
+    "linkedin@2x.png", "linkedin.png",
     "linkedin@2x.jpg", "linkedin.jpg",
+    # nomes que já geramos antes
+    "linkedin_mono.svg", "linkedin_mono_green.svg",
 ]
 
 CAROUSEL_INTERVAL_SEC = 3
@@ -35,7 +39,7 @@ EMPRESA_CAPTIONS = [
     "GeoINT & InSAR — Integridade",
 ]
 
-# <<<  >>> (edite à vontade)
+# <<< NEWSROOM (edite à vontade) >>>
 NEWS_ITEMS = [
     {
         "title": "MAVIPE lança módulo OGMP 2.0 Nível 5",
@@ -149,6 +153,14 @@ def news_thumbnail_src(path_str: str | None) -> str | None:
         return as_data_uri(str(p))
     return None
 
+def render_dots(n: int, active_index: int) -> str:
+    # Gera os "dots" sem ambiguidade de f-string
+    parts = []
+    for i in range(n):
+        cls = "active" if i == active_index else ""
+        parts.append(f"<span class='{cls}'></span>")
+    return "".join(parts)
+
 # ================== CSS ==================
 st.markdown('''
 <style>
@@ -170,7 +182,7 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 /* Logo grande e “saltando” acima da barra */
 .nav-logo{
   position:relative;
-  height:140px;
+  height:140px; /* ajuste conforme sua marca */
   width:auto; display:block;
   transform:translateY(3px);
   image-rendering:auto;
@@ -192,7 +204,7 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .highlight{color:#34d399}
 
-/* Faz o parágrafo “caber” bem */
+/* Parágrafo do hero — cabimento perfeito */
 .hero-sub{
   font-size:clamp(16px,2.2vw,20px);
   color:#b9c6e6;
@@ -221,20 +233,6 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
   box-shadow:0 8px 18px rgba(0,0,0,.35), 0 0 0 4px rgba(52,211,153,.15) inset; }
 .social img{ width:26px; height:26px; display:block; }
 
-@media (max-width:768px){
-  .navbar, .nav-left{ height:56px; }
-  .nav-logo{ height:110px; transform:translateY(-10px); }
-  .hero iframe{width:177.777vh; height:100vh; max-width:300vw;}
-  .kicker{font-size:14px;}
-  h1.hero-title{font-size:clamp(28px,8vw,36px);}
-  .hero-sub{font-size:15px; max-width:100%;}
-  .section{padding:56px 5vw;}
-  .nav-right a{margin-left:12px;}
-  .social{ margin-top:18px; }
-  .social a{ width:48px; height:48px; border-radius:12px; }
-  .social img{ width:24px; height:24px; }
-}
-
 /* Dots e thumbnails */
 .carousel-dots{display:flex; gap:8px; justify-content:center; margin-top:10px}
 .carousel-dots span{width:8px; height:8px; border-radius:50%; background:#5d6a8b; display:inline-block; opacity:.6}
@@ -245,11 +243,9 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .thumb img{width:100%; height:100%; object-fit:cover; display:block}
 .thumb:hover{opacity:1; transform:translateY(-2px)}
 .thumb.active{border-color:#34d399; box-shadow:0 0 0 2px rgba(52,211,153,.35) inset;}
-@media (max-width:768px){ .thumb{width:92px; height:56px;} }
 
 /* Slide principal com tamanho uniforme */
 .carousel-main{ width:100%; height:400px; object-fit:cover; border-radius:12px; box-shadow:0 8px 28px rgba(0,0,0,.35); }
-@media (max-width:768px){ .carousel-main{ height:240px; } }
 
 /* Legenda abaixo do slide principal */
 .carousel-caption{ text-align:center; color:#b9c6e6; font-size:0.95rem; margin-top:8px; }
@@ -266,9 +262,8 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .sector-card p{margin:0 0 8px 0; color:#b9c6e6}
 .sector-card ul{margin:8px 0 0 18px; color:#c7d3f0}
 .sector-card li{margin:4px 0}
-@media (max-width:980px){ .sectors-grid{grid-template-columns:1fr} }
 
-/* === Newsroom === */
+/* Newsroom */
 .news-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:18px; }
 .news-card{ background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; }
 .news-thumb{width:100%; height:160px; object-fit:cover; background:rgba(255,255,255,.02)}
@@ -278,7 +273,28 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .news-summary{color:#cbd6f2; font-size:.95rem; margin-bottom:10px}
 .news-actions{padding:0 16px 14px 16px}
 .news-actions a{display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none; background:#34d399; color:#05131a; font-weight:700}
-@media (max-width:980px){ .news-grid{grid-template-columns:1fr} }
+
+/* MOBILE */
+:root{ --safe-top: env(safe-area-inset-top, 0px); --safe-right: env(safe-area-inset-right, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); --safe-left: env(safe-area-inset-left, 0px); }
+.navbar{ padding: max(8px, calc(8px + var(--safe-top))) max(8px, calc(8px + var(--safe-right))) 8px max(8px, calc(8px + var(--safe-left))) !important; }
+@media (max-width:980px){
+  .sectors-grid{grid-template-columns:1fr}
+  .news-grid{grid-template-columns:1fr}
+}
+@media (max-width:768px){
+  .navbar, .nav-left{ height:56px; }
+  .nav-logo{ height:110px; transform:translateY(-10px); }
+  .hero iframe{width:177.777vh; height:100vh; max-width:300vw;}
+  .kicker{font-size:14px;}
+  h1.hero-title{font-size:clamp(28px,8vw,36px);}
+  .hero-sub{font-size:15px; max-width:100%;}
+  .section{padding:56px 5vw;}
+  .nav-right a{margin-left:12px;}
+  .social{ margin-top:18px; }
+  .social a{ width:48px; height:48px; border-radius:12px; }
+  .social img{ width:24px; height:24px; }
+  .carousel-main{ height:240px; }
+}
 </style>
 ''', unsafe_allow_html=True)
 
@@ -388,6 +404,7 @@ with col_img:
     if "emp_idx" not in st.session_state: st.session_state.emp_idx = 0
     if "emp_last_tick" not in st.session_state: st.session_state.emp_last_tick = time.time()
 
+    # Suporte a navegação por query param
     thumb_param = get_query_param("thumb", None)
     if thumb_param is not None:
         try:
@@ -405,6 +422,7 @@ with col_img:
         st.markdown(f"<img class='carousel-main' src='{uri}' alt='Empresa {idx+1}/{n}'/>", unsafe_allow_html=True)
         st.markdown(f"<div class='carousel-caption'>{empresa_caption(idx, imgs[idx])}</div>", unsafe_allow_html=True)
 
+        # Controles
         bcol1, bcol2, bcol3 = st.columns([1, 6, 1])
         with bcol1:
             if st.button("◀", key="emp_prev"):
@@ -417,10 +435,10 @@ with col_img:
                 st.session_state.emp_last_tick = time.time()
                 st.rerun()
         with bcol2:
-            dots = "".join(f"<span class='{'active' if i==idx else ''}'></span>" for i in range(n))
-            st.markdown
-            st.markdown(f"<div class='carousel-dots'>{dots}</div>", unsafe_allow_html=True)
+            dots_html = render_dots(n, idx)
+            st.markdown(f"<div class='carousel-dots'>{dots_html}</div>", unsafe_allow_html=True)
 
+        # Thumbs
         thumbs_html = "<div class='thumbs'>"
         for i, pth in enumerate(imgs):
             t_uri = as_data_uri(pth)
@@ -432,6 +450,7 @@ with col_img:
         thumbs_html += "</div>"
         st.markdown(thumbs_html, unsafe_allow_html=True)
 
+        # Auto-play simples
         now = time.time()
         if now - st.session_state.emp_last_tick >= CAROUSEL_INTERVAL_SEC:
             st.session_state.emp_idx = (idx + 1) % n
@@ -489,8 +508,8 @@ if logos:
             st.session_state.part_last_tick = time.time()
             st.rerun()
     with d2:
-        dots2 = "".join(f"<span class='{'active' if k==j else ''}'></span>" for k in range(n2))
-        st.markdown(f"<div class='carousel-dots'>{dots2}</div>", unsafe_allow_html=True)
+        dots2_html = render_dots(n2, j)
+        st.markdown(f"<div class='carousel-dots'>{dots2_html}</div>", unsafe_allow_html=True)
 
     pthumbs = "<div class='thumbs partner'>"
     for k, p in enumerate(logos):
@@ -500,6 +519,7 @@ if logos:
     pthumbs += "</div>"
     st.markdown(pthumbs, unsafe_allow_html=True)
 
+    # Auto-play parceiros
     now = time.time()
     if now - st.session_state.part_last_tick >= PARTNER_INTERVAL_SEC:
         st.session_state.part_idx = (j + 1) % n2
