@@ -420,7 +420,7 @@ st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Parceiros")
 
 # 👉 escolha aqui o arquivo único a exibir (ex.: um banner ou um logo)
-single_logo_path = "blacksky_logo_100px.png"  # mude para "petrobras_logo_100px.png", "ghgsat_logo_100px.png", etc.
+single_logo_path = "parceiro.png"  # mude para "petrobras_logo_100px.png", "ghgsat_logo_100px.png", etc.
 
 from pathlib import Path
 if Path(single_logo_path).exists() and Path(single_logo_path).stat().st_size > 0:
