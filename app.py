@@ -591,6 +591,7 @@ st.markdown('''
   </div>
   <div id="ambiental" class="sector-card">
   <h3>Meio-Ambiente</h3>
+  </p>
       Monitoramento de emissões e riscos ambientais por meio de tecnologias avançadas de Observação da Terra.
 </p>
 <ul>
