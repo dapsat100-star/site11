@@ -530,6 +530,15 @@ def sector_icon_data_uri(slug: str) -> str | None:
     return as_data_uri(path) if path else None
 
 SECTORS = [
+    {"slug":"oleogas","title":"Óleo & Gás",
+     "desc":"Integridade de ativos e segurança operacional com imagens SAR e ópticas.",
+     "bullets":[
+        "Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5",
+        "Deformação/subsistência em dutos, tanques, taludes e fundações",
+        "Derrames e manchas de óleo",
+     ],
+     "fallback_emoji":"🛢️"}, 
+    
     {"slug":"defesa","title":"Defesa & Segurança",
      "desc":"Maritime & Ground Domain Awareness com alertas e análise assistida por IA.",
      "bullets":[
@@ -546,16 +555,7 @@ SECTORS = [
         "Dashboards e relatórios georreferenciados",
      ],
      "fallback_emoji":"🌎"},
-    {"slug":"oleogas","title":"Óleo & Gás",
-     "desc":"Integridade de ativos e segurança operacional com imagens SAR e ópticas.",
-     "bullets":[
-        "Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5",
-        "Deformação/subsistência em dutos, tanques, taludes e fundações",
-        "Derrames e manchas de óleo",
-     ],
-     "fallback_emoji":"🛢️"},
-]
-
+    
 st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
 st.header("Setores & Casos de Uso")
 st.markdown(
