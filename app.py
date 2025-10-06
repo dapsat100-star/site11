@@ -294,24 +294,20 @@ st.markdown(f'''
 # ================== HERO (vídeo sem logo duplicado) ==================
 st.markdown(f'''
 <div class="hero">
-  <iframe src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&playlist={YOUTUBE_ID}"
+  <iframe src="https://www.youtube.com/embed/Ulrl6TFaWtA?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&playlist=Ulrl6TFaWtA"
           title="MAVIPE hero" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"></iframe>
   <div class="overlay"></div>
   <div class="content">
     <div>
-      <div class="kicker">Monitoramento de Metano (OGMP 2.0) • Detecção de Mudanças • Monitoramento Terrestre e Marítimo • Imagens ópticas e SAR de alta resolução</div>
+      <div class="kicker">Monitoramento de Metano • Detecção de Mudanças • Imagens ópticas e SAR de altíssima resolução</div>
       <h1 class="hero-title">Transformando dados geoespaciais em <span class="highlight">informações acionáveis</span></h1>
       <div class="hero-sub">
         A MAVIPE integra <b>IA</b>, <b>imagens de satélite</b> (ópticas e SAR), <b>dados operacionais de inteligência</b> e <b>dados meteoceanográficos</b> para entregar <b>informações confiáveis</b> de monitoramento por satélite para os setores <b>ambiental</b>, <b>petróleo e gás</b>, e <b>defesa e segurança</b>.
       </div>
-      <div style="margin-top:22px">
-        <a class="cta" href="#contato">Agendar demo</a>
-        <a class="btn" href="#solucao">Explorar solução</a>
-        <a class="btn" href="#setores">Casos de uso</a>
-      </div>
     </div>
   </div>
 </div>
+
 ''', unsafe_allow_html=True)
 
 # ================== EMPRESA ==================
