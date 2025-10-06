@@ -1,4 +1,4 @@
-# app.py — MAVIPE Landing Page (Hero + Logo Retina + Carrosséis + Newsroom + Setores)
+    # app.py — MAVIPE Landing Page (Hero + Logo Retina + Carrosséis + Newsroom + Setores)
 import base64
 import time
 import re
@@ -207,9 +207,20 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .section{padding:72px 8vw; border-top:1px solid rgba(255,255,255,.07)}
 .lead{color:#b9c6e6}
 
-/* MOBILE */
-:root{ --safe-top: env(safe-area-inset-top, 0px); --safe-right: env(safe-area-inset-right, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); --safe-left: env(safe-area-inset-left, 0px); }
-.navbar{ padding: max(8px, calc(8px + var(--safe-top))) max(8px, calc(8px + var(--safe-right))) 8px max(8px, calc(8px + var(--safe-left))) !important; }
+/* Botão social (LinkedIn) centralizado e com hover */
+.social{ display:flex; justify-content:center; margin-top:24px; }
+.social a{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:52px; height:52px; border-radius:14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:saturate(140%) blur(6px);
+  text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.social a:hover{ transform:translateY(-2px); border-color:rgba(52,211,153,.65);
+  box-shadow:0 8px 18px rgba(0,0,0,.35), 0 0 0 4px rgba(52,211,153,.15) inset; }
+.social img{ width:26px; height:26px; display:block; }
+
 @media (max-width:768px){
   .navbar, .nav-left{ height:56px; }
   .nav-logo{ height:110px; transform:translateY(-10px); }
@@ -219,6 +230,9 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
   .hero-sub{font-size:15px; max-width:100%;}
   .section{padding:56px 5vw;}
   .nav-right a{margin-left:12px;}
+  .social{ margin-top:18px; }
+  .social a{ width:48px; height:48px; border-radius:12px; }
+  .social img{ width:24px; height:24px; }
 }
 
 /* Dots e thumbnails */
@@ -254,7 +268,7 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .sector-card li{margin:4px 0}
 @media (max-width:980px){ .sectors-grid{grid-template-columns:1fr} }
 
-/* ===  === */
+/* === Newsroom === */
 .news-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:18px; }
 .news-card{ background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; }
 .news-thumb{width:100%; height:160px; object-fit:cover; background:rgba(255,255,255,.02)}
@@ -342,35 +356,29 @@ with col_text:
         unsafe_allow_html=True,
     )
 
-    # === ÍCONE DO LINKEDIN — usando arquivo na raiz, com fallback ===
+    # === LINKEDIN centralizado (usa arquivo na raiz; aceita @2x e .svg/.png/.jpg) ===
     linkedin_path = find_first(LINKEDIN_CANDIDATES)
     if linkedin_path:
         st.markdown(
             f"""
-            <a href="https://www.linkedin.com/company/mavipe"
-               target="_blank" rel="noopener"
-               aria-label="LinkedIn da MAVIPE"
-               style="
-                 display:inline-flex; align-items:center; justify-content:center;
-                 margin-top:18px; width:48px; height:48px;
-                 border-radius:12px;
-                 background:rgba(255,255,255,.06);
-                 border:1px solid rgba(255,255,255,.18);
-                 text-decoration:none;
-               ">
-              <img src="{as_data_uri(linkedin_path)}" alt="LinkedIn" style="width:26px; height:26px; display:block;"/>
-            </a>
+            <div class="social">
+              <a href="https://www.linkedin.com/company/mavipe"
+                 target="_blank" rel="noopener" aria-label="LinkedIn da MAVIPE">
+                <img src="{as_data_uri(linkedin_path)}" alt="LinkedIn"/>
+              </a>
+            </div>
             """,
             unsafe_allow_html=True,
         )
     else:
         st.markdown(
             """
-            <a href="https://www.linkedin.com/company/mavipe"
-               target="_blank" rel="noopener"
-               style="display:inline-block; margin-top:18px; color:#9fc6ff; text-decoration:underline;">
-               LinkedIn
-            </a>
+            <div class="social">
+              <a href="https://www.linkedin.com/company/mavipe" target="_blank" rel="noopener"
+                 style="color:#9fc6ff; text-decoration:underline; width:auto; height:auto; background:transparent; border:none;">
+                 LinkedIn
+              </a>
+            </div>
             """,
             unsafe_allow_html=True,
         )
@@ -410,6 +418,7 @@ with col_img:
                 st.rerun()
         with bcol2:
             dots = "".join(f"<span class='{'active' if i==idx else ''}'></span>" for i in range(n))
+            st.markdown
             st.markdown(f"<div class='carousel-dots'>{dots}</div>", unsafe_allow_html=True)
 
         thumbs_html = "<div class='thumbs'>"
