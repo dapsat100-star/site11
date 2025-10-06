@@ -329,7 +329,7 @@ with col_text:
         A <b>MAVIPE Sistemas Espaciais</b> é uma empresa de base tecnológica que emprega soluções próprias, no <b>estado-da-arte</b>, baseadas em <b>IA</b>, <b>aprendizado de máquinas</b> e <b>dados operacionais de inteligência</b> para a realização de <b>monitoramentos por satélite</b> em ambientes terrestre e marítimo.
         </p>
         <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
-        Experiência em <b>centros de operações espaciais</b>, P&D e gestão de ativos. Expertise em <b>meio ambiente</b>, <b>petróleo e gás</b> e <b>defesa e segurança</b>.
+        Seus profisiionais possuem anos de experiência em <b>centros de operações espaciais</b>, P&D e gestão de ativos. Expertise em <b>meio ambiente</b>, <b>petróleo e gás</b> e <b>defesa e segurança</b>.
         </p>
         """,
         unsafe_allow_html=True,
