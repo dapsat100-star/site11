@@ -254,9 +254,8 @@ st.markdown(f'''
 ''', unsafe_allow_html=True)
 
 # ================== HERO (vídeo + logo Base64 no topo direito) ==================
-logo_tag = f'<img class="logo" src="{as_data_uri(logo_path)}" alt="MAVIPE logo"/>' if logo_path else ""
-if not logo_path:
-    st.warning(f"Logo não encontrada. Adicione um dos arquivos: {', '.join(LOGO_CANDIDATES)}")
+logo_tag = ""
+
 
 st.markdown(f'''
 <div class="hero">
