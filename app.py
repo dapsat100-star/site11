@@ -567,24 +567,44 @@ else:
 
 st.markdown("</div>", unsafe_allow_html=True)
 
+import streamlit as st
+
 # ================== SETORES ==================
 st.markdown("""
 <style>
-  /* ===== Título e subtítulo ===== */
-  .section h2, .section h3 {
-    color: #f5f7ff !important;
-    margin-bottom: .25rem;
+  /* ===== Título da seção ===== */
+  .section h2 {
+    color: #ffffff !important;       /* máximo contraste */
+    opacity: 1 !important;
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    margin-bottom: 0.6rem !important;
+    letter-spacing: 0.5px;
+    position: relative;
+    display: inline-block;
   }
+
+  /* ===== Linha decorativa ===== */
+  .section h2::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: #4EA8DE;   /* cor de destaque — altere se quiser */
+    margin: 0.6rem auto 0 auto;
+    border-radius: 3px;
+  }
+
+  /* ===== Subtítulo ===== */
   .section .subtitle {
-    color: #f1f1f1;
-    opacity: 1;
+    color: #f1f1f1 !important;
+    opacity: 1 !important;
     font-weight: 400;
-    font-size: 1rem;
-    letter-spacing: .3px;
+    font-size: 1.05rem;
+    text-align: center !important;
+    letter-spacing: 0.3px;
     margin: 0 0 1.5rem 0;
-  }
-  @media (min-width: 768px){
-    .section .subtitle { font-size: 1.05rem; }
   }
 
   /* ===== Grid de setores ===== */
@@ -637,6 +657,14 @@ st.markdown("""
   }
 </style>
 """, unsafe_allow_html=True)
+
+# ===== Título e subtítulo da seção =====
+st.markdown('<div id="setores" class="section" style="text-align:center;">', unsafe_allow_html=True)
+st.header("Setores / Casos de uso")
+st.markdown(
+    '<p class="subtitle">Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental</p>',
+    unsafe_allow_html=True
+)
 
 
 # ===== TÍTULO =====
