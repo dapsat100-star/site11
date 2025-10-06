@@ -269,87 +269,59 @@ st.markdown(f'''
 </div>
 ''', unsafe_allow_html=True)
 
-# ================== EMPRESA ==================
-st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
-st.markdown('<div class="section">', unsafe_allow_html=True)
+st.markdown("""
+<style>
+/* ===== Seção EMPRESA: forçar contraste ===== */
+#empresa, #empresa * {
+  opacity: 1 !important;
+  color: inherit !important;
+}
 
-col_text, col_img = st.columns([1, 1])
+/* Título forte e visível */
+#empresa h1 {
+  color: #ffffff !important;
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
 
-with col_text:
-    st.markdown(
-        "<h1 style='font-size:2.2rem; font-weight:700; color:#e6eefc; margin-bottom:12px;'>MAVIPE Sistemas Espaciais</h1>",
-        unsafe_allow_html=True,
-    )
-    st.markdown("""
-<div class="empresa-copy">
-  <p>
-    A <b>MAVIPE Sistemas Espaciais</b> desenvolve e opera soluções próprias, no
-    <b>estado da arte</b>, para <b>monitoramento por satélite</b>. Integramos <b>IA</b>,
-    <b>aprendizado de máquina</b>, <b>imagens ópticas e SAR</b> e <b>dados operacionais
-    de inteligência</b> para transformar pixels em decisões.
-  </p>
-  <p>
-    Nossa equipe soma anos em <b>centros de operações espaciais</b>, P&amp;D e
-    gestão de ativos. Atuamos nos setores de <b>meio ambiente</b>, <b>petróleo e gás</b>
-    e <b>defesa e segurança</b>.
-  </p>
-</div>
+/* Parágrafos mais claros e legíveis */
+#empresa .empresa-copy {
+  max-width: 72ch;
+  color: #dbe7ff;
+  font-size: 1.06rem;
+  line-height: 1.7;
+  text-align: left;
+  text-wrap: pretty;
+  hyphens: auto;
+}
+#empresa .empresa-copy p { margin: 0 0 1rem 0; }
+#empresa .empresa-copy b,
+#empresa .empresa-copy strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Ícone LinkedIn ajustado */
+#empresa .social img {
+  width: 22px;
+  height: 22px;
+}
+#empresa .social a {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+}
+#empresa .social a:hover {
+  border-color: rgba(52,211,153,.6);
+  box-shadow: 0 0 0 3px rgba(52,211,153,.2) inset, 0 8px 18px rgba(0,0,0,.35);
+  transform: translateY(-2px);
+}
+</style>
 """, unsafe_allow_html=True)
 
-    
-    linkedin_path = find_first(LINKEDIN_CANDIDATES)
-    if linkedin_path:
-        st.markdown(
-            f"""
-            <div class="social">
-              <a href="https://www.linkedin.com/company/mavipe"
-                 target="_blank" rel="noopener" aria-label="LinkedIn da MAVIPE">
-                <img src="{as_data_uri(linkedin_path)}" alt="LinkedIn"/>
-              </a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-with col_img:
-    imgs = gather_empresa_images(max_n=3)
-    if "emp_idx" not in st.session_state: st.session_state.emp_idx = 0
-    if "emp_last_tick" not in st.session_state: st.session_state.emp_last_tick = time.time()
-
-    thumb_param = get_query_param("thumb", None)
-    if thumb_param is not None:
-        try:
-            new_idx = int(thumb_param)
-            if imgs:
-                st.session_state.emp_idx = new_idx % len(imgs)
-                st.session_state.emp_last_tick = time.time()
-        except Exception:
-            pass
-
-    if imgs:
-        n = len(imgs); idx = st.session_state.emp_idx % n
-        uri = as_data_uri(imgs[idx])
-        st.markdown(f"<img class='carousel-main' src='{uri}' alt='Empresa {idx+1}/{n}'/>", unsafe_allow_html=True)
-        st.markdown(f"<div class='carousel-caption'>{empresa_caption(idx, imgs[idx])}</div>", unsafe_allow_html=True)
-
-        bcol1, bcol2, bcol3 = st.columns([1, 6, 1])
-        with bcol1:
-            if st.button("◀", key="emp_prev"):
-                st.session_state.emp_idx = (idx - 1) % n; st.session_state.emp_last_tick = time.time(); st.rerun()
-        with bcol3:
-            if st.button("▶", key="emp_next"):
-                st.session_state.emp_idx = (idx + 1) % n; st.session_state.emp_last_tick = time.time(); st.rerun()
-        with bcol2:
-            st.markdown(f"<div class='carousel-dots'>{render_dots(n, idx)}</div>", unsafe_allow_html=True)
-
-        now = time.time()
-        if now - st.session_state.emp_last_tick >= CAROUSEL_INTERVAL_SEC:
-            st.session_state.emp_idx = (idx + 1) % n; st.session_state.emp_last_tick = now
-            time.sleep(0.05); st.rerun()
-    else:
-        st.info("Coloque 3 imagens com nomes começando por 'empresa' (ex.: empresa1.jpg, empresa2.png, empresa3.jpeg).")
-
-st.markdown('</div>', unsafe_allow_html=True)
 
 # ================== SOLUÇÃO ==================
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
