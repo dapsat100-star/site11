@@ -436,9 +436,7 @@ else:
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ================== SETORES & APLICAÇÕES ==================
-# IMPORTANTE: toda a seção em um único bloco HTML para manter DOM correto.
-st.markdown('''
+
 # ================== SETORES & APLICAÇÕES ==================
 st.markdown('''
 <div id="setores" class="section" style="position:relative; isolation:isolate;">
