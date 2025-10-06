@@ -23,9 +23,9 @@ PARTNER_INTERVAL_SEC  = 3
 
 # <<< LEGENDA MANUAL DA EMPRESA (ordem dos slides) >>>
 EMPRESA_CAPTIONS = [
-    "Empresa Estratégica de Defesa  - Certificação do Ministério da Defesa",
-    "Plataforma Geoespacial DAP ATLAS - Multipropósito, Proprietária e Certificada como Produto Estratégico de Defesa",
-    "GeoINT & InSAR — integridade",
+    "Empresa Estratégica de Defesa — Certificação do Ministério da Defesa",
+    "Plataforma Geoespacial DAP ATLAS — Multipropósito, Proprietária e Certificada como Produto Estratégico de Defesa",
+    "GeoINT & InSAR — Integridade",
 ]
 
 # <<<  >>> (edite à vontade)
@@ -182,7 +182,16 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 .kicker{color:#cfe7ff; font-weight:600; margin-bottom:10px}
 h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .highlight{color:#34d399}
-.hero-sub{font-size:clamp(16px,2.2vw,20px); color:#b9c6e6; max-width:70ch}
+
+/* Faz o parágrafo “caber” bem */
+.hero-sub{
+  font-size:clamp(16px,2.2vw,20px);
+  color:#b9c6e6;
+  max-width:70ch;
+  line-height:1.35;
+  text-wrap:balance;    /* melhora a quebra de linhas (browsers suportados) */
+}
+
 .cta, .btn{display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700; margin-right:10px}
 .cta{background:#34d399; color:#05131a}
 .btn{border:1px solid rgba(255,255,255,.18); color:#e6eefc; background:rgba(255,255,255,.06)}
@@ -290,13 +299,11 @@ st.markdown(f'''
   <div class="overlay"></div>
   <div class="content">
     <div>
-      <div class="kicker">Monitoramento de Metano • Detecção de Mudanças • Imagens Opticas e SAR de altísssima resolução</div>
+      <div class="kicker">Monitoramento de Metano • Detecção de Mudanças • Imagens ópticas e SAR de altíssima resolução</div>
       <h1 class="hero-title">Transformando dados geoespaciais em <span class="highlight">informações acionáveis</span></h1>
       <div class="hero-sub">
-  A MAVIPE integra <b>IA</b>, <b>satélites</b> (óptico/SAR), dados operacionais e
-  <b>meteoceanográficos</b> para monitorar <b>ambiente</b>, <b>O&G</b> e <b>defesa</b>.
-</div>
-     
+        A MAVIPE integra <b>IA</b>, <b>imagens de satélite</b> (ópticas e SAR), <b>dados operacionais de inteligência</b> e <b>dados meteoceanográficos</b> para entregar <b>informações confiáveis</b> de monitoramento por satélite para os setores <b>ambiental</b>, <b>petróleo e gás</b>, e <b>defesa e segurança</b>.
+      </div>
       <div style="margin-top:22px">
         <a class="cta" href="#contato">Agendar demo</a>
         <a class="btn" href="#solucao">Explorar solução</a>
@@ -315,7 +322,7 @@ col_text, col_img = st.columns([1, 1])
 
 with col_text:
     st.markdown(
-        "<h1 style='font-size:2.2rem; font-weight:700; color:#e6eefc; margin-bottom:12px;'>DAP Space Systems</h1>",
+        "<h1 style='font-size:2.2rem; font-weight:700; color:#e6eefc; margin-bottom:12px;'>MAVIPE Space Systems</h1>",
         unsafe_allow_html=True,
     )
     st.markdown(
@@ -547,9 +554,9 @@ st.markdown('''
     <h3>Oil &amp; Gas</h3>
     <p>Integridade de ativos e segurança operacional com imagens SAR e ópticas.</p>
     <ul>
-      <li>Monitoramento de Emissão de Metano - Dashboards para OGMP 2.0 Nível 5</li>
+      <li>Monitoramento de Emissão de Metano — Dashboards para OGMP 2.0 Nível 5</li>
       <li>Deformação/subsidência em dutos, tanques (fundação), well pads, taludes, pilhas</li>
-      <li>Derrames/manchas de óleos</li>
+      <li>Derrames/manchas de óleo</li>
     </ul>
   </div>
 </div>
@@ -573,9 +580,8 @@ msg = st.text_area("Qual desafio você quer resolver?")
 
 if st.button("Enviar e-mail"):
     subject = "MAVIPE — Agendar demo"
-    body = f"Nome: {nome}\nEmail: {email}\nOrg: {org}\nTelefone: {phone}\nMensagem:\n{msg}"
+    body = f"Nome: {nome}\\nEmail: {email}\\nOrg: {org}\\nTelefone: {phone}\\nMensagem:\\n{msg}"
     st.success("Clique abaixo para abrir seu e-mail:")
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
-
