@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Base -->
+  <path d="M8 54 H56" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Pilares -->
+  <path d="M16 54 L20 40 L24 54 M28 54 L32 40 L36 54 M40 54 L44 40 L48 54"
+        stroke="#ffffff" stroke-width="2" fill="none" stroke-linejoin="round"/>
+  <!-- Plataforma -->
+  <rect x="12" y="34" width="40" height="6" rx="1" stroke="#ffffff" stroke-width="2" fill="rgba(255,255,255,0.06)"/>
+  <!-- Torre (derrick) -->
+  <path d="M30 34 L34 18 L38 34 Z" stroke="#ffffff" stroke-width="2" fill="rgba(255,255,255,0.10)"/>
+  <path d="M32 20 L36 20 M31 24 L37 24 M30.5 28 L37.5 28" stroke="#ffffff" stroke-width="1.5"/>
+  <!-- Braço do guindaste -->
+  <path d="M34 18 L46 12" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="46" cy="12" r="2" fill="#ffffff"/>
+  <!-- Heliponto -->
+  <rect x="14" y="28" width="10" height="4" rx="1" stroke="#ffffff" stroke-width="1.8" fill="rgba(255,255,255,0.06)"/>
+  <path d="M19 29.5 h0" stroke="#ffffff" stroke-width="1.5"/>
+</svg>
