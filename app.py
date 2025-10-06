@@ -534,7 +534,7 @@ SECTORS = [
      "desc":"Integridade de ativos e segurança operacional com imagens SAR e ópticas.",
      "bullets":[
         "Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5",
-        "Deformação/subsistência em dutos, tanques, taludes e fundações",
+        "Detecção & Monitoramento de Ativos Críticos: Supervisão contínua de dutos, instalações industriais e outras infraestruturas estratégicas, com detecção de anomalias",
         "Derrames e manchas de óleo",
      ],
      "fallback_emoji":"🛢️"}, 
