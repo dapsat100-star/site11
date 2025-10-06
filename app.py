@@ -575,18 +575,10 @@ st.markdown("- Óleo & Gás • Portos & Costas • Mineração • Defesa & Seg
 
 st.markdown('''
 <div class="sectors-grid">
-  <div id="defesa" class="sector-card">
-    <h3>Defense & Security</h3>
-    <p>Maritime & Ground Domain Awareness com alertas e análise assistida por IA.</p>
-    <ul>
-      <li>Contagem de aeronaves/veículos e novas estruturas em instalações</li>
-      <li>Vigilância de Área Econômica Exclusiva, combate à pesca ilegal e contrabando</li>
-      <li>Detecção de mudanças em fronteiras e áreas sensíveis</li>
-    </ul>
-  </div>
+  
 
   <div id="ambiental" class="sector-card">
-    <h3>Environmental</h3>
+    <h3>Meio-Ambiente</h3>
     <p>Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.</p>
     <ul>
       <li>Metano (OGMP 2.0 L5): quantificação por fonte e incerteza</li>
@@ -602,6 +594,15 @@ st.markdown('''
       <li>Monitoramento de Emissão de Metano — Dashboards para OGMP 2.0 Nível 5</li>
       <li>Deformação/subsidência em dutos, tanques (fundação), well pads, taludes, pilhas</li>
       <li>Derrames/manchas de óleo</li>
+    </ul>
+  </div>
+  <div id="defesa" class="sector-card">
+    <h3>Defense & Security</h3>
+    <p>Maritime & Ground Domain Awareness com alertas e análise assistida por IA.</p>
+    <ul>
+      <li>Contagem de aeronaves/veículos e novas estruturas em instalações</li>
+      <li>Vigilância de Área Econômica Exclusiva, combate à pesca ilegal e contrabando</li>
+      <li>Detecção de mudanças em fronteiras e áreas sensíveis</li>
     </ul>
   </div>
 </div>
