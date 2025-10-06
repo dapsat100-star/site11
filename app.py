@@ -591,12 +591,20 @@ st.markdown('''
   </div>
   <div id="ambiental" class="sector-card">
   <h3>Meio-Ambiente</h3>
-    <p>Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.</p>
-    <ul>
-      <li>Monitoramento de Emissões em Resíduos — Detecção de metano e CO₂ em aterros e operações de resíduos.</li>
-      <li>Cobertura do solo, queimadas e portos &amp; costas</li>
-      <li>Dashboards e relatórios georreferenciados</li>
-    </ul>
+    <<p>
+  Monitoramento de emissões e riscos ambientais por meio de tecnologias avançadas de Observação da Terra.
+</p>
+<ul>
+  <li>
+    <strong>Emissões em Resíduos:</strong> Detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros sanitários e áreas de manejo de resíduos.
+  </li>
+  <li>
+    <strong>Cobertura do Solo e Queimadas:</strong> Acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.
+  </li>
+  <li>
+    <strong>Desastres Ambientais:</strong> Monitoramento de eventos extremos, como enchentes e derramamentos de óleo.
+  </li>
+</ul>
   </div>
   <div id="defesa" class="sector-card">
     <h3>Defense & Security</h3>
