@@ -582,7 +582,7 @@ st.markdown('''
  <div id="oleoegas" class="sector-card">
   <h3>Óleo &amp; Gás</h3>
   <p>
-    Monitoramento de emissões de metano OGMP 2.0, aliado a análises de integridade e riscos operacionais com imagens SAR e ópticas.
+    Monitoramento de emissões de metano OGMP 2.0, com soluções complementares para detecção de mudanças patrimoniais e resposta a incidentes ambientais por meio de imagens ópticas e SAR.
   </p>
   <ul>
     <li>
