@@ -535,7 +535,7 @@ SECTORS = [
      "bullets":[
         "Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5",
         "Detecção & Monitoramento de Ativos Críticos: Supervisão contínua de dutos, instalações industriais e outras infraestruturas estratégicas, com detecção de anomalias",
-        "Derrames e manchas de óleo",
+        "Detecção de Derramamento de Petróleo: Identificação rápida de manchas e derrames de óleo no mar com alertas operacionais e suporte à resposta ambiental.",
      ],
      "fallback_emoji":"🛢️"}, 
     
@@ -544,7 +544,7 @@ SECTORS = [
      "bullets":[
         "Contagem de aeronaves/veículos e novas estruturas em instalações",
         "Vigilância de Área Econômica Exclusiva, combate à pesca ilegal e contrabando",
-        "Detecção de mudanças em fronteiras e áreas sensíveis",
+        " ",
      ],
      "fallback_emoji":"🛡️"},
     {"slug":"ambiental","title":"Ambiental",
