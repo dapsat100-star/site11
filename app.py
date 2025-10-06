@@ -550,9 +550,9 @@ SECTORS = [
     {"slug":"ambiental","title":"Ambiental",
      "desc":"Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.",
      "bullets":[
-        "Metano (OGMP 2.0 L5): quantificação por fonte e incerteza",
-        "Cobertura do solo, queimadas e portos & costas",
-        "Dashboards e relatórios georreferenciados",
+        "Emissões em Resíduos: Detecção de metanoem aterros sanitários e áreas de manejo de resíduos.",
+        "Cobertura do solo: Acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.",
+        "Desastres Ambientais: Monitoramwento de eventos extremos,como enchentes e derramamentos de óleo no mar",
      ],
      "fallback_emoji":"🌎"},
 ]    
