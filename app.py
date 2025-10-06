@@ -621,17 +621,27 @@ st.markdown('''
   </div>
 
   <!-- DEFESA & SEGURANÇA -->
-  <div id="defesa" class="sector-card">
-    <h3>Defesa &amp; Segurança</h3>
-    <p>Maritime &amp; Ground Domain Awareness com alertas e análise assistida por IA.</p>
-    <ul>
-      <li>Contagem de aeronaves, veículos e novas estruturas em instalações</li>
-      <li>Vigilância da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando</li>
-      <li>Detecção de mudanças em fronteiras e áreas sensíveis</li>
-    </ul>
-  </div>
-
+<div id="defesa" class="sector-card">
+  <h3>Defesa &amp; Segurança</h3>
+  <p>
+    Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA, apoiando operações de defesa e segurança.
+  </p>
+  <ul>
+    <li>
+      <strong>Contagem e Identificação de Ativos:</strong>
+      aeronaves, veículos e novas estruturas em instalações estratégicas.
+    </li>
+    <li>
+      <strong>Vigilância Marítima e Costeira:</strong>
+      monitoramento da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando.
+    </li>
+    <li>
+      <strong>Detecção de Mudanças em Áreas Sensíveis:</strong>
+      identificação de alterações em fronteiras, infraestrutura crítica e zonas de interesse estratégico.
+    </li>
+  </ul>
 </div>
+
 
 <style>
   .sectors-grid {
