@@ -590,8 +590,8 @@ st.markdown('''
       quantificação de emissões, identificação de superemissores e relatórios em conformidade com padrões internacionais.
     </li>
     <li>
-      <strong>Análises de Integridade e Estabilidade:</strong>
-      detecção de deformações e subsidência em dutos, tanques, well pads, taludes e pilhas por meio de séries temporais SAR.
+      <strong>Detecção de Mudanças em Ativos e Infraestrutura:</strong>
+      acompanhamento de obras, ampliações e movimentações em áreas operacionais por meio de imagens ópticas e SAR.
     </li>
     <li>
       <strong>Resposta a Incidentes Ambientais:</strong>
