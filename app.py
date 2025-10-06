@@ -296,7 +296,7 @@ with col_text:
 </div>
 """, unsafe_allow_html=True)
 
-    )
+    
     linkedin_path = find_first(LINKEDIN_CANDIDATES)
     if linkedin_path:
         st.markdown(
