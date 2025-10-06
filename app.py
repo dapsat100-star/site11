@@ -584,7 +584,7 @@ st.markdown('''
     <h3>Óleo &amp; Gás</h3>
     <p>Integridade de ativos e segurança operacional com imagens SAR e ópticas.</p>
     <ul>
-      <li>Monitoramento de Emissão de Metano — Dashboards para OGMP 2.0 Nível 5</li>
+      <li>Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5</li>
       <li>Deformação/subsidência em dutos, tanques (fundação), well pads, taludes, pilhas</li>
       <li>Derrames/manchas de óleo</li>
     </ul>
@@ -593,7 +593,7 @@ st.markdown('''
   <h3>Meio-Ambiente</h3>
     <p>Monitoramento de emissões e riscos ambientais, baseado em observação da Terra.</p>
     <ul>
-      <li>Metano (OGMP 2.0 L5): quantificação por fonte e incerteza</li>
+      <li>Monitoramento de Emissões em Resíduos — Detecção de metano e CO₂ em aterros e operações de resíduos.</li>
       <li>Cobertura do solo, queimadas e portos &amp; costas</li>
       <li>Dashboards e relatórios georreferenciados</li>
     </ul>
