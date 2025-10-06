@@ -568,124 +568,93 @@ else:
 st.markdown("</div>", unsafe_allow_html=True)
 
 import streamlit as st
+# ================== SETORES & APLICAÇÕES (FIX) ==================
+# Deixe APENAS este bloco para a seção. Não duplique <div id="setores">.
 
-# ================== SETORES ==================
+# CSS da seção (força contraste e remove heranças indesejadas)
 st.markdown("""
 <style>
-  /* ===== Título da seção ===== */
-  .section h2 {
-    color: #ffffff !important;       /* máximo contraste */
-    opacity: 1 !important;
-    font-size: 2rem !important;
-    font-weight: 700 !important;
-    text-align: center !important;
-    margin-bottom: 0.6rem !important;
-    letter-spacing: 0.5px;
-    position: relative;
-    display: inline-block;
+  /* Título */
+  #setores.section h2{
+    color:#ffffff !important;
+    opacity:1 !important;
+    font-size:2rem !important;
+    font-weight:700 !important;
+    text-align:center !important;
+    margin:0 0 .6rem 0 !important;
+    letter-spacing:.5px;
+    position:relative;
+    display:inline-block;
+  }
+  #setores.section h2::after{
+    content:"";
+    display:block; width:60px; height:3px;
+    background:#4EA8DE; margin:.6rem auto 0; border-radius:3px;
   }
 
-  /* ===== Linha decorativa ===== */
-  .section h2::after {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 3px;
-    background: #4EA8DE;   /* cor de destaque — altere se quiser */
-    margin: 0.6rem auto 0 auto;
-    border-radius: 3px;
+  /* Subtítulo */
+  #setores .subtitle{
+    color:#f1f1f1 !important;
+    opacity:1 !important;
+    font-weight:400;
+    font-size:1.05rem !important;
+    text-align:center !important;
+    letter-spacing:.3px;
+    margin:0 0 1.5rem 0 !important;
   }
 
-  /* ===== Subtítulo ===== */
-  .section .subtitle {
-    color: #f1f1f1 !important;
-    opacity: 1 !important;
-    font-weight: 400;
-    font-size: 1.05rem;
-    text-align: center !important;
-    letter-spacing: 0.3px;
-    margin: 0 0 1.5rem 0;
+  /* Grid */
+  #setores .sectors-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+    gap:1.5rem; margin:2rem 0;
   }
 
-  /* ===== Grid de setores ===== */
-  .sectors-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
+  /* Cards */
+  #setores .sector-card{
+    background:#1e1e1e; color:#f1f1f1;
+    padding:1.5rem; border-radius:16px;
+    border:1px solid rgba(255,255,255,.06);
+    box-shadow:0 4px 20px rgba(0,0,0,.4);
+    transition:transform .2s, box-shadow .2s;
+    font-family:"Segoe UI", Roboto, sans-serif;
   }
+  #setores .sector-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 8px 24px rgba(0,0,0,.5);
+  }
+  #setores .sector-card h3{
+    margin:0 0 .5rem 0; font-size:1.3rem; font-weight:600; color:#e6eefc;
+  }
+  #setores .sector-card p{
+    margin:0 0 .8rem 0; color:#eaeaea; line-height:1.5;
+  }
+  #setores .sector-card ul{ margin:8px 0 0 18px; color:#cbd6f2; }
+  #setores .sector-card li{ margin:4px 0; font-size:.95rem; line-height:1.4; }
+  #setores .sector-card li strong{ color:#fff; font-weight:600; }
 
-  /* ===== Cartões individuais ===== */
-  .sector-card {
-    background: #1e1e1e;
-    color: #f1f1f1;
-    padding: 1.5rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    font-family: "Segoe UI", Roboto, sans-serif;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .sector-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-  }
-  .sector-card h3 {
-    margin-top: 0;
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-  .sector-card p {
-    color: #eaeaea;
-    font-weight: 400;
-    line-height: 1.5;
-    margin-bottom: 0.8rem;
-  }
-  .sector-card ul {
-    padding-left: 1.2rem;
-    margin: 0;
-    list-style-type: disc;
-  }
-  .sector-card li {
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
-    line-height: 1.4;
-  }
-  .sector-card li strong {
-    color: #ffffff;
-    font-weight: 600;
+  @media (max-width:980px){
+    #setores .sectors-grid{ grid-template-columns:1fr; }
   }
 </style>
 """, unsafe_allow_html=True)
 
-# ===== Título e subtítulo da seção =====
-st.markdown('<div id="setores" class="section" style="text-align:center;">', unsafe_allow_html=True)
-st.header("Setores / Casos de uso")
-st.markdown(
-    '<p class="subtitle">Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental</p>',
-    unsafe_allow_html=True
-)
-
-
-# ===== TÍTULO =====
+# Wrapper ÚNICO da seção
 st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
-st.header("Setores / Casos de uso")
+st.header("Setores & Aplicações")
 st.markdown(
     '<p class="subtitle">Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental</p>',
     unsafe_allow_html=True
 )
 
-
-# ===== GRID DE SETORES =====
+# Grid (3 cards)
 st.markdown('''
 <div class="sectors-grid">
 
   <!-- ÓLEO & GÁS -->
   <div id="oleoegas" class="sector-card">
     <h3>Óleo &amp; Gás</h3>
-    <p>
-      Monitoramento de emissões de metano OGMP 2.0, detecção de mudanças e resposta a incidentes ambientais.
-    </p>
+    <p>Monitoramento de emissões de metano OGMP 2.0, detecção de mudanças e resposta a incidentes ambientais.</p>
     <ul>
       <li>
         <strong>Monitoramento de Metano — OGMP 2.0 Nível 5:</strong>
@@ -702,51 +671,35 @@ st.markdown('''
     </ul>
   </div>
 
-
   <!-- MEIO-AMBIENTE -->
   <div id="ambiental" class="sector-card">
     <h3>Meio-Ambiente</h3>
-    <p>
-      Monitoramento de emissões e riscos ambientais por meio de tecnologias avançadas de Observação da Terra.
-    </p>
+    <p>Monitoramento de emissões e riscos ambientais por meio de tecnologias avançadas de Observação da Terra.</p>
     <ul>
-      <li>
-        <strong>Emissões em Resíduos:</strong> detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros sanitários e áreas de manejo de resíduos.
-      </li>
-      <li>
-        <strong>Cobertura do Solo e Queimadas:</strong> acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.
-      </li>
-      <li>
-        <strong>Desastres Ambientais:</strong> monitoramento de eventos extremos, como enchentes e derramamentos de óleo.
-      </li>
+      <li><strong>Emissões em Resíduos:</strong> detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros e áreas de manejo de resíduos.</li>
+      <li><strong>Cobertura do Solo e Queimadas:</strong> acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.</li>
+      <li><strong>Desastres Ambientais:</strong> monitoramento de eventos extremos, como enchentes e derramamentos de óleo.</li>
     </ul>
   </div>
-
 
   <!-- DEFESA & SEGURANÇA -->
   <div id="defesa" class="sector-card">
     <h3>Defesa &amp; Segurança</h3>
-    <p>
-      Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA.
-    </p>
+    <p>Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA.</p>
     <ul>
-      <li>
-        <strong>Contagem e Detecção de Ativos:</strong>
-        aeronaves, veículos e novas estruturas em instalações estratégicas.
-      </li>
-      <li>
-        <strong>Vigilância Marítima e Costeira:</strong>
-        monitoramento da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando.
-      </li>
-      <li>
-        <strong>Detecção de Mudanças em Áreas Sensíveis:</strong>
-        identificação de alterações em fronteiras, infraestrutura crítica e zonas de interesse estratégico.
-      </li>
+      <li><strong>Contagem e Detecção de Ativos:</strong> aeronaves, veículos e novas estruturas em instalações estratégicas.</li>
+      <li><strong>Vigilância Marítima e Costeira:</strong> monitoramento da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando.</li>
+      <li><strong>Detecção de Mudanças em Áreas Sensíveis:</strong> alterações em fronteiras, infraestrutura crítica e zonas de interesse estratégico.</li>
     </ul>
   </div>
 
 </div>
 ''', unsafe_allow_html=True)
+
+# FECHA a seção
+st.markdown('</div>', unsafe_allow_html=True)
+
+
 
 # ================== CONTATO ==================
 st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
