@@ -321,8 +321,7 @@ st.markdown(f'''
   <div class="nav-right">
     <a href="#empresa">Empresa</a>
     <a href="#solucao">Solução</a>
-    <a href="#setores">Setores</a>
-    <a href="#setores">Aplicações Operacionais</a>
+    <a href="#setores">Setores & Aplicações</a>
     <a href="#parceiros">Parceiros</a>
     <a href="#newsroom">Imprensa</a>
     <a class="cta" href="#contato" style="background:#34d399; color:#05131a; font-weight:700; padding:10px 14px; border-radius:10px; text-decoration:none">Contato</a>
