@@ -117,13 +117,9 @@ def news_thumbnail_src(path_str: str | None) -> str | None:
     return as_data_uri(str(p)) if p.exists() and p.stat().st_size > 0 else None
 
 def render_dots(n: int, active_index: int) -> str:
-    parts = []
-    for i in range(n):
-        cls = "active" if i == active_index else ""
-        parts.append(f"<span class='{cls}'></span>")
-    return "".join(parts)
+    return "".join(f"<span class='{'active' if i==active_index else ''}'></span>" for i in range(n))
 
-# ================== CSS (UNIFICADO + HOTFIX SETORES) ==================
+# ================== CSS (UNIFICADO) ==================
 st.markdown('''
 <style>
 html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hidden;}
@@ -182,48 +178,6 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .thumbs.partner .thumb{ background:rgba(255,255,255,.02); }
 .thumbs.partner .thumb img{ object-fit:contain; background:transparent; }
 
-/* ===== HOTFIX: Setores & Aplicações ===== */
-#setores{ position:relative; isolation:isolate; }
-#setores, #setores * { opacity:1 !important; } /* mata opacidades herdadas */
-
-#setores.section h2{
-  color:#ffffff !important; font-weight:800 !important;
-  font-size:2rem !important; text-align:center !important;
-  margin:0 0 .8rem 0 !important; letter-spacing:.4px;
-  position:relative; display:inline-block; width:100%;
-}
-#setores.section h2::after{
-  content:""; display:block; width:68px; height:3px;
-  background:#4EA8DE; margin:.65rem auto 0; border-radius:3px;
-}
-
-#setores .subtitle{
-  color:#f5f7ff !important; text-align:center !important;
-  font-size:1.06rem !important; margin:0 0 1.6rem 0 !important;
-}
-
-#setores .sectors-grid{
-  display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
-  gap:20px; margin:24px 0 0 0;
-}
-
-#setores .sector-card{
-  background:rgba(255,255,255,.06) !important;
-  border:1px solid rgba(255,255,255,.18) !important;
-  border-radius:16px; padding:18px 20px;
-  box-shadow:0 10px 28px rgba(0,0,0,.45);
-  transition: transform .2s ease, box-shadow .2s ease;
-}
-#setores .sector-card:hover{
-  transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(0,0,0,.55);
-}
-#setores .sector-card h3{ color:#ffffff !important; margin:0 0 10px 0; }
-#setores .sector-card p{ color:#e9eefc !important; }
-#setores .sector-card ul{ color:#d5def6 !important; margin:10px 0 0 20px; }
-#setores .sector-card li{ margin:6px 0; font-size:.98rem; line-height:1.45; }
-#setores .sector-card li strong{ color:#ffffff !important; }
-
 /* Newsroom */
 .news-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:18px; }
 .news-card{ background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; }
@@ -248,15 +202,18 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
   box-shadow:0 8px 18px rgba(0,0,0,.35), 0 0 0 4px rgba(52,211,153,.15) inset; }
 .social img{ width:22px; height:22px; display:block; }
 
+/* MOBILE */
+:root{ --safe-top: env(safe-area-inset-top, 0px); --safe-right: env(safe-area-inset-right, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); --safe-left: env(safe-area-inset-left, 0px); }
+.navbar{ padding: max(8px, calc(8px + var(--safe-top))) max(8px, calc(8px + var(--safe-right))) 8px max(8px, calc(8px + var(--safe-left))) !important; }
 @media (max-width:980px){
-  #setores .sectors-grid{ grid-template-columns:1fr; }
-  .news-grid{ grid-template-columns:1fr; }
+  .news-grid{grid-template-columns:1fr}
 }
 @media (max-width:768px){
   .navbar, .nav-left{ height:56px; }
   .nav-logo{ height:110px; transform:translateY(-10px); }
   .hero iframe{width:177.777vh; height:100vh; max-width:300vw;}
-  .kicker{font-size:14px;} h1.hero-title{font-size:clamp(28px,8vw,36px);}
+  .kicker{font-size:14px;}
+  h1.hero-title{font-size:clamp(28px,8vw,36px);}
   .hero-sub{font-size:15px; max-width:100%;}
   .section{padding:56px 5vw;}
   .nav-right a{margin-left:12px;}
@@ -334,7 +291,6 @@ with col_text:
         """,
         unsafe_allow_html=True,
     )
-
     linkedin_path = find_first(LINKEDIN_CANDIDATES)
     if linkedin_path:
         st.markdown(
@@ -365,8 +321,7 @@ with col_img:
             pass
 
     if imgs:
-        n = len(imgs)
-        idx = st.session_state.emp_idx % n
+        n = len(imgs); idx = st.session_state.emp_idx % n
         uri = as_data_uri(imgs[idx])
         st.markdown(f"<img class='carousel-main' src='{uri}' alt='Empresa {idx+1}/{n}'/>", unsafe_allow_html=True)
         st.markdown(f"<div class='carousel-caption'>{empresa_caption(idx, imgs[idx])}</div>", unsafe_allow_html=True)
@@ -374,23 +329,17 @@ with col_img:
         bcol1, bcol2, bcol3 = st.columns([1, 6, 1])
         with bcol1:
             if st.button("◀", key="emp_prev"):
-                st.session_state.emp_idx = (idx - 1) % n
-                st.session_state.emp_last_tick = time.time()
-                st.rerun()
+                st.session_state.emp_idx = (idx - 1) % n; st.session_state.emp_last_tick = time.time(); st.rerun()
         with bcol3:
             if st.button("▶", key="emp_next"):
-                st.session_state.emp_idx = (idx + 1) % n
-                st.session_state.emp_last_tick = time.time()
-                st.rerun()
+                st.session_state.emp_idx = (idx + 1) % n; st.session_state.emp_last_tick = time.time(); st.rerun()
         with bcol2:
             st.markdown(f"<div class='carousel-dots'>{render_dots(n, idx)}</div>", unsafe_allow_html=True)
 
         now = time.time()
         if now - st.session_state.emp_last_tick >= CAROUSEL_INTERVAL_SEC:
-            st.session_state.emp_idx = (idx + 1) % n
-            st.session_state.emp_last_tick = now
-            time.sleep(0.05)
-            st.rerun()
+            st.session_state.emp_idx = (idx + 1) % n; st.session_state.emp_last_tick = now
+            time.sleep(0.05); st.rerun()
     else:
         st.info("Coloque 3 imagens com nomes começando por 'empresa' (ex.: empresa1.jpg, empresa2.png, empresa3.jpeg).")
 
@@ -488,53 +437,63 @@ else:
 st.markdown("</div>", unsafe_allow_html=True)
 
 # ================== SETORES & APLICAÇÕES ==================
-st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
-st.header("Setores & Aplicações")
-st.markdown(
-    '<p class="subtitle">Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental</p>',
-    unsafe_allow_html=True
-)
-
+# IMPORTANTE: toda a seção em um único bloco HTML para manter DOM correto.
 st.markdown('''
-<div class="sectors-grid">
+<div id="setores" class="section" style="position:relative; isolation:isolate;">
+  <h2 style="color:#fff; font-weight:800; text-align:center; margin:0 0 .8rem 0; letter-spacing:.4px;">
+    Setores &amp; Aplicações
+  </h2>
+  <div style="width:68px; height:3px; background:#4EA8DE; margin:.65rem auto 1.2rem auto; border-radius:3px;"></div>
+  <p class="subtitle" style="color:#f5f7ff; text-align:center; font-size:1.06rem; margin:0 0 1.6rem 0;">
+    Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental
+  </p>
 
-  <!-- ÓLEO & GÁS -->
-  <div id="oleoegas" class="sector-card">
-    <h3>Óleo &amp; Gás</h3>
-    <p>Monitoramento de emissões de metano OGMP 2.0, detecção de mudanças e resposta a incidentes ambientais.</p>
-    <ul>
-      <li><strong>Monitoramento de Metano — OGMP 2.0 Nível 5:</strong> quantificação de emissões, identificação de superemissores e relatórios em conformidade com padrões internacionais.</li>
-      <li><strong>Detecção de Mudanças em Ativos e Infraestrutura:</strong> acompanhamento de obras, ampliações e movimentações em áreas operacionais por meio de imagens ópticas e SAR.</li>
-      <li><strong>Resposta a Incidentes Ambientais:</strong> detecção de derrames e manchas de óleo em áreas operacionais e de risco.</li>
-    </ul>
+  <div class="sectors-grid" style="
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
+      gap:20px; margin-top:24px;">
+    
+    <!-- ÓLEO & GÁS -->
+    <div id="oleoegas" class="sector-card" style="
+        background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
+        border-radius:16px; padding:18px 20px; box-shadow:0 10px 28px rgba(0,0,0,.45);">
+      <h3 style="color:#fff; margin:0 0 10px 0;">Óleo &amp; Gás</h3>
+      <p style="color:#e9eefc;">Monitoramento de emissões de metano OGMP 2.0, detecção de mudanças e resposta a incidentes ambientais.</p>
+      <ul style="color:#d5def6; margin:10px 0 0 20px;">
+        <li><strong style="color:#fff;">Monitoramento de Metano — OGMP 2.0 Nível 5:</strong> quantificação de emissões, identificação de superemissores e relatórios em conformidade com padrões internacionais.</li>
+        <li><strong style="color:#fff;">Detecção de Mudanças em Ativos e Infraestrutura:</strong> acompanhamento de obras, ampliações e movimentações em áreas operacionais por meio de imagens ópticas e SAR.</li>
+        <li><strong style="color:#fff;">Resposta a Incidentes Ambientais:</strong> detecção de derrames e manchas de óleo em áreas operacionais e de risco.</li>
+      </ul>
+    </div>
+
+    <!-- MEIO-AMBIENTE -->
+    <div id="ambiental" class="sector-card" style="
+        background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
+        border-radius:16px; padding:18px 20px; box-shadow:0 10px 28px rgba(0,0,0,.45);">
+      <h3 style="color:#fff; margin:0 0 10px 0;">Meio-Ambiente</h3>
+      <p style="color:#e9eefc;">Monitoramento de emissões e riscos ambientais por meio de tecnologias avançadas de Observação da Terra.</p>
+      <ul style="color:#d5def6; margin:10px 0 0 20px;">
+        <li><strong style="color:#fff;">Emissões em Resíduos:</strong> detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros e áreas de manejo de resíduos.</li>
+        <li><strong style="color:#fff;">Cobertura do Solo e Queimadas:</strong> acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.</li>
+        <li><strong style="color:#fff;">Desastres Ambientais:</strong> monitoramento de eventos extremos, como enchentes e derramamentos de óleo.</li>
+      </ul>
+    </div>
+
+    <!-- DEFESA & SEGURANÇA -->
+    <div id="defesa" class="sector-card" style="
+        background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
+        border-radius:16px; padding:18px 20px; box-shadow:0 10px 28px rgba(0,0,0,.45);">
+      <h3 style="color:#fff; margin:0 0 10px 0;">Defesa &amp; Segurança</h3>
+      <p style="color:#e9eefc;">Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA.</p>
+      <ul style="color:#d5def6; margin:10px 0 0 20px;">
+        <li><strong style="color:#fff;">Contagem e Detecção de Ativos:</strong> aeronaves, veículos e novas estruturas em instalações estratégicas.</li>
+        <li><strong style="color:#fff;">Vigilância Marítima e Costeira:</strong> monitoramento da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando.</li>
+        <li><strong style="color:#fff;">Detecção de Mudanças em Áreas Sensíveis:</strong> alterações em fronteiras, infraestrutura crítica e zonas de interesse estratégico.</li>
+      </ul>
+    </div>
+
   </div>
-
-  <!-- MEIO-AMBIENTE -->
-  <div id="ambiental" class="sector-card">
-    <h3>Meio-Ambiente</h3>
-    <p>Monitoramento de emissões e riscos ambientais por meio de tecnologias avançadas de Observação da Terra.</p>
-    <ul>
-      <li><strong>Emissões em Resíduos:</strong> detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros e áreas de manejo de resíduos.</li>
-      <li><strong>Cobertura do Solo e Queimadas:</strong> acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.</li>
-      <li><strong>Desastres Ambientais:</strong> monitoramento de eventos extremos, como enchentes e derramamentos de óleo.</li>
-    </ul>
-  </div>
-
-  <!-- DEFESA & SEGURANÇA -->
-  <div id="defesa" class="sector-card">
-    <h3>Defesa &amp; Segurança</h3>
-    <p>Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA.</p>
-    <ul>
-      <li><strong>Contagem e Detecção de Ativos:</strong> aeronaves, veículos e novas estruturas em instalações estratégicas.</li>
-      <li><strong>Vigilância Marítima e Costeira:</strong> monitoramento da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando.</li>
-      <li><strong>Detecção de Mudanças em Áreas Sensíveis:</strong> alterações em fronteiras, infraestrutura crítica e zonas de interesse estratégico.</li>
-    </ul>
-  </div>
-
 </div>
 ''', unsafe_allow_html=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
 
 # ================== CONTATO ==================
 st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
@@ -557,3 +516,4 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
+
