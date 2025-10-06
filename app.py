@@ -436,100 +436,67 @@ else:
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ================== SETORES & APLICAÇÕES ==================
-st.markdown("""
+# ================== SETORES & APLICAÇÕES (render seguro) ==================
+import streamlit.components.v1 as components
+
+SETORES_HTML = """
+<div id="setores" style="position:relative; padding:72px 8vw; border-top:1px solid rgba(255,255,255,.07); isolation:isolate;">
 <style>
-  #setores h2{
-    color:#fff; font-weight:800; text-align:center;
-    margin:0 0 .8rem 0; letter-spacing:.4px;
-  }
-  #setores .subtitle{
-    color:#f5f7ff; text-align:center; font-size:1.06rem;
-    margin:0 0 1.6rem 0;
-  }
-  #setores .bar{
-    width:68px; height:3px; background:#4EA8DE;
-    margin:.65rem auto 1.2rem; border-radius:3px;
-  }
-
-  #setores .sectors-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
-    gap:20px;
-    margin-top:24px;
-  }
-
-  #setores .sector-card{
-    background:rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.18);
-    border-radius:16px;
-    padding:18px 20px;
-    box-shadow:0 10px 28px rgba(0,0,0,.45);
-    transition:transform .15s ease, box-shadow .15s ease;
-  }
-  #setores .sector-card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 16px 36px rgba(0,0,0,.5);
-  }
-  #setores .sector-card h3{
-    color:#fff; margin:0 0 10px 0;
-  }
-  #setores .sector-card p{
-    color:#e9eefc; margin:0 0 8px 0;
-  }
-  #setores .sector-card ul{
-    color:#d5def6; margin:10px 0 0 20px;
-  }
-  #setores .sector-card li strong{
-    color:#fff;
-  }
+  #setores h2{color:#fff;font-weight:800;text-align:center;margin:0 0 .8rem 0;letter-spacing:.4px}
+  #setores .subtitle{color:#f5f7ff;text-align:center;font-size:1.06rem;margin:0 0 1.6rem 0}
+  #setores .bar{width:68px;height:3px;background:#4EA8DE;margin:.65rem auto 1.2rem;border-radius:3px}
+  #setores .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:24px}
+  #setores .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:16px;
+                 padding:18px 20px;box-shadow:0 10px 28px rgba(0,0,0,.45);transition:transform .15s, box-shadow .15s}
+  #setores .card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(0,0,0,.5)}
+  #setores .card h3{color:#fff;margin:0 0 10px 0}
+  #setores .card p{color:#e9eefc;margin:0 0 8px 0}
+  #setores .card ul{color:#d5def6;margin:10px 0 0 20px}
+  #setores .card li strong{color:#fff}
+  @media (max-width:980px){#setores{padding:56px 5vw}}
 </style>
 
-<div id="setores" class="section" style="position:relative; isolation:isolate;">
-  <h2>Setores &amp; Aplicações</h2>
-  <div class="bar"></div>
-  <p class="subtitle">
-    Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental
-  </p>
+<h2>Setores &amp; Aplicações</h2>
+<div class="bar"></div>
+<p class="subtitle">Óleo &amp; Gás • Portos &amp; Costas • Mineração • Defesa &amp; Segurança • Monitoramento Ambiental</p>
 
-  <div class="sectors-grid">
+<div class="grid">
 
-    <!-- ÓLEO & GÁS -->
-    <div id="oleoegas" class="sector-card">
-      <h3>Óleo &amp; Gás</h3>
-      <p>Monitoramento de emissões de metano OGMP 2.0, detecção de mudanças e resposta a incidentes ambientais.</p>
-      <ul>
-        <li><strong>Monitoramento de Metano — OGMP 2.0 Nível 5:</strong> quantificação de emissões, identificação de superemissores e relatórios em conformidade com padrões internacionais.</li>
-        <li><strong>Detecção de Mudanças em Ativos e Infraestrutura:</strong> acompanhamento de obras, ampliações e movimentações em áreas operacionais por meio de imagens ópticas e SAR.</li>
-        <li><strong>Resposta a Incidentes Ambientais:</strong> detecção de derrames e manchas de óleo em áreas operacionais e de risco.</li>
-      </ul>
-    </div>
-
-    <!-- MEIO-AMBIENTE -->
-    <div id="ambiental" class="sector-card">
-      <h3>Meio-Ambiente</h3>
-      <p>Monitoramento de emissões e riscos ambientais por meio de tecnologias avançadas de Observação da Terra.</p>
-      <ul>
-        <li><strong>Emissões em Resíduos:</strong> detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros e áreas de manejo de resíduos.</li>
-        <li><strong>Cobertura do Solo e Queimadas:</strong> acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.</li>
-        <li><strong>Desastres Ambientais:</strong> monitoramento de eventos extremos, como enchentes e derramamentos de óleo.</li>
-      </ul>
-    </div>
-
-    <!-- DEFESA & SEGURANÇA -->
-    <div id="defesa" class="sector-card">
-      <h3>Defesa &amp; Segurança</h3>
-      <p>Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA.</p>
-      <ul>
-        <li><strong>Contagem e Detecção de Ativos:</strong> aeronaves, veículos e novas estruturas em instalações estratégicas.</li>
-        <li><strong>Vigilância Marítima e Costeira:</strong> monitoramento da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando.</li>
-        <li><strong>Detecção de Mudanças em Áreas Sensíveis:</strong> alterações em fronteiras, infraestrutura crítica e zonas de interesse estratégico.</li>
-      </ul>
-    </div>
-
-  </div>
+<div id="oleoegas" class="card">
+  <h3>Óleo &amp; Gás</h3>
+  <p>Monitoramento de emissões de metano OGMP 2.0, detecção de mudanças e resposta a incidentes ambientais.</p>
+  <ul>
+    <li><strong>Monitoramento de Metano — OGMP 2.0 Nível 5:</strong> quantificação de emissões, identificação de superemissores e relatórios em conformidade com padrões internacionais.</li>
+    <li><strong>Detecção de Mudanças em Ativos e Infraestrutura:</strong> acompanhamento de obras, ampliações e movimentações em áreas operacionais por meio de imagens ópticas e SAR.</li>
+    <li><strong>Resposta a Incidentes Ambientais:</strong> detecção de derrames e manchas de óleo em áreas operacionais e de risco.</li>
+  </ul>
 </div>
-""", unsafe_allow_html=True)
+
+<div id="ambiental" class="card">
+  <h3>Meio-Ambiente</h3>
+  <p>Monitoramento de emissões e riscos ambientais por meio de tecnologias avançadas de Observação da Terra.</p>
+  <ul>
+    <li><strong>Emissões em Resíduos:</strong> detecção de metano (CH₄) e dióxido de carbono (CO₂) em aterros e áreas de manejo de resíduos.</li>
+    <li><strong>Cobertura do Solo e Queimadas:</strong> acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.</li>
+    <li><strong>Desastres Ambientais:</strong> monitoramento de eventos extremos, como enchentes e derramamentos de óleo.</li>
+  </ul>
+</div>
+
+<div id="defesa" class="card">
+  <h3>Defesa &amp; Segurança</h3>
+  <p>Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA.</p>
+  <ul>
+    <li><strong>Contagem e Detecção de Ativos:</strong> aeronaves, veículos e novas estruturas em instalações estratégicas.</li>
+    <li><strong>Vigilância Marítima e Costeira:</strong> monitoramento da Zona Econômica Exclusiva, combate à pesca ilegal e contrabando.</li>
+    <li><strong>Detecção de Mudanças em Áreas Sensíveis:</strong> alterações em fronteiras, infraestrutura crítica e zonas de interesse estratégico.</li>
+  </ul>
+</div>
+
+</div>
+</div>
+"""
+
+components.html(SETORES_HTML, height=780, scrolling=False)
 
 
 
