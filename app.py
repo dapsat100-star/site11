@@ -292,8 +292,11 @@ st.markdown(f'''
     <div>
       <div class="kicker">Monitoramento de Metano • Detecção de Mudanças • Imagens Opticas e SAR de altísssima resolução</div>
       <h1 class="hero-title">Transformando dados geoespaciais em <span class="highlight">informações acionáveis</span></h1>
-      <div class="hero-sub">A MAVIPE integra <b>IA</b>, <b>imagens de satélite</b> (ópticas e SAR) e dados operacionais para entregar
-        <b>insights confiáveis</b> em monitoramento ambiental, emissões de metano e integridade de ativos — no ritmo da sua operação.</div>
+      <div class="hero-sub">
+  A MAVIPE integra <b>IA</b>, <b>satélites</b> (óptico/SAR), dados operacionais e
+  <b>meteoceanográficos</b> para monitorar <b>ambiente</b>, <b>O&G</b> e <b>defesa</b>.
+</div>
+     
       <div style="margin-top:22px">
         <a class="cta" href="#contato">Agendar demo</a>
         <a class="btn" href="#solucao">Explorar solução</a>
