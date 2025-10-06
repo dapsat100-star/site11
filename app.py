@@ -141,7 +141,7 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 .nav-right a{color:#d6def5; text-decoration:none; margin-left:18px}
 
 /* Logo na navbar — flutuante (opção 3) */
-.nav-logo{position:absolute; top:-18px; left:0; height:100px; width:auto; display:block; filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));}
+.nav-logo{position:relative; top:-18px; left:0; height:100px; width:auto; display:block; filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));}
 @media (max-width:768px){ .nav-logo{top:-10px; height:80px;} }
 
 /* Hero YouTube */
