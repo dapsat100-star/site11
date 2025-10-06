@@ -280,16 +280,22 @@ with col_text:
         "<h1 style='font-size:2.2rem; font-weight:700; color:#e6eefc; margin-bottom:12px;'>MAVIPE Sistemas Espaciais</h1>",
         unsafe_allow_html=True,
     )
-    st.markdown(
-        """
-        <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
-        A <b>MAVIPE Sistemas Espaciais</b> é uma empresa de base tecnológica que emprega soluções próprias, no <b>estado-da-arte</b>, baseadas em <b>IA</b>, <b>aprendizado de máquinas</b> e <b>dados operacionais de inteligência</b> para a realização de <b>monitoramentos por satélite</b> em ambientes terrestre e marítimo.
-        </p>
-        <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
-        Experiência em <b>centros de operações espaciais</b>, P&D e gestão de ativos. Expertise em <b>meio ambiente</b>, <b>petróleo e gás</b> e <b>defesa e segurança</b>.
-        </p>
-        """,
-        unsafe_allow_html=True,
+    st.markdown("""
+<div class="empresa-copy">
+  <p>
+    A <b>MAVIPE Sistemas Espaciais</b> desenvolve e opera soluções próprias, no
+    <b>estado da arte</b>, para <b>monitoramento por satélite</b>. Integramos <b>IA</b>,
+    <b>aprendizado de máquina</b>, <b>imagens ópticas e SAR</b> e <b>dados operacionais
+    de inteligência</b> para transformar pixels em decisões.
+  </p>
+  <p>
+    Nossa equipe soma anos em <b>centros de operações espaciais</b>, P&amp;D e
+    gestão de ativos. Atuamos nos setores de <b>meio ambiente</b>, <b>petróleo e gás</b>
+    e <b>defesa e segurança</b>.
+  </p>
+</div>
+""", unsafe_allow_html=True)
+
     )
     linkedin_path = find_first(LINKEDIN_CANDIDATES)
     if linkedin_path:
