@@ -1,4 +1,4 @@
-# app.py — MAVIPE Landing Page (Hero + Logo Base64 + Carrosséis + Newsroom + Setores)
+# app.py — MAVIPE Landing Page (Hero + Logo Retina + Carrosséis + Newsroom + Setores)
 import base64
 import time
 import re
@@ -10,7 +10,16 @@ st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=No
 
 # ================== CONFIG ==================
 YOUTUBE_ID = "Ulrl6TFaWtA"
-LOGO_CANDIDATES = ["logo-mavipe.png", "logo-mavipe.jpeg", "logo-mavipe.jpg"]
+# Preferimos o @2x para ficar nítido em telas retina; depois 1x; por fim nomes antigos.
+LOGO_CANDIDATES = [
+    "logo-mavipe@2x.png",
+    "logo-mavipe.png",
+    "logo-mavipe@2x.jpg",
+    "logo-mavipe.jpg",
+    "logo-mavipe.jpeg",
+    "logo-mavipe@2x.jpeg",
+    "logo-mavipe.png",  # repetido por compatibilidade, não atrapalha
+]
 CAROUSEL_INTERVAL_SEC = 3      # autoplay Empresa
 PARTNER_INTERVAL_SEC  = 3      # autoplay Parceiros
 
@@ -55,7 +64,12 @@ def find_first(candidates) -> str | None:
     return None
 
 def guess_mime(path: Path) -> str:
-    return "image/png" if path.suffix.lower() == ".png" else "image/jpeg"
+    ext = path.suffix.lower()
+    if ext == ".png":
+        return "image/png"
+    if ext in (".jpg", ".jpeg"):
+        return "image/jpeg"
+    return "application/octet-stream"
 
 def as_data_uri(path_str: str) -> str:
     p = Path(path_str)
@@ -135,37 +149,35 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 #MainMenu, header, footer {visibility:hidden;}
 .block-container{padding:0!important; max-width:100%!important}
 
-/* Navbar fixa */
+/* Navbar compacta e estável */
 .navbar{
   position:fixed; top:0; left:0; right:0; z-index:1000;
   display:flex; justify-content:space-between; align-items:center;
-  padding:8px 8px !important; background:rgba(8,16,33,.35);
-  backdrop-filter:saturate(160%) blur(10px);
+  height:64px; padding:8px 8px !important; overflow:visible;
+  background:rgba(8,16,33,.35); backdrop-filter:saturate(160%) blur(10px);
   border-bottom:1px solid rgba(255,255,255,.08);
-  height:64px;            /* altura compacta fixa */
-  overflow:visible;       /* deixa o logo "passar" por cima */
 }
+.nav-left{ position:relative; height:64px; display:flex; align-items:center; gap:12px; }
+.nav-right a{ color:#d6def5; text-decoration:none; margin-left:18px }
 
-/* LOGO flutuante seguro (relative + translate) */
-.nav-left{
-  position:relative; height:64px; display:flex; align-items:center; gap:12px;
-}
+/* Logo grande e “saltando” acima da barra */
 .nav-logo{
-  position:relative; height:100px; width:auto; display:block;
-  transform:translateY(-18px); /* sobe sem sair do fluxo */
+  position:relative;
+  height:140px;         /* ajuste aqui para maior/menor */
+  width:auto; display:block;
+  transform:translateY(-30px);
+  image-rendering:auto;
   filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));
   z-index:2;
 }
-
-.nav-right a{color:#d6def5; text-decoration:none; margin-left:18px}
 
 /* Hero YouTube */
 .hero{position:relative; height:100vh; min-height:640px; width:100vw; left:50%; margin-left:-50vw; overflow:hidden}
 .hero iframe{position:absolute; top:50%; left:50%; width:177.777vw; height:100vh; transform:translate(-50%,-50%); pointer-events:none}
 .hero .overlay{position:absolute; inset:0; background:radial-gradient(85% 60% at 30% 30%, rgba(20,30,55,.0) 0%, rgba(8,16,33,.48) 68%, rgba(8,16,33,.86) 100%); z-index:1}
 
-/* Garante que o logo do hero não apareça */
-.hero .logo{display:none}
+/* Garantir que nenhum logo extra apareça no hero */
+.hero .logo{ display:none }
 
 /* Conteúdo Hero */
 .hero .content{position:absolute; z-index:2; inset:0; display:flex; align-items:center; padding:0 8vw; color:#e8eefc}
@@ -184,10 +196,10 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .navbar{ padding: max(8px, calc(8px + var(--safe-top))) max(8px, calc(8px + var(--safe-right))) 8px max(8px, calc(8px + var(--safe-left))) !important; }
 @media (max-width:768px){
   .navbar, .nav-left{ height:56px; }
-  .nav-logo{ height:80px; transform:translateY(-10px); }
+  .nav-logo{ height:110px; transform:translateY(-16px); }
   .hero iframe{width:177.777vh; height:100vh; max-width:300vw;}
   .kicker{font-size:14px;}
-  h1.hero-title{font-size:clamp(28px,8vw,36px);} 
+  h1.hero-title{font-size:clamp(28px,8vw,36px);}
   .hero-sub{font-size:15px; max-width:100%;}
   .section{padding:56px 5vw;}
   .nav-right a{margin-left:12px;}
@@ -241,8 +253,24 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 ''', unsafe_allow_html=True)
 
 # ================== NAVBAR (com LOGO à esquerda) ==================
-logo_path = find_first(LOGO_CANDIDATES)
-logo_left_tag = f'<img src="{as_data_uri(logo_path)}" alt="MAVIPE logo" class="nav-logo"/>' if logo_path else '<div class="brand" style="color:#e6eefc; font-weight:700">MAVIPE</div>'
+# Retina de verdade: se existir @2x usamos ele (embutido em base64), o CSS mantém altura/posicionamento.
+logo_2x = Path("logo-mavipe@2x.png")
+logo_1x = Path("logo-mavipe.png")
+fallback = find_first(LOGO_CANDIDATES)
+
+def pick_logo_path() -> str | None:
+    if logo_2x.exists() and logo_2x.stat().st_size > 0:
+        return str(logo_2x)
+    if logo_1x.exists() and logo_1x.stat().st_size > 0:
+        return str(logo_1x)
+    return fallback
+
+logo_path = pick_logo_path()
+logo_left_tag = (
+    f'<img src="{as_data_uri(logo_path)}" alt="MAVIPE logo" class="nav-logo"/>'
+    if logo_path else
+    '<div class="brand" style="color:#e6eefc; font-weight:700">MAVIPE</div>'
+)
 
 st.markdown(f'''
 <div class="navbar">
@@ -253,16 +281,17 @@ st.markdown(f'''
     <a href="#parceiros">Parceiros</a>
     <a href="#newsroom">Newsroom</a>
     <a href="#setores">Setores</a>
-    <a class="cta" href="#contato">Agendar demo</a>
+    <a class="cta" href="#contato" style="background:#34d399; color:#05131a; font-weight:700; padding:10px 14px; border-radius:10px; text-decoration:none">Agendar demo</a>
   </div>
 </div>
 ''', unsafe_allow_html=True)
 
 # ================== HERO (vídeo sem logo duplicado) ==================
-logo_tag = ""  # logo do topo direito removido
+# Removemos o logo do topo direito para evitar duplicação.
+logo_tag = ""  # sem logo no hero
 if not logo_path:
     st.warning(
-        f"Logo não encontrada. Adicione um dos arquivos: {', '.join(LOGO_CANDIDATES)}"
+        f"Logo não encontrada. Adicione um dos arquivos: logo-mavipe@2x.png, logo-mavipe.png"
     )
 
 st.markdown(f'''
@@ -300,7 +329,7 @@ with col_text:
     )
     st.markdown(
         """
-        <p style=\"color:#b9c6e6; line-height:1.6; font-size:1rem;\">
+        <p style="color:#b9c6e6; line-height:1.6; font-size:1rem;">
         We are a startup company that develops cutting-edge technological solutions for the automated analysis of satellite images
         with optical and SAR-type sensors through its <b>DAP Ocean Framework™</b>. Our company is capable of performing automated
         analytics from any supplier of satellite images on the market for the provision of <b>Maritime Domain Awareness (MDA)</b> and
@@ -461,15 +490,15 @@ else:
         img_src = news_thumbnail_src(it.get("image"))
         thumb   = f"<img class='news-thumb' src='{img_src}' alt='thumb'/>" if img_src else "<div class='news-thumb'></div>"
         html += f"""
-        <div class=\"news-card\">
+        <div class="news-card">
           {thumb}
-          <div class=\"news-body\">
-            <div class=\"news-title\">{title}</div>
-            <div class=\"news-meta\">{date}</div>
-            <div class=\"news-summary\">{summary}</div>
+          <div class="news-body">
+            <div class="news-title">{title}</div>
+            <div class="news-meta">{date}</div>
+            <div class="news-summary">{summary}</div>
           </div>
-          <div class=\"news-actions\">
-            <a href=\"{link}\" target=\"_blank\" rel=\"noopener\">Ler mais</a>
+          <div class="news-actions">
+            <a href="{link}" target="_blank" rel="noopener">Ler mais</a>
           </div>
         </div>
         """
@@ -536,7 +565,7 @@ msg = st.text_area("Qual desafio você quer resolver?")
 
 if st.button("Enviar e-mail"):
     subject = "MAVIPE — Agendar demo"
-    body = f"Nome: {nome}\\nEmail: {email}\\nOrg: {org}\\nTelefone: {phone}\\nMensagem:\\n{msg}"
+    body = f"Nome: {nome}\nEmail: {email}\nOrg: {org}\nTelefone: {phone}\nMensagem:\n{msg}"
     st.success("Clique abaixo para abrir seu e-mail:")
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
