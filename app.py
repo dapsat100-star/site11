@@ -18,6 +18,13 @@ LOGO_CANDIDATES = [
     "logo-mavipe.jpeg",
     "logo-mavipe@2x.jpeg",
 ]
+# ÍCONE LINKEDIN NA RAIZ (auto detecção com @2x)
+LINKEDIN_CANDIDATES = [
+    "linkedin@2x.png", "linkedin.png",
+    "linkedin@2x.svg", "linkedin.svg",
+    "linkedin@2x.jpg", "linkedin.jpg",
+]
+
 CAROUSEL_INTERVAL_SEC = 3
 PARTNER_INTERVAL_SEC  = 3
 
@@ -67,6 +74,8 @@ def guess_mime(path: Path) -> str:
         return "image/png"
     if ext in (".jpg", ".jpeg"):
         return "image/jpeg"
+    if ext == ".svg":
+        return "image/svg+xml"
     return "application/octet-stream"
 
 def as_data_uri(path_str: str) -> str:
@@ -161,7 +170,7 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 /* Logo grande e “saltando” acima da barra */
 .nav-logo{
   position:relative;
-  height:140px;         /* ajuste aqui para maior/menor */
+  height:140px;
   width:auto; display:block;
   transform:translateY(3px);
   image-rendering:auto;
@@ -189,7 +198,7 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
   color:#b9c6e6;
   max-width:70ch;
   line-height:1.35;
-  text-wrap:balance;    /* melhora a quebra de linhas (browsers suportados) */
+  text-wrap:balance;
 }
 
 .cta, .btn{display:inline-block; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:700; margin-right:10px}
@@ -294,7 +303,7 @@ st.markdown(f'''
 # ================== HERO (vídeo sem logo duplicado) ==================
 st.markdown(f'''
 <div class="hero">
-  <iframe src="https://www.youtube.com/embed/Ulrl6TFaWtA?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&playlist=Ulrl6TFaWtA"
+  <iframe src="https://www.youtube.com/embed/{YOUTUBE_ID}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&rel=0&showinfo=0&playlist={YOUTUBE_ID}"
           title="MAVIPE hero" frameborder="0" allow="autoplay; fullscreen; picture-in-picture"></iframe>
   <div class="overlay"></div>
   <div class="content">
@@ -307,7 +316,6 @@ st.markdown(f'''
     </div>
   </div>
 </div>
-
 ''', unsafe_allow_html=True)
 
 # ================== EMPRESA ==================
@@ -324,7 +332,7 @@ with col_text:
     st.markdown(
         """
         <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
-        A <b>MAVIPE Sistemas Espaciais</b> é uma empresa de base tecnológica que emprega soluções próprias, no estado da arte, baseadas em <b>IA</b>, <b>aprendizado de máquinas</b> e <b>dados operacionais de inteligência</b> para a realização de <b>monitoramentos por satélite</b> em ambientes terrestre e marítimo, no estado-da-arte mundial.
+        A <b>MAVIPE Sistemas Espaciais</b> é uma empresa de base tecnológica que emprega soluções próprias, no <b>estado-da-arte</b>, baseadas em <b>IA</b>, <b>aprendizado de máquinas</b> e <b>dados operacionais de inteligência</b> para a realização de <b>monitoramentos por satélite</b> em ambientes terrestre e marítimo, no <b>estado-da-arte</b> mundial.
         </p>
 
         <p style="color:#b9c6e6; line-height:1.6; font-size:1rem; text-align:justify;">
@@ -333,27 +341,39 @@ with col_text:
         """,
         unsafe_allow_html=True,
     )
-    # === ÍCONE DO LINKEDIN (substitui "Know more") ===
-    st.markdown(
-        """
-        <a href="https://www.linkedin.com/company/mavipe"
-           target="_blank" rel="noopener"
-           aria-label="LinkedIn da MAVIPE"
-           style="
-             display:inline-flex; align-items:center; justify-content:center;
-             margin-top:18px; width:48px; height:48px;
-             border-radius:12px;
-             background:rgba(255,255,255,.06);
-             border:1px solid rgba(255,255,255,.18);
-             text-decoration:none;
-           ">
-          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="#0A66C2" aria-hidden="true">
-            <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8.5h4V24h-4V8.5zM8.5 8.5h3.8v2.1h.05c.53-1 1.8-2.1 3.7-2.1 4 0 4.75 2.6 4.75 6V24h-4v-8.5c0-2-.04-4.5-2.75-4.5-2.75 0-3.17 2.15-3.17 4.35V24h-4V8.5z"/>
-          </svg>
-        </a>
-        """,
-        unsafe_allow_html=True,
-    )
+
+    # === ÍCONE DO LINKEDIN — usando arquivo na raiz, com fallback ===
+    linkedin_path = find_first(LINKEDIN_CANDIDATES)
+    if linkedin_path:
+        st.markdown(
+            f"""
+            <a href="https://www.linkedin.com/company/mavipe"
+               target="_blank" rel="noopener"
+               aria-label="LinkedIn da MAVIPE"
+               style="
+                 display:inline-flex; align-items:center; justify-content:center;
+                 margin-top:18px; width:48px; height:48px;
+                 border-radius:12px;
+                 background:rgba(255,255,255,.06);
+                 border:1px solid rgba(255,255,255,.18);
+                 text-decoration:none;
+               ">
+              <img src="{as_data_uri(linkedin_path)}" alt="LinkedIn" style="width:26px; height:26px; display:block;"/>
+            </a>
+            """,
+            unsafe_allow_html=True,
+        )
+    else:
+        st.markdown(
+            """
+            <a href="https://www.linkedin.com/company/mavipe"
+               target="_blank" rel="noopener"
+               style="display:inline-block; margin-top:18px; color:#9fc6ff; text-decoration:underline;">
+               LinkedIn
+            </a>
+            """,
+            unsafe_allow_html=True,
+        )
 
 with col_img:
     imgs = gather_empresa_images(max_n=3)
