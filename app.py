@@ -142,9 +142,9 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 .nav-left{display:flex; align-items:center; gap:12px}
 .nav-right a{color:#d6def5; text-decoration:none; margin-left:22px}
 
-/* Logo na navbar — AUMENTADO */
-.nav-logo{height:64px; width:auto; display:block; filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));}
-@media (max-width:768px){ .nav-logo{height:48px;} }
+/* Logo na navbar — AUMENTADO (80px) */
+.nav-logo{height:80px; width:auto; display:block; filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));}
+@media (max-width:768px){ .nav-logo{height:64px;} }
 
 /* Hero YouTube */
 .hero{position:relative; height:100vh; min-height:640px; width:100vw; left:50%; margin-left:-50vw; overflow:hidden}
@@ -534,4 +534,5 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
+
 
