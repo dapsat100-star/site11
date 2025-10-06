@@ -624,7 +624,7 @@ st.markdown('''
 <div id="defesa" class="sector-card">
   <h3>Defesa &amp; Segurança</h3>
   <p>
-    Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA, apoiando operações de defesa e segurança.
+    Monitoramento de atividades marítimas e terrestres com geração de alertas estratégicos e análise assistida por IA.
   </p>
   <ul>
     <li>
