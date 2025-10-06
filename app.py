@@ -45,7 +45,6 @@ NEWS_ITEMS = [
         "link": "https://example.com/noticia3",
         "image": "news3.png",
     },
-    # adicione mais itens conforme necessário
 ]
 
 # ================== UTILS ==================
@@ -141,15 +140,18 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 .navbar{position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between;
   padding:14px 36px; background:rgba(8,16,33,.35); backdrop-filter:saturate(160%) blur(10px);
   border-bottom:1px solid rgba(255,255,255,.08)}
-.nav-left .brand{color:#e6eefc; font-weight:700}
+.nav-left{display:flex; align-items:center; gap:10px}
 .nav-right a{color:#d6def5; text-decoration:none; margin-left:22px}
+
+/* Logo na navbar */
+.nav-logo{height:36px; width:auto; display:block; filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));}
 
 /* Hero YouTube */
 .hero{position:relative; height:100vh; min-height:640px; width:100vw; left:50%; margin-left:-50vw; overflow:hidden}
 .hero iframe{position:absolute; top:50%; left:50%; width:177.777vw; height:100vh; transform:translate(-50%,-50%); pointer-events:none}
 .hero .overlay{position:absolute; inset:0; background:radial-gradient(85% 60% at 30% 30%, rgba(20,30,55,.0) 0%, rgba(8,16,33,.48) 68%, rgba(8,16,33,.86) 100%); z-index:1}
 
-/* LOGO topo direito */
+/* LOGO topo direito (sobre o vídeo) */
 .hero .logo{
   position:absolute; z-index:3; top:18px; right:28px;
   width: clamp(110px, 12vw, 200px); height:auto;
@@ -272,10 +274,13 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 </style>
 ''', unsafe_allow_html=True)
 
-# ================== NAVBAR ==================
-st.markdown('''
+# ================== NAVBAR (com LOGO à esquerda) ==================
+logo_path = find_first(LOGO_CANDIDATES)
+logo_left_tag = f'<img src="{as_data_uri(logo_path)}" alt="MAVIPE logo" class="nav-logo"/>' if logo_path else '<div class="brand" style="color:#e6eefc; font-weight:700">MAVIPE</div>'
+
+st.markdown(f'''
 <div class="navbar">
-  <div class="nav-left"><div class="brand">MAVIPE Sistemas Espaciais</div></div>
+  <div class="nav-left">{logo_left_tag}</div>
   <div class="nav-right">
     <a href="#empresa">Empresa</a>
     <a href="#solucao">Solução</a>
@@ -287,8 +292,7 @@ st.markdown('''
 </div>
 ''', unsafe_allow_html=True)
 
-# ================== HERO (vídeo + logo Base64) ==================
-logo_path = find_first(LOGO_CANDIDATES)
+# ================== HERO (vídeo + logo Base64 no topo direito) ==================
 logo_tag = f'<img class="logo" src="{as_data_uri(logo_path)}" alt="MAVIPE logo"/>' if logo_path else ""
 if not logo_path:
     st.warning(f"Logo não encontrada. Adicione um dos arquivos: {', '.join(LOGO_CANDIDATES)}")
@@ -490,15 +494,15 @@ else:
         img_src = news_thumbnail_src(it.get("image"))
         thumb   = f"<img class='news-thumb' src='{img_src}' alt='thumb'/>" if img_src else "<div class='news-thumb'></div>"
         html += f"""
-        <div class="news-card">
+        <div class=\"news-card\">
           {thumb}
-          <div class="news-body">
-            <div class="news-title">{title}</div>
-            <div class="news-meta">{date}</div>
-            <div class="news-summary">{summary}</div>
+          <div class=\"news-body\">
+            <div class=\"news-title\">{title}</div>
+            <div class=\"news-meta\">{date}</div>
+            <div class=\"news-summary\">{summary}</div>
           </div>
-          <div class="news-actions">
-            <a href="{link}" target="_blank" rel="noopener">Ler mais</a>
+          <div class=\"news-actions\">
+            <a href=\"{link}\" target=\"_blank\" rel=\"noopener\">Ler mais</a>
           </div>
         </div>
         """
