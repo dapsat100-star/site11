@@ -22,7 +22,6 @@ EMPRESA_CAPTIONS = [
 ]
 
 # <<< NEWSROOM: edite aqui as suas notícias >>>
-# Campos: title, date (string), summary, link (URL), image (opcional: caminho local p/ thumb)
 NEWS_ITEMS = [
     {
         "title": "MAVIPE lança módulo OGMP 2.0 Nível 5",
@@ -137,14 +136,15 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 .block-container{padding:0!important; max-width:100%!important}
 
 /* Navbar fixa */
-.navbar{position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between;
+.navbar{position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between; align-items:center;
   padding:14px 36px; background:rgba(8,16,33,.35); backdrop-filter:saturate(160%) blur(10px);
   border-bottom:1px solid rgba(255,255,255,.08)}
-.nav-left{display:flex; align-items:center; gap:10px}
+.nav-left{display:flex; align-items:center; gap:12px}
 .nav-right a{color:#d6def5; text-decoration:none; margin-left:22px}
 
-/* Logo na navbar */
-.nav-logo{height:36px; width:auto; display:block; filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));}
+/* Logo na navbar — AUMENTADO */
+.nav-logo{height:64px; width:auto; display:block; filter:drop-shadow(0 3px 6px rgba(0,0,0,.35));}
+@media (max-width:768px){ .nav-logo{height:48px;} }
 
 /* Hero YouTube */
 .hero{position:relative; height:100vh; min-height:640px; width:100vw; left:50%; margin-left:-50vw; overflow:hidden}
@@ -154,7 +154,7 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 /* LOGO topo direito (sobre o vídeo) */
 .hero .logo{
   position:absolute; z-index:3; top:18px; right:28px;
-  width: clamp(110px, 12vw, 200px); height:auto;
+  width: clamp(120px, 14vw, 220px); height:auto;
   opacity:.98; filter:drop-shadow(0 6px 14px rgba(0,0,0,.45));
   pointer-events:none;
 }
@@ -172,23 +172,16 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .lead{color:#b9c6e6}
 
 /* MOBILE */
-:root{
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-right: env(safe-area-inset-right, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --safe-left: env(safe-area-inset-left, 0px);
-}
-.navbar{
-  padding: max(12px, calc(12px + var(--safe-top))) max(24px, calc(24px + var(--safe-right))) 12px max(24px, calc(24px + var(--safe-left)));
-}
+:root{ --safe-top: env(safe-area-inset-top, 0px); --safe-right: env(safe-area-inset-right, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); --safe-left: env(safe-area-inset-left, 0px); }
+.navbar{ padding: max(12px, calc(12px + var(--safe-top))) max(24px, calc(24px + var(--safe-right))) 12px max(24px, calc(24px + var(--safe-left))); }
 .cta, .btn{min-height:44px; line-height:1.15; margin-bottom:10px;}
 .hero{height:100svh;}
 @supports (height:100dvh){.hero{height:100dvh;}}
 @media (max-width:768px){
-  .hero .logo{top:calc(12px + var(--safe-top)); right:calc(16px + var(--safe-right)); width:clamp(96px,28vw,160px);}
+  .hero .logo{top:calc(12px + var(--safe-top)); right:calc(16px + var(--safe-right)); width:clamp(96px,28vw,180px);} 
   .hero iframe{width:177.777vh; height:100vh; max-width:300vw;}
   .kicker{font-size:14px;}
-  h1.hero-title{font-size:clamp(28px,8vw,36px);}
+  h1.hero-title{font-size:clamp(28px,8vw,36px);} 
   .hero-sub{font-size:15px; max-width:100%;}
   [data-testid="column"]{width:100%!important; flex:0 0 100%!important;}
   .section{padding:56px 5vw;}
@@ -201,36 +194,18 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .carousel-dots span.active{background:#e6eefc; opacity:1}
 
 .thumbs{display:flex; gap:12px; justify-content:center; margin-top:10px; flex-wrap:wrap}
-.thumb{
-  display:inline-block; width:120px; height:70px; overflow:hidden; border-radius:8px;
-  border:2px solid transparent; opacity:.85; transition:all .2s ease-in-out;
-}
+.thumb{ display:inline-block; width:120px; height:70px; overflow:hidden; border-radius:8px; border:2px solid transparent; opacity:.85; transition:all .2s ease-in-out; }
 .thumb img{width:100%; height:100%; object-fit:cover; display:block}
 .thumb:hover{opacity:1; transform:translateY(-2px)}
 .thumb.active{border-color:#34d399; box-shadow:0 0 0 2px rgba(52,211,153,.35) inset;}
-@media (max-width:768px){
-  .thumb{width:92px; height:56px;}
-}
+@media (max-width:768px){ .thumb{width:92px; height:56px;} }
 
 /* Slide principal com tamanho uniforme */
-.carousel-main{
-  width:100%;
-  height:400px;            /* desktop */
-  object-fit:cover;
-  border-radius:12px;
-  box-shadow:0 8px 28px rgba(0,0,0,.35);
-}
-@media (max-width:768px){
-  .carousel-main{ height:240px; }
-}
+.carousel-main{ width:100%; height:400px; object-fit:cover; border-radius:12px; box-shadow:0 8px 28px rgba(0,0,0,.35); }
+@media (max-width:768px){ .carousel-main{ height:240px; } }
 
 /* Legenda abaixo do slide principal */
-.carousel-caption{
-  text-align:center;
-  color:#b9c6e6;
-  font-size:0.95rem;
-  margin-top:8px;
-}
+.carousel-caption{ text-align:center; color:#b9c6e6; font-size:0.95rem; margin-top:8px; }
 
 /* Parceiros: preservar proporção dos logos */
 .carousel-main.partner{ object-fit:contain; background:rgba(255,255,255,.03); }
@@ -238,15 +213,8 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .thumbs.partner .thumb img{ object-fit:contain; background:transparent; }
 
 /* === Setores: cards com âncoras === */
-.sectors-grid{
-  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:16px; margin-top:18px
-}
-.sector-card{
-  background:rgba(255,255,255,.03);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:16px; padding:16px 18px;
-}
+.sectors-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:18px }
+.sector-card{ background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:16px; padding:16px 18px; }
 .sector-card h3{margin:0 0 8px 0; color:#e6eefc}
 .sector-card p{margin:0 0 8px 0; color:#b9c6e6}
 .sector-card ul{margin:8px 0 0 18px; color:#c7d3f0}
@@ -254,22 +222,15 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 @media (max-width:980px){ .sectors-grid{grid-template-columns:1fr} }
 
 /* === Newsroom === */
-.news-grid{
-  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:16px; margin-top:18px;
-}
-.news-card{
-  background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08);
-  border-radius:16px; overflow:hidden; display:flex; flex-direction:column;
-}
+.news-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:18px; }
+.news-card{ background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; }
 .news-thumb{width:100%; height:160px; object-fit:cover; background:rgba(255,255,255,.02)}
 .news-body{padding:14px 16px}
 .news-title{color:#e6eefc; font-weight:700; margin:0 0 6px 0}
 .news-meta{color:#9fb0d4; font-size:.85rem; margin-bottom:6px}
 .news-summary{color:#cbd6f2; font-size:.95rem; margin-bottom:10px}
 .news-actions{padding:0 16px 14px 16px}
-.news-actions a{display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none;
-  background:#34d399; color:#05131a; font-weight:700}
+.news-actions a{display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none; background:#34d399; color:#05131a; font-weight:700}
 @media (max-width:980px){ .news-grid{grid-template-columns:1fr} }
 </style>
 ''', unsafe_allow_html=True)
@@ -332,7 +293,7 @@ with col_text:
     )
     st.markdown(
         """
-        <p style="color:#b9c6e6; line-height:1.6; font-size:1rem;">
+        <p style=\"color:#b9c6e6; line-height:1.6; font-size:1rem;\">
         We are a startup company that develops cutting-edge technological solutions for the automated analysis of satellite images
         with optical and SAR-type sensors through its <b>DAP Ocean Framework™</b>. Our company is capable of performing automated
         analytics from any supplier of satellite images on the market for the provision of <b>Maritime Domain Awareness (MDA)</b> and
@@ -481,7 +442,6 @@ st.header("Newsroom")
 if not NEWS_ITEMS:
     st.info("Adicione notícias em NEWS_ITEMS no topo do arquivo.")
 else:
-    # Ordena por data (string ISO desc, se informado)
     def sort_key(item): return item.get("date", ""), item.get("title","")
     items = sorted(NEWS_ITEMS, key=sort_key, reverse=True)
 
@@ -574,3 +534,4 @@ if st.button("Enviar e-mail"):
     st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
+
