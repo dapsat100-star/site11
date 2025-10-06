@@ -137,7 +137,7 @@ html, body, [data-testid="stAppViewContainer"]{background:#0b1221; overflow-x:hi
 
 /* Navbar fixa */
 .navbar{position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; justify-content:space-between; align-items:center;
-  padding:8px 28px; background:rgba(8,16,33,.35); backdrop-filter:saturate(160%) blur(10px);
+  padding:8px 8px; background:rgba(8,16,33,.35); backdrop-filter:saturate(160%) blur(10px);
   border-bottom:1px solid rgba(255,255,255,.08)}
 .nav-left{display:flex; align-items:center; gap:12px}
 .nav-right a{color:#d6def5; text-decoration:none; margin-left:22px}
