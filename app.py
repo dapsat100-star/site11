@@ -23,7 +23,7 @@ PARTNER_INTERVAL_SEC  = 3
 
 # <<< LEGENDA MANUAL DA EMPRESA (ordem dos slides) >>>
 EMPRESA_CAPTIONS = [
-    "Empresa Estratégica de Defesa — Certificação do Ministério da Defesa",
+    "Empresa Certificada do Ministério da Defesa",
     "Plataforma Geoespacial DAP ATLAS — Multipropósito, Proprietária e Certificada como Produto Estratégico de Defesa",
     "GeoINT & InSAR — Integridade",
 ]
