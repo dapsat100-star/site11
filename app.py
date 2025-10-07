@@ -420,7 +420,7 @@ st.markdown("""
 st.markdown("""
 <style>
 .parcases-img{
-  width:100%;
+  width:130%;
   max-width:500px;
   height:auto;
   border-radius:12px;
