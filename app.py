@@ -282,7 +282,7 @@ st.markdown(f'''
   <div class="nav-left">{logo_left_tag}</div>
   <div class="nav-right">
     <a href="#empresa">Empresa</a>
-    <a href="#solucao">Solução</a>
+    <a href="#solucao">Soluções</a>
     <a href="#setores">Setores & Aplicações</a>
     <a href="#parceiros">Parceiros & Casos de Sucesso</a>
     <a href="#newsroom">Imprensa</a>
