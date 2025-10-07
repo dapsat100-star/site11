@@ -414,27 +414,41 @@ st.markdown("- InSAR: deformação (mm/mês), mapas de risco e recomendações p
 st.markdown("- GeoINT: camadas contextuais, alertas e dashboards; exportações e integrações por API/CSV.")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ================== PARCEIROS ==================
+# ================== PARCEIROS & CASOS DE SUCESSO (IMAGENS ÚNICAS) ==================
 st.markdown('<div id="parceiros"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
-st.header("Parceiros")
 
-# 👉 escolha aqui o arquivo único a exibir (ex.: um banner ou um logo)
-single_logo_path = "parceiro.png"  # mude para "petrobras_logo_100px.png", "ghgsat_logo_100px.png", etc.
+st.header("Parceiros & Casos de Sucesso")
 
-from pathlib import Path
-if Path(single_logo_path).exists() and Path(single_logo_path).stat().st_size > 0:
-    img_uri = as_data_uri(single_logo_path)
+# ----- Imagem de Parceiros (BlackSky + GHGSat) -----
+partners_img = "parceiros_blacksky_ghgsat.png"  # coloque aqui o nome do arquivo da imagem com os 2 logos
+if Path(partners_img).exists():
+    uri = as_data_uri(partners_img)
     st.markdown(
         f"""
-        <div style="display:flex;justify-content:center;align-items:center;padding:30px 0;">
-            <img src="{img_uri}" alt="Parceiro" style="max-height:300px;width:auto;object-fit:contain;"/>
+        <div style='text-align:center; margin-top:20px; margin-bottom:50px;'>
+            <img src='{uri}' style='max-width:80%; height:auto; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.25);'>
         </div>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
 else:
-    st.info("Adicione a imagem única na pasta do app e atualize o nome em `single_logo_path`.")
+    st.info(f"Adicione a imagem dos parceiros como '{partners_img}' na pasta do app.")
+
+# ----- Imagem do Caso de Sucesso (Petrobras) -----
+success_img = "case_petrobras.png"  # coloque aqui o nome da imagem do case Petrobras
+if Path(success_img).exists():
+    uri2 = as_data_uri(success_img)
+    st.markdown(
+        f"""
+        <div style='text-align:center; margin-top:10px;'>
+            <img src='{uri2}' style='max-width:90%; height:auto; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.25);'>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+else:
+    st.info(f"Adicione a imagem do caso de sucesso como '{success_img}' na pasta do app.")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
