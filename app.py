@@ -444,7 +444,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 partners_img = "solucao1.png"
-success_img  = "case_petrobras.png"
+success_img  = "solucao2.png"
 
 # ====== BLOCO 1 (imagem esquerda / texto direita) ======
 col1a, col1b = st.columns([1,1.2], gap="large")
