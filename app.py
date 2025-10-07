@@ -441,7 +441,7 @@ st.markdown("""
 with st.container():
     col1, col2 = st.columns([1,1], gap="large")
 
-    partners_img = "partners.png"
+    partners_img = "solucao1.png"
     success_img  = "case_petrobras.png"
 
     # Coluna 1 — Parceiros
