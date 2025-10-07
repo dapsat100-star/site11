@@ -480,7 +480,7 @@ with col2a:
     st.markdown(
         """
         <div class='parcases-text'>
-        Em parceria com a Petrobras, conduzimos o primeiro projeto de <b>monitoramento OGMP 2.0 Nível 5</b> do Brasil.<br><br>
+        Empregando imagens de satélites do tipo radar (SAR), combinado à capacidade de emprego de IA, a Plataforma DAP ATLAS, da MAVIPE Sistemas Espaciais, é capaz de detectar derramamento de petróleo no mar dia e noite, em regime de dedicação 24/7</b> do Brasil.<br><br>
         Integramos dados satelitais de alta resolução, inteligência artificial e dashboards georreferenciados para quantificar emissões de metano em instalações onshore e offshore, com precisão e rastreabilidade auditável.
         </div>
         """,
