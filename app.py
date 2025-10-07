@@ -436,8 +436,8 @@ st.markdown("""
 }
 .parcases-caption{
   text-align:center;
-  color:#4b5563;
-  font-size:0.85rem;
+  color:#F5F5F5;
+  font-size:0.95rem;
   margin-top:6px;
 }
 </style>
