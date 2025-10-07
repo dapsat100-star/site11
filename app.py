@@ -440,7 +440,7 @@ st.markdown("""
 }
 .parcapes-caption{
   text-align:center;
-  color:##FFFFFF;
+  color:#FFFF00;
   font-size:0.95rem;
   margin-top:10px;
   line-height:1.4;
