@@ -561,7 +561,7 @@ with st.container():
                 unsafe_allow_html=True
             )
             st.markdown(
-                "<div class='parcapes-caption'>Parceiros estratégicos — BlackSky &amp; GHGSat</div>",
+                "<div class='parcapes-caption'>Provedores de Dados Espacais</div>",
                 unsafe_allow_html=True
             )
         else:
