@@ -415,75 +415,60 @@ st.markdown("- GeoINT: camadas contextuais, alertas e dashboards; exportações 
 st.markdown("</div>", unsafe_allow_html=True)
 
 # ================== PARCEIROS & CASOS DE SUCESSO (LADO A LADO — STREAMLIT COLUMNS) ==================
-st.markdown('<div id="parceiros"></div>', unsafe_allow_html=True)
+# ================== PARCEIROS & CASOS DE SUCESSO (SEÇÃO CORRIGIDA) ==================
+partners_img = "partners.png"          # BlackSky + GHGSat
+success_img  = "case_petrobras.png"    # Petrobras
 
-# Fundo branco só nesta seção usando uma <div> wrapper
-st.markdown("""
-<div class="section partners-cases-section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:72px 8vw;">
-<h2 style="margin-top:0; margin-bottom:8px;">Parceiros & Casos de Sucesso</h2>
-<p style="margin:0 0 16px 0; color:#334155; font-size:0.95rem;">Alianças estratégicas e resultados comprovados em campo.</p>
+p1 = as_data_uri(partners_img) if Path(partners_img).exists() and Path(partners_img).stat().st_size>0 else None
+p2 = as_data_uri(success_img) if Path(success_img).exists() and Path(success_img).stat().st_size>0 else None
+
+st.markdown(f"""
+<div id="parceiros" class="section partners-cases-section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:72px 8vw;">
+  <h2 style="margin-top:0; margin-bottom:8px;">Parceiros &amp; Casos de Sucesso</h2>
+  <p style="margin:0 0 16px 0; color:#334155; font-size:0.95rem;">Alianças estratégicas e resultados comprovados em campo.</p>
+
+  <div class="ps-grid">
+    <div class="ps-item">
+      {f"<img src='{p1}' alt='Parceiros — BlackSky &amp; GHGSat' class='ps-img'/>" if p1 else "<em>Imagem de parceiros não encontrada (partners.png).</em>"}
+      <div class="ps-caption">Parceiros estratégicos — BlackSky &amp; GHGSat</div>
+    </div>
+
+    <div class="ps-item">
+      {f"<img src='{p2}' alt='Caso de Sucesso — Petrobras OGMP 2.0' class='ps-img'/>" if p2 else "<em>Imagem do caso de sucesso não encontrada (case_petrobras.png).</em>"}
+      <div class="ps-caption">
+        Caso de Sucesso — <b>Monitoramento OGMP 2.0 Nível 5 com Petrobras</b><br>
+        Detecção e quantificação de emissões de metano (onshore &amp; offshore), com IA, dados satelitais e dashboards georreferenciados.
+      </div>
+    </div>
+  </div>
 </div>
-""", unsafe_allow_html=True)
 
-# CSS local para imagens e legendas
-st.markdown("""
 <style>
-.parcases-img{
-  width:50%;
-  max-width:520px;
-  height:auto;
-  border-radius:12px;
-  box-shadow:0 8px 24px rgba(0,0,0,.12);
-  display:block;
-  margin:0 auto;
-}
-.parcapes-caption{
-  text-align:center;
-  color:#4b5a7a;
-  font-size:0.95rem;
-  margin-top:10px;
-  line-height:1.4;
-}
+/* garante que nada fique translúcido nesta seção */
+.partners-cases-section, .partners-cases-section * {{ opacity:1 !important; }}
+
+/* grid responsiva lado a lado */
+.ps-grid {{
+  display:flex; flex-wrap:wrap; gap:40px; justify-content:center; align-items:flex-start;
+}}
+
+/* card de cada imagem */
+.ps-item {{ text-align:center; max-width:520px; flex:1 1 340px; }}
+
+/* imagem sem distorção */
+.ps-img {{
+  width:100%; max-width:480px; height:auto;
+  border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.12);
+}}
+
+/* legenda sólida (sem opacidade) */
+.ps-caption {{
+  color:#334155 !important;   /* mais escura */
+  font-size:0.95rem; margin-top:10px; line-height:1.4;
+}}
 </style>
 """, unsafe_allow_html=True)
 
-# Container visual da seção (fundo branco já foi aplicado no wrapper acima)
-with st.container():
-    col1, col2 = st.columns([1,1], gap="large")
-
-    partners_img = "partners.png"
-    success_img  = "case_petrobras.png"
-
-    # Coluna 1 — Parceiros
-    with col1:
-        if Path(partners_img).exists() and Path(partners_img).stat().st_size > 0:
-            st.markdown(
-                f"<img class='parcases-img' src='{as_data_uri(partners_img)}' alt='Parceiros — BlackSky &amp; GHGSat'/>",
-                unsafe_allow_html=True
-            )
-            st.markdown(
-                "<div class='parcapes-caption'>Parceiros estratégicos — BlackSky &amp; GHGSat</div>",
-                unsafe_allow_html=True
-            )
-        else:
-            st.info("Imagem de parceiros não encontrada (partners.png).")
-
-    # Coluna 2 — Caso de Sucesso
-    with col2:
-        if Path(success_img).exists() and Path(success_img).stat().st_size > 0:
-            st.markdown(
-                f"<img class='parcases-img' src='{as_data_uri(success_img)}' alt='Caso de Sucesso — Petrobras OGMP 2.0'/>",
-                unsafe_allow_html=True
-            )
-            st.markdown(
-                """<div class='parcapes-caption'>
-                Caso de Sucesso — <b>Monitoramento OGMP 2.0 Nível 5 com Petrobras</b><br>
-                Detecção e quantificação de emissões de metano (onshore &amp; offshore), com IA, dados satelitais e dashboards georreferenciados.
-                </div>""",
-                unsafe_allow_html=True
-            )
-        else:
-            st.info("Imagem do caso de sucesso não encontrada (case_petrobras.png).")
 
 
 
