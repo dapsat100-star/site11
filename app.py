@@ -420,7 +420,7 @@ st.markdown('<div id="parceiros"></div>', unsafe_allow_html=True)
 
 # Fundo branco só nesta seção usando uma <div> wrapper
 st.markdown("""
-<div class="section partners-cases-section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:72px 8vw;">
+<div class="section partners-cases-section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:36px 8vw;">
 <h2 style="margin-top:0; margin-bottom:8px;">Parceiros & Casos de Sucesso</h2>
 <p style="margin:0 0 16px 0; color:#334155; font-size:0.95rem;">Alianças estratégicas e resultados comprovados em campo.</p>
 </div>
