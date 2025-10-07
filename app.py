@@ -431,7 +431,7 @@ st.markdown("""
 .parcases-text{
   font-size:0.95rem;
   line-height:1.6;
-  color:#334155;
+  color:#F5F5F5;
   padding:8px 16px;
 }
 .parcases-caption{
