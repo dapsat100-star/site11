@@ -416,80 +416,112 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 # ================== PARCEIROS & CASOS DE SUCESSO (LADO A LADO) ==================
 st.markdown('<div id="parceiros"></div>', unsafe_allow_html=True)
-st.markdown('<div class="section">', unsafe_allow_html=True)
+st.markdown('<div class="section partners-cases-section">', unsafe_allow_html=True)
 
 st.header("Parceiros & Casos de Sucesso")
 
-partners_img = "partners.png"
-success_img  = "case_petrobras.png"
+# nomes dos arquivos (na mesma pasta do app.py)
+partners_img = "partners.png"          # imagem com BlackSky + GHGSat
+success_img  = "case_petrobras.png"    # imagem do caso Petrobras
 
-# CSS para centralizar e manter responsivo
+# CSS específico desta seção
 st.markdown('''
 <style>
+/* fundo branco apenas nesta seção */
+.partners-cases-section{
+  background:#ffffff !important;
+  color:#0b1221 !important;
+  border-top:1px solid rgba(0,0,0,.06);
+}
+
+/* layout das duas colunas */
 .partners-success-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 40px;
-  flex-wrap: wrap;              /* empilha no mobile */
-  margin-top: 24px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  gap:40px;
+  flex-wrap:wrap;          /* empilha no mobile */
+  margin-top:24px;
 }
-.partners-success-item {
-  text-align: center;
-  max-width: 420px;
-  flex: 1 1 300px;
+
+/* cada item (img + legenda) */
+.partners-success-item{
+  text-align:center;
+  max-width:520px;
+  flex:1 1 340px;
 }
-.partners-success-item img {
-  width: 100%;
-  max-width: 380px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+
+/* imagens responsivas (sem distorcer) */
+.partners-success-item img{
+  width:100%;
+  max-width:480px;
+  height:auto;
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.12);
 }
-.partners-success-caption {
-  color: #b9c6e6;
-  font-size: 0.95rem;
-  margin-top: 10px;
-  line-height: 1.4;
+
+/* legendas */
+.partners-success-caption{
+  color:#4b5a7a;
+  font-size:0.95rem;
+  margin-top:10px;
+  line-height:1.4;
+}
+
+/* título dentro da seção branca */
+.partners-cases-section h1, 
+.partners-cases-section h2, 
+.partners-cases-section h3, 
+.partners-cases-section .stMarkdown h3 {
+  color:#0b1221 !important;
 }
 </style>
 ''', unsafe_allow_html=True)
 
+# HTML da seção
 html = "<div class='partners-success-container'>"
 
 # Coluna 1 — Parceiros
-if Path(partners_img).exists():
+if Path(partners_img).exists() and Path(partners_img).stat().st_size > 0:
     uri = as_data_uri(partners_img)
     html += f"""
     <div class='partners-success-item'>
-        <img src='{uri}' alt='Parceiros'>
-        <div class='partners-success-caption'>
-            Parceiros estratégicos — BlackSky &amp; GHGSat
-        </div>
+      <img src='{uri}' alt='Parceiros — BlackSky & GHGSat'>
+      <div class='partners-success-caption'>
+        Parceiros estratégicos — BlackSky &amp; GHGSat
+      </div>
     </div>
     """
 else:
-    html += "<div class='partners-success-item'><em>Imagem de parceiros não encontrada.</em></div>"
+    html += """
+    <div class='partners-success-item'>
+      <em>Imagem de parceiros não encontrada (partners.png).</em>
+    </div>
+    """
 
 # Coluna 2 — Caso de Sucesso
-if Path(success_img).exists():
+if Path(success_img).exists() and Path(success_img).stat().st_size > 0:
     uri2 = as_data_uri(success_img)
     html += f"""
     <div class='partners-success-item'>
-        <img src='{uri2}' alt='Caso Petrobras'>
-        <div class='partners-success-caption'>
-            Caso de Sucesso — <b>Monitoramento OGMP 2.0 Nível 5 com Petrobras</b><br>
-            Campanha pioneira de detecção e quantificação de emissões de metano em instalações terrestres e offshore,
-            com integração de IA, dados satelitais e dashboards georreferenciados.
-        </div>
+      <img src='{uri2}' alt='Caso de Sucesso — Petrobras OGMP 2.0'>
+      <div class='partners-success-caption'>
+        Caso de Sucesso — <b>Monitoramento OGMP 2.0 Nível 5 com Petrobras</b><br>
+        Detecção e quantificação de emissões de metano (onshore & offshore), com IA, dados satelitais e dashboards georreferenciados.
+      </div>
     </div>
     """
 else:
-    html += "<div class='partners-success-item'><em>Imagem do caso de sucesso não encontrada.</em></div>"
+    html += """
+    <div class='partners-success-item'>
+      <em>Imagem do caso de sucesso não encontrada (case_petrobras.png).</em>
+    </div>
+    """
 
 html += "</div>"
-
 st.markdown(html, unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 
