@@ -412,7 +412,7 @@ st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
 st.markdown("""
 <div class="section partners-cases-section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:16px 8vw;">
 <h2 style="margin-top:0; margin-bottom:8px;">Solução</h2>
-<p style="margin:0 0 16px 0; color:#334155; font-size:0.95rem;">Alianças estratégicas e resultados comprovados em campo.</p>
+<p style="margin:0 0 16px 0; color:#334155; font-size:0.95rem;">Soluções desenvolvidas para a solução de demandas reais a partir de dados geoespaciais.</p>
 </div>
 """, unsafe_allow_html=True)
 
