@@ -427,7 +427,7 @@ if Path(partners_img).exists():
     st.markdown(
         f"""
         <div style='text-align:center; margin-top:20px; margin-bottom:50px;'>
-            <img src='{uri}' style='max-width:80%; height:auto; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.25);'>
+            <img src='{uri}' style='max-width:50%; height:auto; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.25);'>
             <div style='color:#b9c6e6; font-size:0.95rem; margin-top:8px;'>Parceiros estratégicos — BlackSky & GHGSat</div>
         </div>
         """,
