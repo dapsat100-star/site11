@@ -421,7 +421,7 @@ st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Parceiros & Casos de Sucesso")
 
 # ----- Imagem de Parceiros (BlackSky + GHGSat) -----
-partners_img = "parceiros_blacksky_ghgsat.png"  # imagem com os logos juntos
+partners_img = "partners.png"  # imagem com os logos juntos
 if Path(partners_img).exists():
     uri = as_data_uri(partners_img)
     st.markdown(
