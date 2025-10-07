@@ -405,111 +405,96 @@ with col_img:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ================== SOLUÇÃO ==================
+# ================== SOLUÇÕES (4 linhas x 2 colunas) ==================
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
 
-# Fundo branco só nesta seção
+# Cabeçalho + fundo branco da seção
 st.markdown("""
-<div class="section partners-cases-section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:16px 8vw;">
-<h2 style="margin-top:0; margin-bottom:8px;">Soluções</h2>
-<p style="margin:0 0 16px 0; color:#334155; font-size:0.95rem;">Soluções desenvolvidas para a solução de demandas reais a partir de dados geoespaciais.</p>
+<div class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:24px 8vw;">
+  <h2 style="margin:0 0 8px;">Soluções</h2>
+  <p style="margin:0; color:#334155; font-size:0.98rem;">
+    Quatro ofertas principais — cada uma com resultados e entregáveis claros, prontos para operação.
+  </p>
 </div>
 """, unsafe_allow_html=True)
 
-# CSS local
+# CSS específico desta seção (cores para fundo branco)
 st.markdown("""
 <style>
-.parcases-img{
-  width:130%;
-  max-width:500px;
-  height:auto;
-  border-radius:12px;
-  box-shadow:0 8px 24px rgba(0,0,0,.12);
-  display:block;
-  margin:0 auto;
+.sol-img{
+  width:100%; max-width:520px; height:auto; border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.10); display:block; margin:0 auto;
 }
-.parcases-text{
-  font-size:0.95rem;
-  line-height:1.6;
-  color:#F5F5F5;
-  padding:8px 16px;
-}
-.parcases-caption{
-  text-align:center;
-  color:#F5F5F5;
-  font-size:0.95rem;
-  margin-top:6px;
-}
+.sol-cap{ text-align:center; color:#334155; font-size:0.92rem; margin-top:8px; }
+.sol-title{ font-weight:800; font-size:1.15rem; color:#0b1221; margin:0 0 6px; }
+.sol-text{ font-size:0.98rem; line-height:1.55; color:#334155; margin:6px 0 0; }
+.sol-box{ padding:14px 0 28px; border-bottom:1px dashed rgba(0,0,0,.08); }
 </style>
 """, unsafe_allow_html=True)
 
-partners_img = "solucao1.png"
-success_img  = "solucao2.png"
+# Defina aqui os 4 produtos (título, descrição, imagem e ordem das colunas)
+SOLUTIONS = [
+    {
+        "title": "Relatório Situacional (SITREP) — Óptico + IA",
+        "desc": ("Quadro tático da AOI com principais achados, estimativas e prioridade de ação. "
+                 "Inclui metadados, nível de confiança e recomendação operacional."),
+        "img": "solucao1.png",
+        "caption": "Exemplo de SITREP com destaques geoespaciais",
+        "reverse": False,  # False = imagem esquerda, texto direita
+    },
+    {
+        "title": "Derramamento de Óleo (SAR + IA)",
+        "desc": ("Detecção automática 24/7 em SAR, triagem de falsos positivos, mensuração da área/alongamento "
+                 "e relatório acionável para resposta ambiental."),
+        "img": "solucao2.png",
+        "caption": "Mancha detectada e qualificada em SAR",
+        "reverse": True,   # True = texto esquerda, imagem direita
+    },
+    {
+        "title": "OGMP 2.0 Nível 5 — Metano",
+        "desc": ("Detecção e quantificação por fonte, incerteza, trilhas de auditoria e exportação de evidências. "
+                 "Dashboards, API e relatórios compatíveis com OGMP 2.0."),
+        "img": "solucao3.png",
+        "caption": "Fluxo de quantificação e evidências",
+        "reverse": False,
+    },
+    {
+        "title": "Ativos Críticos & Mudanças (GEOINT/InSAR)",
+        "desc": ("Vigilância de dutos, plantas e áreas sensíveis; detecção de mudanças, expansão irregular e "
+                 "análises InSAR para integridade estrutural."),
+        "img": "solucao4.png",
+        "caption": "Mudanças e alertas priorizados",
+        "reverse": True,
+    },
+]
 
-# ====== BLOCO 1 (imagem esquerda / texto direita) ======
-col1a, col1b = st.columns([1,1.2], gap="large")
-
-with col1a:
-    if Path(partners_img).exists() and Path(partners_img).stat().st_size > 0:
-        st.markdown(
-            f"<img class='parcases-img' src='{as_data_uri(partners_img)}' alt='Relatório MAVIPE'/>",
-            unsafe_allow_html=True
-        )
-        st.markdown(
-            "<div class='parcases-caption'>Relatório Situacional de Derramamento de Óleo</div>",
-            unsafe_allow_html=True
-        )
+# Render das 4 linhas (2 colunas por linha)
+for i, s in enumerate(SOLUTIONS, start=1):
+    st.markdown('<div class="sol-box">', unsafe_allow_html=True)
+    if s["reverse"]:
+        col_text, col_img = st.columns([1.2, 1], gap="large")
     else:
-        st.info("Imagem não encontrada (solucao1.png).")
+        col_img, col_text = st.columns([1, 1.2], gap="large")
 
-with col1b:
-    st.markdown(
-        """
-        <div class='parcases-text'>
-        Nosso sistema de detecção automática utiliza imagens SAR e IA para identificar anomalias associadas a derramamentos de óleo em alto-mar.<br><br>
-        A partir da primeira detecção, geramos relatórios situacionais padronizados e acionáveis, permitindo o planejamento rápido de inspeções e mitigação de impactos ambientais.
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    # Bloco de imagem
+    img_col = col_img if not s["reverse"] else col_img  # só para clareza
+    with img_col:
+        if Path(s["img"]).exists() and Path(s["img"]).stat().st_size > 0:
+            st.markdown(f"<img class='sol-img' src='{as_data_uri(s['img'])}' alt='{s['title']}'/>",
+                        unsafe_allow_html=True)
+            st.markdown(f"<div class='sol-cap'>{s['caption']}</div>", unsafe_allow_html=True)
+        else:
+            st.info(f"Imagem não encontrada ({s['img']}).")
 
-# ====== BLOCO 2 (texto esquerda / imagem direita) ======
-col2a, col2b = st.columns([1.2,1], gap="large")
+    # Bloco de texto
+    txt_col = col_text if s["reverse"] else col_text
+    with txt_col:
+        st.markdown(f"<div class='sol-title'>{s['title']}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='sol-text'>{s['desc']}</div>", unsafe_allow_html=True)
 
-with col2a:
-    st.markdown(
-        """
-        <div class='parcases-text'>
-        Empregando imagens de satélites do tipo radar (SAR), combinado à capacidade de emprego de IA, a Plataforma DAP ATLAS, é capaz de detectar derramamento de petróleo no mar dia e noite, em regime de dedicação 24/7 do Brasil.<br>
-        O Relatório Situacional (SITREP) exibe uma imagem de satélite da Área de Interesse (AOI) como plano de fundo, com as principais características detectadas automaticamente e sobrepostas perfeitamente. À direita da tela, uma tabela dinâmica organiza os dados extraídos pelo nosso processo proprietário de fusão de dados multi-sensor, enquanto uma descrição objetiva no canto inferior fornece aos tomadores de decisão uma visão operacional clara, rápida e acionável do incidente ambiental — muitas vezes permitindo identificar a origem exata do vazamento.
-        </div>
+    st.markdown('</div>', unsafe_allow_html=True)
+# ================== /SOLUÇÕES ==================
 
-        <style>
-        .parcases-text {
-            max-width: 90%;              /* controla a largura para não invadir a outra coluna */
-            margin: 0 auto;              /* centraliza horizontalmente */
-            text-align: justify;         /* justifica o texto */
-            line-height: 1.5;            /* melhora a legibilidade */
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-with col2b:
-    if Path(success_img).exists() and Path(success_img).stat().st_size > 0:
-        st.markdown(
-            f"<img class='parcases-img' src='{as_data_uri(success_img)}' alt='Petrobras OGMP'/>",
-            unsafe_allow_html=True
-        )
-        st.markdown(
-            """<div class='parcases-caption'>
-            Caso de Sucesso — Monitoramento OGMP 2.0 Nível 5 com Petrobras
-            </div>""",
-            unsafe_allow_html=True
-        )
-    else:
-        st.info("Imagem não encontrada (case_petrobras.png).")
 
 
 
