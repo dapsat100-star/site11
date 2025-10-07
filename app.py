@@ -430,7 +430,7 @@ st.markdown("""
 st.markdown("""
 <style>
 .parcases-img{
-  width:30%;
+  width:50%;
   max-width:520px;
   height:auto;
   border-radius:12px;
