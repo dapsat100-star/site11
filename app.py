@@ -414,49 +414,83 @@ st.markdown("- InSAR: deformação (mm/mês), mapas de risco e recomendações p
 st.markdown("- GeoINT: camadas contextuais, alertas e dashboards; exportações e integrações por API/CSV.")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ================== PARCEIROS & CASOS DE SUCESSO (IMAGENS + LEGENDA) ==================
+# ================== PARCEIROS & CASOS DE SUCESSO (LADO A LADO) ==================
 st.markdown('<div id="parceiros"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 
 st.header("Parceiros & Casos de Sucesso")
 
-# ----- Imagem de Parceiros (BlackSky + GHGSat) -----
-partners_img = "partners.png"  # imagem com os logos juntos
+partners_img = "partners.png"
+success_img  = "case_petrobras.png"
+
+# CSS para centralizar e manter responsivo
+st.markdown('''
+<style>
+.partners-success-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;              /* empilha no mobile */
+  margin-top: 24px;
+}
+.partners-success-item {
+  text-align: center;
+  max-width: 420px;
+  flex: 1 1 300px;
+}
+.partners-success-item img {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+}
+.partners-success-caption {
+  color: #b9c6e6;
+  font-size: 0.95rem;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+</style>
+''', unsafe_allow_html=True)
+
+html = "<div class='partners-success-container'>"
+
+# Coluna 1 — Parceiros
 if Path(partners_img).exists():
     uri = as_data_uri(partners_img)
-    st.markdown(
-        f"""
-        <div style='text-align:center; margin-top:20px; margin-bottom:50px;'>
-            <img src='{uri}' style='max-width:30%; height:auto; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.25);'>
-            <div style='color:#b9c6e6; font-size:0.95rem; margin-top:8px;'>Parceiros estratégicos — BlackSky & GHGSat</div>
+    html += f"""
+    <div class='partners-success-item'>
+        <img src='{uri}' alt='Parceiros'>
+        <div class='partners-success-caption'>
+            Parceiros estratégicos — BlackSky &amp; GHGSat
         </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    </div>
+    """
 else:
-    st.info(f"Adicione a imagem dos parceiros como '{partners_img}' na pasta do app.")
+    html += "<div class='partners-success-item'><em>Imagem de parceiros não encontrada.</em></div>"
 
-# ----- Imagem do Caso de Sucesso (Petrobras) -----
-success_img = "case_petrobras.png"  # imagem ilustrativa do case Petrobras
+# Coluna 2 — Caso de Sucesso
 if Path(success_img).exists():
     uri2 = as_data_uri(success_img)
-    st.markdown(
-        f"""
-        <div style='text-align:center; margin-top:20px;'>
-            <img src='{uri2}' style='max-width:30%; height:auto; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.25);'>
-            <div style='color:#b9c6e6; font-size:0.95rem; max-width:800px; margin:10px auto 0; line-height:1.4;'>
-                Caso de Sucesso — <b>Monitoramento OGMP 2.0 Nível 5 com Petrobras</b><br>
-                Campanha pioneira de detecção e quantificação de emissões de metano em instalações terrestres e offshore,
-                com integração de IA, dados satelitais e dashboards georreferenciados.
-            </div>
+    html += f"""
+    <div class='partners-success-item'>
+        <img src='{uri2}' alt='Caso Petrobras'>
+        <div class='partners-success-caption'>
+            Caso de Sucesso — <b>Monitoramento OGMP 2.0 Nível 5 com Petrobras</b><br>
+            Campanha pioneira de detecção e quantificação de emissões de metano em instalações terrestres e offshore,
+            com integração de IA, dados satelitais e dashboards georreferenciados.
         </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    </div>
+    """
 else:
-    st.info(f"Adicione a imagem do caso de sucesso como '{success_img}' na pasta do app.")
+    html += "<div class='partners-success-item'><em>Imagem do caso de sucesso não encontrada.</em></div>"
 
-st.markdown("</div>", unsafe_allow_html=True)
+html += "</div>"
+
+st.markdown(html, unsafe_allow_html=True)
+
 
 
 # ================== NEWSROOM ==================
