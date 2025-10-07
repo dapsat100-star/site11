@@ -480,9 +480,18 @@ with col2a:
     st.markdown(
         """
         <div class='parcases-text'>
-        Empregando imagens de satélites do tipo radar (SAR), combinado à capacidade de emprego de IA, a Plataforma DAP ATLAS, é capaz de detectar derramamento de petróleo no mar dia e noite, em regime de dedicação 24/7</b> do Brasil.<br>
+        Empregando imagens de satélites do tipo radar (SAR), combinado à capacidade de emprego de IA, a Plataforma DAP ATLAS, é capaz de detectar derramamento de petróleo no mar dia e noite, em regime de dedicação 24/7 do Brasil.<br>
         O Relatório Situacional (SITREP) exibe uma imagem de satélite da Área de Interesse (AOI) como plano de fundo, com as principais características detectadas automaticamente e sobrepostas perfeitamente. À direita da tela, uma tabela dinâmica organiza os dados extraídos pelo nosso processo proprietário de fusão de dados multi-sensor, enquanto uma descrição objetiva no canto inferior fornece aos tomadores de decisão uma visão operacional clara, rápida e acionável do incidente ambiental — muitas vezes permitindo identificar a origem exata do vazamento.
         </div>
+
+        <style>
+        .parcases-text {
+            max-width: 90%;              /* controla a largura para não invadir a outra coluna */
+            margin: 0 auto;              /* centraliza horizontalmente */
+            text-align: justify;         /* justifica o texto */
+            line-height: 1.5;            /* melhora a legibilidade */
+        }
+        </style>
         """,
         unsafe_allow_html=True
     )
