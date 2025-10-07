@@ -407,7 +407,8 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 # ================== SOLUÇÃO ==================
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
-# Fundo branco só nesta seção usando uma <div> wrapper
+
+# Fundo branco só nesta seção
 st.markdown("""
 <div class="section partners-cases-section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:16px 8vw;">
 <h2 style="margin-top:0; margin-bottom:8px;">Solução</h2>
@@ -415,65 +416,92 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# CSS local para imagens e legendas
+# CSS local
 st.markdown("""
 <style>
 .parcases-img{
-  width:50%;
-  max-width:520px;
+  width:100%;
+  max-width:420px;
   height:auto;
   border-radius:12px;
   box-shadow:0 8px 24px rgba(0,0,0,.12);
   display:block;
   margin:0 auto;
 }
-.parcapes-caption{
-  text-align:center;
-  color:#F5F5F5;
+.parcases-text{
   font-size:0.95rem;
-  margin-top:10px;
-  line-height:1.4;
+  line-height:1.6;
+  color:#334155;
+  padding:8px 16px;
+}
+.parcases-caption{
+  text-align:center;
+  color:#4b5563;
+  font-size:0.85rem;
+  margin-top:6px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Container visual da seção (fundo branco já foi aplicado no wrapper acima)
-with st.container():
-    col1, col2 = st.columns([1,1], gap="large")
+partners_img = "solucao1.png"
+success_img  = "case_petrobras.png"
 
-    partners_img = "solucao1.png"
-    success_img  = "case_petrobras.png"
+# ====== BLOCO 1 (imagem esquerda / texto direita) ======
+col1a, col1b = st.columns([1,1.2], gap="large")
 
-    # Coluna 1 — Parceiros
-    with col1:
-        if Path(partners_img).exists() and Path(partners_img).stat().st_size > 0:
-            st.markdown(
-                f"<img class='parcases-img' src='{as_data_uri(partners_img)}' alt='Parceiros — BlackSky &amp; GHGSat'/>",
-                unsafe_allow_html=True
-            )
-            st.markdown(
-                "<div class='parcapes-caption'>Relatório Situacional de Derramento de Óleo</div>",
-                unsafe_allow_html=True
-            )
-        else:
-            st.info("Imagem de parceiros não encontrada (partners.png).")
+with col1a:
+    if Path(partners_img).exists() and Path(partners_img).stat().st_size > 0:
+        st.markdown(
+            f"<img class='parcases-img' src='{as_data_uri(partners_img)}' alt='Relatório MAVIPE'/>",
+            unsafe_allow_html=True
+        )
+        st.markdown(
+            "<div class='parcases-caption'>Relatório Situacional de Derramamento de Óleo</div>",
+            unsafe_allow_html=True
+        )
+    else:
+        st.info("Imagem não encontrada (solucao1.png).")
 
-    # Coluna 2 — Caso de Sucesso
-    with col2:
-        if Path(success_img).exists() and Path(success_img).stat().st_size > 0:
-            st.markdown(
-                f"<img class='parcases-img' src='{as_data_uri(success_img)}' alt='Caso de Sucesso — Petrobras OGMP 2.0'/>",
-                unsafe_allow_html=True
-            )
-            st.markdown(
-                """<div class='parcapes-caption'>
-                Caso de Sucesso — <b>Monitoramento OGMP 2.0 Nível 5 com Petrobras</b><br>
-                Detecção e quantificação de emissões de metano (onshore &amp; offshore), com IA, dados satelitais e dashboards georreferenciados.
-                </div>""",
-                unsafe_allow_html=True
-            )
-        else:
-            st.info("Imagem do caso de sucesso não encontrada (case_petrobras.png).")
+with col1b:
+    st.markdown(
+        """
+        <div class='parcases-text'>
+        Nosso sistema de detecção automática utiliza imagens SAR e IA para identificar anomalias associadas a derramamentos de óleo em alto-mar.<br><br>
+        A partir da primeira detecção, geramos relatórios situacionais padronizados e acionáveis, permitindo o planejamento rápido de inspeções e mitigação de impactos ambientais.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# ====== BLOCO 2 (texto esquerda / imagem direita) ======
+col2a, col2b = st.columns([1.2,1], gap="large")
+
+with col2a:
+    st.markdown(
+        """
+        <div class='parcases-text'>
+        Em parceria com a Petrobras, conduzimos o primeiro projeto de <b>monitoramento OGMP 2.0 Nível 5</b> do Brasil.<br><br>
+        Integramos dados satelitais de alta resolução, inteligência artificial e dashboards georreferenciados para quantificar emissões de metano em instalações onshore e offshore, com precisão e rastreabilidade auditável.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+with col2b:
+    if Path(success_img).exists() and Path(success_img).stat().st_size > 0:
+        st.markdown(
+            f"<img class='parcases-img' src='{as_data_uri(success_img)}' alt='Petrobras OGMP'/>",
+            unsafe_allow_html=True
+        )
+        st.markdown(
+            """<div class='parcases-caption'>
+            Caso de Sucesso — Monitoramento OGMP 2.0 Nível 5 com Petrobras
+            </div>""",
+            unsafe_allow_html=True
+        )
+    else:
+        st.info("Imagem não encontrada (case_petrobras.png).")
+
 
 
 # ================== PARCEIROS & CASOS DE SUCESSO (LADO A LADO — STREAMLIT COLUMNS) ==================
