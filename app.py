@@ -428,7 +428,7 @@ if Path(single_logo_path).exists() and Path(single_logo_path).stat().st_size > 0
     st.markdown(
         f"""
         <div style="display:flex;justify-content:center;align-items:center;padding:30px 0;">
-            <img src="{img_uri}" alt="Parceiro" style="max-height:140px;width:auto;object-fit:contain;"/>
+            <img src="{img_uri}" alt="Parceiro" style="max-height:300px;width:auto;object-fit:contain;"/>
         </div>
         """,
         unsafe_allow_html=True
