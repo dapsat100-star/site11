@@ -612,7 +612,6 @@ st.markdown('<div id="newsroom"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Newsroom")
 
-# Lista de notícias com imagem, título, data, resumo e link
 NEWS_ITEMS = [
     {
         "title": "MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano por Satélite",
@@ -623,79 +622,58 @@ NEWS_ITEMS = [
             "em atendimento ao nível L5 (site level) da OGMP 2.0, conforme diretrizes do Programa de Meio Ambiente da ONU."
         ),
         "link": "https://example.com/noticia1",
-        "image": "news1.png"
+        "image": "news1.png",
     },
     {
         "title": "A MAVIPE é Certificada pelo Ministério da Defesa como Empresa Estratégica de Defesa (EED)",
         "date": "2024-12-20",
         "summary": "A certificação do Ministério da Defesa reforça o caráter estratégico das soluções da MAVIPE.",
         "link": "https://example.com/noticia2",
-        "image": "news2.png"
+        "image": "news2.png",
     },
 ]
 
-# CSS aprimorado para imagens da Newsroom
+# CSS
 st.markdown("""
 <style>
 .news-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  gap: 20px;
-  margin-top: 18px;
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(360px,1fr));
+  gap:20px; margin-top:18px;
 }
 .news-card {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 14px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px; overflow:hidden;
+  display:flex; flex-direction:column;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
 }
-.news-thumb {
-  width: 100%;
-  height: 180px;
-  background-color: #ffffff;
-  display: block;
-  overflow: hidden;
-}
-.news-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #ffffff;
-  display: block;
-}
-.news-body { padding: 14px 16px; flex-grow: 1; }
-.news-title { color: #e6eefc; font-weight: 700; margin: 0 0 6px; font-size: 1rem; }
-.news-meta { color: #9fb0d4; font-size: .85rem; margin-bottom: 8px; }
-.news-summary { color: #cbd6f2; font-size: .94rem; margin-bottom: 14px; line-height: 1.4; }
-.news-actions { padding: 0 16px 14px 16px; }
+.news-thumb { width:100%; height:180px; background:#ffffff; overflow:hidden; }
+.news-thumb img { width:100%; height:100%; object-fit:contain; background:#ffffff; display:block; }
+.news-body { padding:14px 16px; flex-grow:1; }
+.news-title { color:#e6eefc; font-weight:700; margin:0 0 6px; font-size:1rem; }
+.news-meta { color:#9fb0d4; font-size:.85rem; margin-bottom:8px; }
+.news-summary { color:#cbd6f2; font-size:.94rem; margin-bottom:14px; line-height:1.4; }
+.news-actions { padding:0 16px 14px 16px; }
 .news-actions a {
-  display: inline-block;
-  padding: 10px 14px;
-  border-radius: 10px;
-  text-decoration: none;
-  background: #34d399;
-  color: #05131a;
-  font-weight: 700;
+  display:inline-block; padding:10px 14px; border-radius:10px;
+  text-decoration:none; background:#34d399; color:#05131a; font-weight:700;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Renderização
+# HTML final (SEM st.code / SEM crases)
 html = '<div class="news-grid">'
 for item in NEWS_ITEMS:
-    img_tag = ""
+    # thumb
     img_path = Path(item["image"])
     if img_path.exists() and img_path.stat().st_size > 0:
-        img_tag = f"<div class='news-thumb'><img src='{as_data_uri(str(img_path))}' alt='news image'/></div>"
+        thumb = f"<div class='news-thumb'><img src='{as_data_uri(str(img_path))}' alt='thumb'/></div>"
     else:
-        img_tag = "<div class='news-thumb' style='background:#fff;'></div>"
-
+        thumb = "<div class='news-thumb' style='background:#ffffff'></div>"
+    # card
     html += f"""
     <div class="news-card">
-      {img_tag}
+      {thumb}
       <div class="news-body">
         <div class="news-title">{item['title']}</div>
         <div class="news-meta">{item['date']}</div>
@@ -707,10 +685,9 @@ for item in NEWS_ITEMS:
     </div>
     """
 html += "</div>"
+
 st.markdown(html, unsafe_allow_html=True)
-
 st.markdown("</div>", unsafe_allow_html=True)
-
 
 
 
