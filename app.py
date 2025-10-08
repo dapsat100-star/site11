@@ -588,6 +588,7 @@ with st.container():
             st.info("Imagem do caso de sucesso não encontrada (case_petrobras.png).")
 
 # ================== 📰 NEWSROOM ==================
+# ================== 📰 NEWSROOM ==================
 st.markdown('<div id="newsroom"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Newsroom")
@@ -613,20 +614,13 @@ NEWS_ITEMS = [
     },
 ]
 
-# CSS (ok manter como está)
 st.markdown("""
 <style>
-.news-grid {
-  display:grid; grid-template-columns:repeat(auto-fit, minmax(360px,1fr));
-  gap:20px; margin-top:18px;
-}
-.news-card {
-  background:rgba(255,255,255,.02);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:14px; overflow:hidden;
-  display:flex; flex-direction:column;
-  box-shadow:0 6px 18px rgba(0,0,0,.25);
-}
+.news-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(360px,1fr));
+  gap:20px; margin-top:18px; }
+.news-card { background:rgba(255,255,255,.02); border:1px solid rgba(255,255,255,.08);
+  border-radius:14px; overflow:hidden; display:flex; flex-direction:column;
+  box-shadow:0 6px 18px rgba(0,0,0,.25); }
 .news-thumb { width:100%; height:180px; background:#ffffff; overflow:hidden; }
 .news-thumb img { width:100%; height:100%; object-fit:contain; background:#ffffff; display:block; }
 .news-body { padding:14px 16px; flex-grow:1; }
@@ -634,14 +628,11 @@ st.markdown("""
 .news-meta { color:#9fb0d4; font-size:.85rem; margin-bottom:8px; }
 .news-summary { color:#cbd6f2; font-size:.94rem; margin-bottom:14px; line-height:1.4; }
 .news-actions { padding:0 16px 14px 16px; }
-.news-actions a {
-  display:inline-block; padding:10px 14px; border-radius:10px;
-  text-decoration:none; background:#34d399; color:#05131a; font-weight:700;
-}
+.news-actions a { display:inline-block; padding:10px 14px; border-radius:10px;
+  text-decoration:none; background:#34d399; color:#05131a; font-weight:700; }
 </style>
 """, unsafe_allow_html=True)
 
-# Render (único)
 cards = ['<div class="news-grid">']
 for item in NEWS_ITEMS:
     img_path = Path(item["image"])
@@ -663,45 +654,12 @@ for item in NEWS_ITEMS:
       </div>
     </div>
     """).strip()
-
     cards.append(card_html)
 
 cards.append("</div>")
 st.markdown("\n".join(cards), unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)  # fecha a .section
 
-# fecha a section AQUI
-st.markdown("</div>", unsafe_allow_html=True)
-# no topo do arquivo, junto dos outros imports
-import textwrap
-
-# ...dentro da seção Newsroom (após CSS)...
-cards = ['<div class="news-grid">']
-for item in NEWS_ITEMS:
-    img_path = Path(item["image"])
-    if img_path.exists() and img_path.stat().st_size > 0:
-        thumb = f"<div class='news-thumb'><img src='{as_data_uri(str(img_path))}' alt='thumb'/></div>"
-    else:
-        thumb = "<div class='news-thumb' style='background:#ffffff'></div>"
-
-    card_html = textwrap.dedent(f"""
-    <div class="news-card">
-      {thumb}
-      <div class="news-body">
-        <div class="news-title">{item['title']}</div>
-        <div class="news-meta">{item['date']}</div>
-        <div class="news-summary">{item['summary']}</div>
-      </div>
-      <div class="news-actions">
-        <a href="{item['link']}" target="_blank" rel="noopener">Ler mais</a>
-      </div>
-    </div>
-    """).strip()
-
-    cards.append(card_html)
-
-cards.append("</div>")
-st.markdown("\n".join(cards), unsafe_allow_html=True)
-# depois disso, feche a section: st.markdown("</div>", unsafe_allow_html=True)
 
 
 
