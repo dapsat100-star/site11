@@ -599,20 +599,28 @@ with st.container():
 
 
 # ================== 📰 NEWSROOM ==================
+# ================== 📰 NEWSROOM ==================
+import re, textwrap, json
+from base64 import b64encode
 from pathlib import Path
-import re, textwrap
 import streamlit as st
+
+# Helper para converter imagens em base64 (exibição inline)
+def as_data_uri(path: str) -> str:
+    p = Path(path)
+    return "data:image/" + p.suffix.replace(".", "") + ";base64," + b64encode(p.read_bytes()).decode()
+
+# Helper para gerar o slug (parte da URL)
+def slugify(s: str) -> str:
+    s = s.lower()
+    s = re.sub(r"[^a-z0-9]+", "-", s)
+    return s.strip("-")
 
 st.markdown('<div id="newsroom"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Newsroom")
 
-# ---- util: slugify
-def slugify(s: str) -> str:
-    s = s.lower()
-    s = re.sub(r'[^a-z0-9]+', '-', s)
-    return s.strip('-')
-
+# ================== 📦 Lista das notícias resumidas ==================
 NEWS_ITEMS = [
     {
         "title": "MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano por Satélite",
@@ -622,42 +630,40 @@ NEWS_ITEMS = [
             "para realizar o monitoramento de metano por satélite aplicado aos ambientes onshore e offshore "
             "em atendimento ao nível L5 (site level) da OGMP 2.0, conforme diretrizes do Programa de Meio Ambiente da ONU."
         ),
-        "link": "https://example.com/noticia1",  # opcional: fonte externa, se existir
+        "link": "https://example.com/noticia1",
         "image": "news1.png",
     },
     {
         "title": "A MAVIPE é Certificada pelo Ministério da Defesa como Empresa Estratégica de Defesa (EED)",
         "date": "2024-12-20",
         "summary": "A certificação do Ministério da Defesa reforça o caráter estratégico das soluções da MAVIPE.",
-        "link": "https://example.com/noticia2",   # opcional
+        "link": "https://example.com/noticia2",
         "image": "news2.png",
     },
 ]
 
-# gera slug pra cada item
+# Gera slugs automáticos
 for it in NEWS_ITEMS:
     it["slug"] = slugify(it["title"])
 
-# (opcional) corpo completo por notícia; se não definir, usará o summary como fallback
-ARTICLE_BODY = {
-    # "mavipe-assina-contrato-com-a-petrobras-para-monitoramento-de-metano-por-satelite": """
-    #     Texto completo da notícia, com parágrafos, bullets, etc.
-    # """,
-    # "a-mavipe-e-certificada-pelo-ministerio-da-defesa-como-empresa-estrategica-de-defesa-eed": """
-    #     Texto completo desta notícia.
-    # """,
-}
+# ================== 📄 Carrega textos completos do arquivo JSON ==================
+ARTICLE_BODY = {}
+json_path = Path("news_articles.json")
+if json_path.exists():
+    with open(json_path, "r", encoding="utf-8") as f:
+        ARTICLE_BODY = json.load(f)
 
-# ---- estilo
+# ================== 💅 Estilos CSS ==================
 st.markdown("""
 <style>
 .news-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(360px,1fr));
   gap:20px; margin-top:18px; }
 .news-card { background:rgba(255,255,255,.02); border:1px solid rgba(255,255,255,.08);
   border-radius:14px; overflow:hidden; display:flex; flex-direction:column;
-  box-shadow:0 6px 18px rgba(0,0,0,.25); }
+  box-shadow:0 6px 18px rgba(0,0,0,.25); transition:transform .2s ease; }
+.news-card:hover { transform:translateY(-3px); }
 .news-thumb { width:100%; height:180px; background:#ffffff; overflow:hidden; }
-.news-thumb img { width:100%; height:100%; object-fit:contain; background:#ffffff; display:block; }
+.news-thumb img { width:100%; height:100%; object-fit:contain; display:block; }
 .news-body { padding:14px 16px; flex-grow:1; }
 .news-title { color:#e6eefc; font-weight:700; margin:0 0 6px; font-size:1rem; }
 .news-meta { color:#9fb0d4; font-size:.85rem; margin-bottom:8px; }
@@ -669,7 +675,8 @@ st.markdown("""
   text-decoration:none; border:1px solid rgba(255,255,255,.25); color:#e6eefc; font-weight:600; }
 .article-wrap { max-width:1000px; margin:8px auto 24px auto; background:rgba(255,255,255,.02);
   border:1px solid rgba(255,255,255,.08); border-radius:14px; box-shadow:0 6px 18px rgba(0,0,0,.25); }
-.article-hero { width:100%; height:320px; background:#fff; overflow:hidden; border-top-left-radius:14px; border-top-right-radius:14px; }
+.article-hero { width:100%; height:320px; background:#fff; overflow:hidden;
+  border-top-left-radius:14px; border-top-right-radius:14px; }
 .article-hero img { width:100%; height:100%; object-fit:contain; }
 .article-body { padding:22px 26px 26px 26px; }
 .article-title { margin:0; color:#e6eefc; font-size:1.6rem; font-weight:800; }
@@ -680,22 +687,22 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ---- router: se existe ?news=slug, mostra a página interna da notícia e sai
+# ================== 🧭 Roteador interno (abre página de notícia) ==================
 qp = st.query_params
 open_slug = qp.get("news", None)
+
 if open_slug:
     item = next((x for x in NEWS_ITEMS if x["slug"] == open_slug), None)
     if item:
-        # botão/anchor de voltar remove o parâmetro 'news'
         st.markdown(f'<p><a class="backlink" href="./#newsroom">← Voltar para a Newsroom</a></p>', unsafe_allow_html=True)
 
-        # hero + corpo
         img_path = Path(item["image"])
         hero = ""
         if img_path.exists() and img_path.stat().st_size > 0:
             hero = f"<div class='article-hero'><img src='{as_data_uri(str(img_path))}' alt='hero'/></div>"
 
-        body = ARTICLE_BODY.get(item["slug"], item["summary"])
+        # Busca texto completo no JSON, senão usa o summary
+        body = ARTICLE_BODY.get(item["slug"], {}).get("body", item["summary"])
 
         article_html = f"""
         <div class="article-wrap">
@@ -712,10 +719,10 @@ if open_slug:
         </div>
         """
         st.markdown(article_html, unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)  # fecha .section
+        st.markdown("</div>", unsafe_allow_html=True)  # fecha a .section
         st.stop()
 
-# ---- grade normal (sem ?news)
+# ================== 🗞️ Grade principal da Newsroom ==================
 cards = ['<div class="news-grid">']
 for item in NEWS_ITEMS:
     img_path = Path(item["image"])
@@ -748,6 +755,7 @@ for item in NEWS_ITEMS:
 cards.append("</div>")
 st.markdown("\n".join(cards), unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)  # fecha a .section
+
 
 
 
