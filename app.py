@@ -478,7 +478,7 @@ SOLUTIONS = [
     },
     {
         "title": "OGMP 2.0 Nível 5 — Metano",
-        "desc": ("Detecção e quantificação por fonte, incerteza, trilhas de auditoria e exportação de evidências. "
+        "desc": ("Com as análises e dados fornecidos pela Plataforma DAP ATLAS, a MAVIPE entrega a seus clientes as informações necessárias para reportar as emissões de metano em nível L5 (site level), conforme os padrões do Oil and Gas Methane Partnership 2.0 (OGMP 2.0), do programa de meio ambiente da Organização das Nações Unidas (ONU), contribuindo para a redução das emissões de gases de efeito estufa. "
                  "Dashboards, API e relatórios compatíveis com OGMP 2.0."),
         "img": "solucao3.png",
         "caption": "Fluxo de quantificação e evidências",
