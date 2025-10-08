@@ -175,16 +175,6 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 #setores{ position:relative; isolation:isolate; }
 #setores, #setores * { opacity:1 !important; } /* elimina heranças opacas */
 
-/* Newsroom */
-.news-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-top:18px; }
-.news-card{ background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; }
-.news-thumb{width:100%; height:160px; object-fit:cover; background:rgba(255,255,255,.02)}
-.news-body{padding:14px 16px}
-.news-title{color:#e6eefc; font-weight:700; margin:0 0 6px 0}
-.news-meta{color:#9fb0d4; font-size:.85rem; margin-bottom:6px}
-.news-summary{color:#cbd6f2; font-size:.95rem; margin-bottom:10px}
-.news-actions{padding:0 16px 14px 16px}
-.news-actions a{display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none; background:#34d399; color:#05131a; font-weight:700}
 
 /* Social (LinkedIn) — ícone menor */
 .social{ display:flex; justify-content:center; margin-top:24px; }
