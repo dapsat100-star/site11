@@ -607,129 +607,110 @@ with st.container():
         else:
             st.info("Imagem do caso de sucesso não encontrada (case_petrobras.png).")
 
-# ================== NEWSROOM (cards com fundo branco) ==================
+# ================== 📰 NEWSROOM ==================
 st.markdown('<div id="newsroom"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section">', unsafe_allow_html=True)
+st.header("Newsroom")
 
-# Cabeçalho da seção (mantém fundo do site; os cards são brancos)
-st.markdown('<div class="section"><h2 style="margin:0;">Newsroom</h2></div>', unsafe_allow_html=True)
+# Lista de notícias com imagem, título, data, resumo e link
+NEWS_ITEMS = [
+    {
+        "title": "MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano por Satélite",
+        "date": "2025-08-26",
+        "summary": (
+            "Em 26 de agosto de 2025, a MAVIPE Sistemas Espaciais assinou contrato com a PETROBRAS "
+            "para realizar o monitoramento de metano por satélite aplicado aos ambientes onshore e offshore "
+            "em atendimento ao nível L5 (site level) da OGMP 2.0, conforme diretrizes do Programa de Meio Ambiente da ONU."
+        ),
+        "link": "https://example.com/noticia1",
+        "image": "news1.png"
+    },
+    {
+        "title": "A MAVIPE é Certificada pelo Ministério da Defesa como Empresa Estratégica de Defesa (EED)",
+        "date": "2024-12-20",
+        "summary": "A certificação do Ministério da Defesa reforça o caráter estratégico das soluções da MAVIPE.",
+        "link": "https://example.com/noticia2",
+        "image": "news2.png"
+    },
+]
 
-# CSS específico da Newsroom
+# CSS aprimorado para imagens da Newsroom
 st.markdown("""
 <style>
-.news-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(380px,1fr));
-  gap:22px;
-  margin: 6px 0 10px 0;
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 20px;
+  margin-top: 18px;
 }
-.news-card{
-  background:#ffffff;                 /* card branco */
-  border:1px solid rgba(0,0,0,.08);
-  border-radius:16px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  box-shadow:0 6px 16px rgba(0,0,0,.18);
-  transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+.news-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
 }
-.news-card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 14px 28px rgba(0,0,0,.24);
-  border-color:rgba(0,0,0,.12);
+.news-thumb {
+  width: 100%;
+  height: 180px;
+  background-color: #ffffff;
+  display: block;
+  overflow: hidden;
 }
-
-/* Área da imagem: fundo branco garante "sem moldura escura" */
-.news-thumb{
-  width:100%;
-  height:220px;              /* ajuste aqui a altura do thumb */
-  object-fit:contain;        /* preserva proporção, centraliza */
-  background:#ffffff !important;
-  display:block;
+.news-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #ffffff;
+  display: block;
 }
-
-.news-body{
-  padding:16px 18px 12px 18px;
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  background:#ffffff;
-  color:#0b1221;
-}
-.news-title{
-  color:#0b1221;
-  font-weight:800;
-  font-size:1.05rem;
-  margin:0 0 6px 0;
-  line-height:1.35;
-}
-.news-meta{
-  color:#64748b;
-  font-size:.88rem;
-  margin-bottom:8px;
-}
-.news-summary{
-  color:#334155;
-  font-size:.95rem;
-  margin-bottom:12px;
-  line-height:1.55;
-}
-.news-actions{ padding:0 18px 18px 18px; }
-.news-actions a{
-  display:inline-block;
-  padding:10px 14px;
-  border-radius:10px;
-  text-decoration:none;
-  background:#34d399;
-  color:#05131a;
-  font-weight:800;
-  transition:background .2s ease, transform .1s ease;
-}
-.news-actions a:hover{ background:#25c184; transform:translateY(-1px); }
-
-@media (max-width:768px){
-  .news-grid{ grid-template-columns:1fr; }
-  .news-thumb{ height:180px; }
+.news-body { padding: 14px 16px; flex-grow: 1; }
+.news-title { color: #e6eefc; font-weight: 700; margin: 0 0 6px; font-size: 1rem; }
+.news-meta { color: #9fb0d4; font-size: .85rem; margin-bottom: 8px; }
+.news-summary { color: #cbd6f2; font-size: .94rem; margin-bottom: 14px; line-height: 1.4; }
+.news-actions { padding: 0 16px 14px 16px; }
+.news-actions a {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  background: #34d399;
+  color: #05131a;
+  font-weight: 700;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# --- Render dos cards ---
-if not NEWS_ITEMS:
-    st.info("Adicione notícias em NEWS_ITEMS no topo do arquivo.")
-else:
-    # ordena por data (desc)
-    items = sorted(NEWS_ITEMS, key=lambda it: (it.get("date",""), it.get("title","")), reverse=True)
+# Renderização
+html = '<div class="news-grid">'
+for item in NEWS_ITEMS:
+    img_tag = ""
+    img_path = Path(item["image"])
+    if img_path.exists() and img_path.stat().st_size > 0:
+        img_tag = f"<div class='news-thumb'><img src='{as_data_uri(str(img_path))}' alt='news image'/></div>"
+    else:
+        img_tag = "<div class='news-thumb' style='background:#fff;'></div>"
 
-    html = ['<div class="news-grid">']
-    for it in items:
-      title   = it.get("title","")
-      date    = it.get("date","")
-      summary = it.get("summary","")
-      link    = it.get("link","#").strip() or "#"
-      img_src = news_thumbnail_src(it.get("image"))  # usa seu helper (converte pra data URI se existir)
-
-      thumb_tag = (f"<img class='news-thumb' src='{img_src}' alt='thumb'/>"
-                   if img_src else "<div class='news-thumb' style='background:#ffffff'></div>")
-
-      html.append(f"""
-      <div class="news-card">
-        {thumb_tag}
-        <div class="news-body">
-          <div>
-            <div class="news-title">{title}</div>
-            <div class="news-meta">{date}</div>
-            <div class="news-summary">{summary}</div>
-          </div>
-        </div>
-        <div class="news-actions">
-          <a href="{link}" target="_blank" rel="noopener">Ler mais</a>
-        </div>
+    html += f"""
+    <div class="news-card">
+      {img_tag}
+      <div class="news-body">
+        <div class="news-title">{item['title']}</div>
+        <div class="news-meta">{item['date']}</div>
+        <div class="news-summary">{item['summary']}</div>
       </div>
-      """)
+      <div class="news-actions">
+        <a href="{item['link']}" target="_blank" rel="noopener">Ler mais</a>
+      </div>
+    </div>
+    """
+html += "</div>"
+st.markdown(html, unsafe_allow_html=True)
 
-    html.append("</div>")
-    st.markdown("".join(html), unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 
