@@ -448,8 +448,8 @@ st.markdown("""
 
 /* textos */
 .sol-cap{ text-align:center; color:#334155; font-size:0.92rem; margin-top:8px; }
-.sol-title{ font-weight:800; font-size:1.15rem; color:#0b1221; margin:0 0 6px; }
-.sol-text{ font-size:0.98rem; line-height:1.55; color:#334155; margin:6px 0 0; }
+.sol-title{ font-weight:800; font-size:1.15rem; color:#FFFFFF; margin:0 0 6px; }
+.sol-text{ font-size:0.98rem; line-height:1.55; color:#FFFFFF; margin:6px 0 0; }
 
 /* wrapper */
 .sol-box{ padding:14px 0 28px; border-bottom:1px dashed rgba(0,0,0,.08); }
