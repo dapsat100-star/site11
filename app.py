@@ -607,13 +607,15 @@ with st.container():
         else:
             st.info("Imagem do caso de sucesso não encontrada (case_petrobras.png).")
 
-
-
 # ================== NEWSROOM ==================
+import textwrap
+from pathlib import Path
+
 st.markdown('<div id="newsroom"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Newsroom")
 
+# CSS da grade de notícias
 st.markdown("""
 <style>
 .news-grid{
@@ -643,83 +645,70 @@ st.markdown("""
   background:#0b1221;
   display:block;
 }
-.news-body{
-  padding:16px 18px;
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-}
-.news-title{
-  color:#e6eefc;
-  font-weight:700;
-  font-size:1.05rem;
-  margin:0 0 6px 0;
-  line-height:1.35;
-}
-.news-meta{color:#9fb0d4;font-size:.88rem;margin-bottom:8px;}
-.news-summary{color:#cbd6f2;font-size:.95rem;margin-bottom:12px;line-height:1.55;}
-.news-actions{padding:0 18px 18px 18px;}
+.news-body{ padding:16px 18px; flex:1; display:flex; flex-direction:column; justify-content:space-between; }
+.news-title{ color:#e6eefc; font-weight:700; font-size:1.05rem; margin:0 0 6px 0; line-height:1.35; }
+.news-meta{ color:#9fb0d4; font-size:.88rem; margin-bottom:8px; }
+.news-summary{ color:#cbd6f2; font-size:.95rem; margin-bottom:12px; line-height:1.55; }
+.news-actions{ padding:0 18px 18px 18px; }
 .news-actions a{
-  display:inline-block;
-  padding:10px 14px;
-  border-radius:10px;
-  text-decoration:none;
-  background:#34d399;
-  color:#05131a;
-  font-weight:700;
-  transition:background .25s ease;
+  display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none;
+  background:#34d399; color:#05131a; font-weight:700; transition:background .25s ease;
 }
-.news-actions a:hover{background:#22c37b;}
-@media (max-width:768px){.news-grid{grid-template-columns:1fr;}}
+.news-actions a:hover{ background:#22c37b; }
+@media (max-width:768px){ .news-grid{ grid-template-columns:1fr; } }
 </style>
 """, unsafe_allow_html=True)
 
-NEWS_ITEMS = [
-    {
-        "title": "MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano",
-        "date": "2025-08-26",
-        "summary": "Em 26 de agosto de 2025, a MAVIPE Sistemas Espaciais assinou contrato com a PETROBRAS para realizar o monitoramento de metano por satélite aplicado aos ambientes onshore e offshore em atendimento ao nível L5 (site level) da OGMP 2.0.",
-        "link": "https://example.com/noticia3",
-        "image": "news1.png",
-    },
-    {
-        "title": "MAVIPE é Certificada como Empresa Estratégica de Defesa (EED)",
-        "date": "2024-12-20",
-        "summary": "A certificação do Ministério da Defesa reforça o caráter estratégico das soluções espaciais e geointeligência da MAVIPE.",
-        "link": "https://example.com/noticia2",
-        "image": "news2.jpg",  # se não existir, ele mostra um placeholder preto
-    },
-]
+# Se já tiver NEWS_ITEMS definido acima, use-o. Caso não, descomente este exemplo:
+# NEWS_ITEMS = [
+#     {"title":"MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano","date":"2025-08-26",
+#      "summary":"Em 26 de agosto de 2025, a MAVIPE Sistemas Espaciais assinou contrato com a PETROBRAS...",
+#      "link":"https://example.com/noticia3","image":"news1.png"},
+#     {"title":"MAVIPE é Certificada como Empresa Estratégica de Defesa (EED)","date":"2024-12-20",
+#      "summary":"A certificação do Ministério da Defesa reforça o caráter estratégico...",
+#      "link":"https://example.com/noticia2","image":"news2.jpg"},
+# ]
 
-html_cards = ['<div class="news-grid">']
-for item in NEWS_ITEMS:
-    img_src = None
-    if Path(item["image"]).exists() and Path(item["image"]).stat().st_size > 0:
-        img_src = as_data_uri(item["image"])
+# Pixel preto 1x1 (fallback) — evita quebrar layout se a imagem não existir
+PIXEL_1x1 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NkYGBgAAAABAABJzQnCgAAAABJRU5ErkJggg=="
+
+# Monta o grid sem indentação inicial (evita bloco de código)
+cards = ['<div class="news-grid">']
+for it in sorted(NEWS_ITEMS, key=lambda x: (x.get("date",""), x.get("title","")), reverse=True):
+    title = it.get("title","")
+    date = it.get("date","")
+    summary = it.get("summary","")
+    link = it.get("link","#")
+    img_path = it.get("image")
+    if img_path and Path(img_path).exists() and Path(img_path).stat().st_size > 0:
+        thumb_src = as_data_uri(img_path)
     else:
-        # fundo preto padrão se imagem ausente
-        img_src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NkYGBgAAAABAABJzQnCgAAAABJRU5ErkJggg=="
+        thumb_src = PIXEL_1x1
 
-    html_cards.append(f"""
+    card = textwrap.dedent(f"""
     <div class="news-card">
-      <img class="news-thumb" src="{img_src}" alt="thumbnail"/>
+      <img class="news-thumb" src="{thumb_src}" alt="thumbnail"/>
       <div class="news-body">
         <div>
-          <div class="news-title">{item['title']}</div>
-          <div class="news-meta">{item['date']}</div>
-          <div class="news-summary">{item['summary']}</div>
+          <div class="news-title">{title}</div>
+          <div class="news-meta">{date}</div>
+          <div class="news-summary">{summary}</div>
         </div>
       </div>
       <div class="news-actions">
-        <a href="{item['link']}" target="_blank" rel="noopener">Ler mais</a>
+        <a href="{link}" target="_blank" rel="noopener">Ler mais</a>
       </div>
     </div>
-    """)
+    """).strip()
 
-html_cards.append("</div>")
-st.markdown("\n".join(html_cards), unsafe_allow_html=True)
+    cards.append(card)
+
+cards.append("</div>")
+st.markdown("\n".join(cards), unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
+
+
+
 
 
 
