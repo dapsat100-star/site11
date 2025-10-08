@@ -35,6 +35,7 @@ EMPRESA_CAPTIONS = [
 
 
 # ================== UTILS ==================
+# ================== UTILS ==================
 def find_first(candidates) -> str | None:
     for name in candidates:
         p = Path(name)
@@ -45,7 +46,7 @@ def find_first(candidates) -> str | None:
 def guess_mime(path: Path) -> str:
     ext = path.suffix.lower()
     if ext == ".png": return "image/png"
-    if ext in (".jpg",".jpeg"): return "image/jpeg"
+    if ext in (".jpg", ".jpeg"): return "image/jpeg"
     if ext == ".svg": return "image/svg+xml"
     return "application/octet-stream"
 
@@ -55,12 +56,13 @@ def as_data_uri(path_str: str) -> str:
     return f"data:{guess_mime(p)};base64,{b64}"
 
 def gather_empresa_images(max_n: int = 2) -> list[str]:
-    base = ["empresa1.jpg","empresa1.jpeg","empresa1.png",
-            "empresa2.jpg","empresa2.jpeg","empresa2.png",
-         
+    base = [
+        "empresa1.jpg", "empresa1.jpeg", "empresa1.png",
+        "empresa2.jpg", "empresa2.jpeg", "empresa2.png",
+    ]
     found = [p for p in base if Path(p).exists() and Path(p).stat().st_size > 0]
     extras = []
-    for pat in ("empresa*.jpg","empresa*.jpeg","empresa*.png"):
+    for pat in ("empresa*.jpg", "empresa*.jpeg", "empresa*.png"):
         for p in sorted(Path(".").glob(pat)):
             if p.is_file() and p.stat().st_size > 0:
                 extras.append(str(p))
@@ -68,19 +70,23 @@ def gather_empresa_images(max_n: int = 2) -> list[str]:
     for p in found + extras:
         if p not in seen:
             ordered.append(p); seen.add(p)
-        if len(ordered) >= max_n: break
+        if len(ordered) >= max_n:
+            break
     return ordered
 
 def gather_partner_images(max_n: int = 24) -> list[str]:
-    patterns = ["parceiro*.png","parceiro*.jpg","parceiro*.jpeg",
-                "certificacao*.png","certificacao*.jpg","certificacao*.jpeg",
-                "logo*.png","logo*.jpg","logo*.jpeg"]
+    patterns = [
+        "parceiro*.png", "parceiro*.jpg", "parceiro*.jpeg",
+        "certificacao*.png", "certificacao*.jpg", "certificacao*.jpeg",
+        "logo*.png", "logo*.jpg", "logo*.jpeg",
+    ]
     results = []
     for pat in patterns:
         for p in sorted(Path(".").glob(pat)):
             if p.is_file() and p.stat().st_size > 0:
                 s = str(p)
-                if s not in results: results.append(s)
+                if s not in results:
+                    results.append(s)
     return results[:max_n]
 
 def get_query_param(name: str, default=None):
@@ -101,7 +107,8 @@ def empresa_caption(idx: int, path_str: str) -> str:
     return caption_from_path(path_str)
 
 def news_thumbnail_src(path_str: str | None) -> str | None:
-    if not path_str: return None
+    if not path_str:
+        return None
     p = Path(path_str)
     return as_data_uri(str(p)) if p.exists() and p.stat().st_size > 0 else None
 
@@ -111,6 +118,7 @@ def render_dots(n: int, active_index: int) -> str:
         cls = "active" if i == active_index else ""
         parts.append(f"<span class='{cls}'></span>")
     return "".join(parts)
+
 
 # ================== CSS (UNIFICADO + HOTFIX) ==================
 st.markdown('''
