@@ -33,16 +33,6 @@ EMPRESA_CAPTIONS = [
     "GeoINT & InSAR — Integridade",
 ]
 
-NEWS_ITEMS = [
-    {"title":"MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano por Satélite","date":"2025-08-26",
-     "summary":"Em 26 de agosto de 2025, a MAVIPE Sistemas Espaciais assinou contrato com a PETROBRAS para realizar o monitoramento de metano por satélite aplicado aos ambientes onshore e offshore em atendimento ao nível L5 (site level) da OGMP 2.0 (Oil And Gas Methane Partnership 2.0), conforme diretrizes do Programa de Meio Ambiente da Organização das Nações Unidas (ONU). ",
-     "link":"https://example.com/noticia3","image":"news3.png"},
-
-   
-    {"title":"A MAVIPE é Certificada pelo Ministério da Defesa como Empresa Estratégica de Defesa (EED)","date":"2024-12-20",
-     "summary":"Monitoramento de deformação em dutos, tanques e taludes.",
-     "link":"https://example.com/noticia2","image":"news2.jpg"},
- ]   
 
 # ================== UTILS ==================
 def find_first(candidates) -> str | None:
