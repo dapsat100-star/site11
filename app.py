@@ -37,7 +37,7 @@ NEWS_ITEMS = [
     {"title":"MAVIPE lança módulo OGMP 2.0 Nível 5","date":"2025-09-15",
      "summary":"Quantificação por fonte, incerteza e Q/C com dashboards e API.",
      "link":"https://example.com/noticia1","image":"news1.jpg"},
-    {"title":"Parceria para InSAR de alta cadência","date":"2025-08-22",
+    {"title":"A MAVIPE é Certificada pelo Ministério da Defesa como Empresa Estratégica de Defesa (EED)","date":"2024-12-20",
      "summary":"Monitoramento de deformação em dutos, tanques e taludes.",
      "link":"https://example.com/noticia2","image":"news2.jpg"},
     {"title":"DAP ATLAS integra alertas marítimos","date":"2025-07-02",
