@@ -476,7 +476,7 @@ SOLUTIONS = [
         "reverse": True,   # imagem à direita
     },
     {
-        "title": "OGMP 2.0 Nível 5 — Metano",
+        "title": "Monitoramento de Metano - OGMP2.0 - Nível 5",
         "desc": (
     "Com as análises e dados fornecidos pela Plataforma DAP ATLAS, a MAVIPE entrega a seus clientes as informações "
     "necessárias para reportar as emissões de metano em nível L5 (site level), conforme os padrões do Oil and Gas Methane "
