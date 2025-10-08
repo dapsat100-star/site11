@@ -418,15 +418,18 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# CSS com hover robusto (classes left/right + overflow visível + !important)
+# ===== CSS robusto (direção na própria IMG) =====
 st.markdown("""
 <style>
-/* evita que o zoom seja cortado por contêineres do Streamlit */
-.block-container, .main, .stMarkdown, .sol-box { overflow: visible !important; }
+/* não cortar o zoom pelos containers do Streamlit */
+.block-container, .main, .stMarkdown, [data-testid="column"], [data-testid="stVerticalBlock"], .element-container {
+  overflow: visible !important;
+}
 
+/* imagem base */
 .sol-img{
   width:100%;
-  max-width:520px;
+  max-width:520px;           /* ajuste se quiser imagens maiores */
   height:auto;
   border-radius:12px;
   box-shadow:0 8px 24px rgba(0,0,0,.10);
@@ -436,26 +439,29 @@ st.markdown("""
   will-change: transform;
 }
 
-/* Marcadores de posição do zoom */
-.sol-box.left  .sol-img:hover{
+/* direções aplicadas NA PRÓPRIA IMG (evita quebras de seletor no Streamlit) */
+.sol-img.sol-left:hover{
   transform-origin: left center !important;
-  transform: scale(1.5) !important;
+  transform: scale(1.40) !important;   /* fator de zoom (ajuste aqui) */
   box-shadow:0 18px 44px rgba(0,0,0,.35);
 }
-.sol-box.right .sol-img:hover{
+.sol-img.sol-right:hover{
   transform-origin: right center !important;
-  transform: scale(1.28) !important;
+  transform: scale(1.40) !important;   /* fator de zoom (ajuste aqui) */
   box-shadow:0 18px 44px rgba(0,0,0,.35);
 }
 
+/* textos */
 .sol-cap{ text-align:center; color:#334155; font-size:0.92rem; margin-top:8px; }
 .sol-title{ font-weight:800; font-size:1.15rem; color:#0b1221; margin:0 0 6px; }
 .sol-text{ font-size:0.98rem; line-height:1.55; color:#334155; margin:6px 0 0; }
+
+/* wrapper de cada solução */
 .sol-box{ padding:14px 0 28px; border-bottom:1px dashed rgba(0,0,0,.08); }
 </style>
 """, unsafe_allow_html=True)
 
-# Defina aqui os 4 produtos (título, descrição, imagem e ordem das colunas)
+# ===== Dados das 4 soluções =====
 SOLUTIONS = [
     {
         "title": "Relatório Situacional (SITREP) — Óptico + IA",
@@ -491,11 +497,12 @@ SOLUTIONS = [
     },
 ]
 
-# Render das 4 linhas (2 colunas por linha) com classe left/right
+# ===== Render (2 colunas por linha) com classe na PRÓPRIA IMG =====
 for i, s in enumerate(SOLUTIONS, start=1):
-    wrapper_class = "left" if not s["reverse"] else "right"
-    st.markdown(f'<div class="sol-box {wrapper_class}">', unsafe_allow_html=True)
+    # wrapper só para espaçamento e divider
+    st.markdown('<div class="sol-box">', unsafe_allow_html=True)
 
+    # ordem das colunas
     if s["reverse"]:
         col_text, col_img = st.columns([1.2, 1], gap="large")
     else:
@@ -505,9 +512,11 @@ for i, s in enumerate(SOLUTIONS, start=1):
     with col_img:
         p = Path(s["img"])
         if p.exists() and p.stat().st_size > 0:
-            # garante que passamos Path para as_data_uri
-            st.markdown(f"<img class='sol-img' src='{as_data_uri(p)}' alt='{s['title']}'/>",
-                        unsafe_allow_html=True)
+            img_dir_class = "sol-left" if not s["reverse"] else "sol-right"
+            st.markdown(
+                f"<img class='sol-img {img_dir_class}' src='{as_data_uri(p)}' alt='{s['title']}'/>",
+                unsafe_allow_html=True
+            )
             st.markdown(f"<div class='sol-cap'>{s['caption']}</div>", unsafe_allow_html=True)
         else:
             st.info(f"Imagem não encontrada ({s['img']}).")
