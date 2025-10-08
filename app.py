@@ -439,7 +439,7 @@ st.markdown("""
 /* Marcadores de posição do zoom */
 .sol-box.left  .sol-img:hover{
   transform-origin: left center !important;
-  transform: scale(1.28) !important;
+  transform: scale(1.5) !important;
   box-shadow:0 18px 44px rgba(0,0,0,.35);
 }
 .sol-box.right .sol-img:hover{
