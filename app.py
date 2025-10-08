@@ -498,7 +498,7 @@ SOLUTIONS = [
         "reverse": False,
     },
     {
-        "title": "Geointeligência - Inteligência , Vigilância e Reconhecimento Espacial",
+        "title": "Inteligência , Vigilância e Reconhecimento Espacial",
         "desc": ("Vigilância de dutos, plantas e áreas sensíveis; detecção de mudanças, expansão irregular e "
                  "análises InSAR para integridade estrutural."),
         "img": "solucao4.png",
