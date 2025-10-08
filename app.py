@@ -671,6 +671,42 @@ st.markdown("\n".join(cards), unsafe_allow_html=True)
 
 # fecha a section AQUI
 st.markdown("</div>", unsafe_allow_html=True)
+# no topo do arquivo, junto dos outros imports
+import textwrap
+
+# ...dentro da seção Newsroom (após CSS)...
+cards = ['<div class="news-grid">']
+for item in NEWS_ITEMS:
+    img_path = Path(item["image"])
+    if img_path.exists() and img_path.stat().st_size > 0:
+        thumb = f"<div class='news-thumb'><img src='{as_data_uri(str(img_path))}' alt='thumb'/></div>"
+    else:
+        thumb = "<div class='news-thumb' style='background:#ffffff'></div>"
+
+    card_html = textwrap.dedent(f"""
+    <div class="news-card">
+      {thumb}
+      <div class="news-body">
+        <div class="news-title">{item['title']}</div>
+        <div class="news-meta">{item['date']}</div>
+        <div class="news-summary">{item['summary']}</div>
+      </div>
+      <div class="news-actions">
+        <a href="{item['link']}" target="_blank" rel="noopener">Ler mais</a>
+      </div>
+    </div>
+    """).strip()
+
+    cards.append(card_html)
+
+cards.append("</div>")
+st.markdown("\n".join(cards), unsafe_allow_html=True)
+# depois disso, feche a section: st.markdown("</div>", unsafe_allow_html=True)
+
+
+
+
+
 
 # ================== SETORES & APLICAÇÕES ==================
 st.markdown("""
