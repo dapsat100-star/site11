@@ -614,32 +614,134 @@ st.markdown('<div id="newsroom"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Newsroom")
 
+# ========= CSS =========
+st.markdown("""
+<style>
+.news-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:22px;
+  margin-top:20px;
+}
+.news-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:16px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition:transform .25s ease, box-shadow .25s ease;
+  box-shadow:0 10px 28px rgba(0,0,0,.35);
+}
+.news-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 18px 44px rgba(0,0,0,.45);
+}
+.news-thumb{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  background:#0b1221;
+}
+.news-body{ padding:16px 18px; flex:1; display:flex; flex-direction:column; justify-content:space-between; }
+.news-title{
+  color:#e6eefc;
+  font-weight:700;
+  font-size:1.05rem;
+  margin:0 0 6px 0;
+  line-height:1.35;
+}
+.news-meta{
+  color:#9fb0d4;
+  font-size:.88rem;
+  margin-bottom:8px;
+}
+.news-summary{
+  color:#cbd6f2;
+  font-size:.95rem;
+  margin-bottom:12px;
+  line-height:1.55;
+}
+.news-actions{
+  padding:0 18px 18px 18px;
+}
+.news-actions a{
+  display:inline-block;
+  padding:10px 14px;
+  border-radius:10px;
+  text-decoration:none;
+  background:#34d399;
+  color:#05131a;
+  font-weight:700;
+  transition:background .25s ease;
+}
+.news-actions a:hover{
+  background:#22c37b;
+}
+@media (max-width:768px){
+  .news-grid{ grid-template-columns:1fr; }
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ========= Conteúdo =========
+NEWS_ITEMS = [
+    {
+        "title": "MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano",
+        "date": "2025-08-26",
+        "summary": "Em 26 de agosto de 2025, a MAVIPE Sistemas Espaciais assinou contrato com a PETROBRAS para realizar o monitoramento de metano por satélite aplicado aos ambientes onshore e offshore em atendimento ao nível L5 (site level) da OGMP 2.0.",
+        "link": "https://example.com/noticia3",
+        "image": "news1.png",  # sua imagem
+    },
+    {
+        "title": "MAVIPE é Certificada como Empresa Estratégica de Defesa (EED)",
+        "date": "2024-12-20",
+        "summary": "A certificação do Ministério da Defesa reforça o caráter estratégico das soluções espaciais e geointeligência da MAVIPE.",
+        "link": "https://example.com/noticia2",
+        "image": "news2.jpg",
+    },
+]
+
+# ========= Render =========
 if not NEWS_ITEMS:
     st.info("Adicione notícias em NEWS_ITEMS no topo do arquivo.")
 else:
     items = sorted(NEWS_ITEMS, key=lambda it: (it.get("date",""), it.get("title","")), reverse=True)
     html = '<div class="news-grid">'
     for it in items:
-        title = it.get("title",""); date = it.get("date","")
-        summary = it.get("summary",""); link = it.get("link","#")
-        img_src = news_thumbnail_src(it.get("image"))
-        thumb = f"<img class='news-thumb' src='{img_src}' alt='thumb'/>" if img_src else "<div class='news-thumb'></div>"
+        title   = it.get("title","")
+        date    = it.get("date","")
+        summary = it.get("summary","")
+        link    = it.get("link","#")
+        img     = it.get("image","")
+
+        # tenta carregar a imagem local
+        img_src = None
+        p = Path(img)
+        if p.exists() and p.stat().st_size > 0:
+            img_src = as_data_uri(str(p))
+
+        thumb_html = f"<img class='news-thumb' src='{img_src}' alt='thumb'/>" if img_src else "<div class='news-thumb'></div>"
         html += f"""
         <div class="news-card">
-          {thumb}
+          {thumb_html}
           <div class="news-body">
-            <div class="news-title">{title}</div>
-            <div class="news-meta">{date}</div>
-            <div class="news-summary">{summary}</div>
+            <div>
+              <div class="news-title">{title}</div>
+              <div class="news-meta">{date}</div>
+              <div class="news-summary">{summary}</div>
+            </div>
           </div>
           <div class="news-actions">
             <a href="{link}" target="_blank" rel="noopener">Ler mais</a>
           </div>
-        </div>"""
+        </div>
+        """
     html += "</div>"
     st.markdown(html, unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
+
 
 # ================== SETORES & APLICAÇÕES ==================
 import textwrap
