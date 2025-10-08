@@ -460,7 +460,7 @@ st.markdown("""
 SOLUTIONS = [
     {
         "title": "Relatório Situacional (SITREP) — Óptico + IA",
-        "desc": ("Quadro tático da AOI com principais achados, estimativas e prioridade de ação. "
+        "desc": ("Empregando imagens de satélites do tipo radar (SAR), combinado à capacidade de emprego de IA, a Plataforma DAP ATLAS, da MAVIPE Sistemas Espaciais, é capaz de detectar derramamento de petróleo no mar dia e noite, em regime de dedicação 24/7. "
                  "Inclui metadados, nível de confiança e recomendação operacional."),
         "img": "solucao1.png",
         "caption": "Exemplo de SITREP com destaques geoespaciais",
