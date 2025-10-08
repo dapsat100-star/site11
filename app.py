@@ -597,11 +597,21 @@ with st.container():
         else:
             st.info("Imagem do caso de sucesso não encontrada (case_petrobras.png).")
 
+
 # ================== 📰 NEWSROOM ==================
-# ================== 📰 NEWSROOM ==================
+from pathlib import Path
+import re, textwrap
+import streamlit as st
+
 st.markdown('<div id="newsroom"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Newsroom")
+
+# ---- util: slugify
+def slugify(s: str) -> str:
+    s = s.lower()
+    s = re.sub(r'[^a-z0-9]+', '-', s)
+    return s.strip('-')
 
 NEWS_ITEMS = [
     {
@@ -612,18 +622,33 @@ NEWS_ITEMS = [
             "para realizar o monitoramento de metano por satélite aplicado aos ambientes onshore e offshore "
             "em atendimento ao nível L5 (site level) da OGMP 2.0, conforme diretrizes do Programa de Meio Ambiente da ONU."
         ),
-        "link": "https://example.com/noticia1",
+        "link": "https://example.com/noticia1",  # opcional: fonte externa, se existir
         "image": "news1.png",
     },
     {
         "title": "A MAVIPE é Certificada pelo Ministério da Defesa como Empresa Estratégica de Defesa (EED)",
         "date": "2024-12-20",
         "summary": "A certificação do Ministério da Defesa reforça o caráter estratégico das soluções da MAVIPE.",
-        "link": "https://example.com/noticia2",
+        "link": "https://example.com/noticia2",   # opcional
         "image": "news2.png",
     },
 ]
 
+# gera slug pra cada item
+for it in NEWS_ITEMS:
+    it["slug"] = slugify(it["title"])
+
+# (opcional) corpo completo por notícia; se não definir, usará o summary como fallback
+ARTICLE_BODY = {
+    # "mavipe-assina-contrato-com-a-petrobras-para-monitoramento-de-metano-por-satelite": """
+    #     Texto completo da notícia, com parágrafos, bullets, etc.
+    # """,
+    # "a-mavipe-e-certificada-pelo-ministerio-da-defesa-como-empresa-estrategica-de-defesa-eed": """
+    #     Texto completo desta notícia.
+    # """,
+}
+
+# ---- estilo
 st.markdown("""
 <style>
 .news-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(360px,1fr));
@@ -637,12 +662,60 @@ st.markdown("""
 .news-title { color:#e6eefc; font-weight:700; margin:0 0 6px; font-size:1rem; }
 .news-meta { color:#9fb0d4; font-size:.85rem; margin-bottom:8px; }
 .news-summary { color:#cbd6f2; font-size:.94rem; margin-bottom:14px; line-height:1.4; }
-.news-actions { padding:0 16px 14px 16px; }
-.news-actions a { display:inline-block; padding:10px 14px; border-radius:10px;
+.news-actions { padding:0 16px 14px 16px; display:flex; gap:10px; flex-wrap:wrap; }
+.button-primary { display:inline-block; padding:10px 14px; border-radius:10px;
   text-decoration:none; background:#34d399; color:#05131a; font-weight:700; }
+.button-ghost { display:inline-block; padding:9px 13px; border-radius:10px;
+  text-decoration:none; border:1px solid rgba(255,255,255,.25); color:#e6eefc; font-weight:600; }
+.article-wrap { max-width:1000px; margin:8px auto 24px auto; background:rgba(255,255,255,.02);
+  border:1px solid rgba(255,255,255,.08); border-radius:14px; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+.article-hero { width:100%; height:320px; background:#fff; overflow:hidden; border-top-left-radius:14px; border-top-right-radius:14px; }
+.article-hero img { width:100%; height:100%; object-fit:contain; }
+.article-body { padding:22px 26px 26px 26px; }
+.article-title { margin:0; color:#e6eefc; font-size:1.6rem; font-weight:800; }
+.article-meta { color:#9fb0d4; margin:6px 0 16px 0; }
+.article-text { color:#cbd6f2; font-size:1.05rem; line-height:1.6; }
+.article-actions { display:flex; gap:10px; margin-top:18px; }
+.backlink { text-decoration:none; color:#9fb0d4; }
 </style>
 """, unsafe_allow_html=True)
 
+# ---- router: se existe ?news=slug, mostra a página interna da notícia e sai
+qp = st.query_params
+open_slug = qp.get("news", None)
+if open_slug:
+    item = next((x for x in NEWS_ITEMS if x["slug"] == open_slug), None)
+    if item:
+        # botão/anchor de voltar remove o parâmetro 'news'
+        st.markdown(f'<p><a class="backlink" href="./#newsroom">← Voltar para a Newsroom</a></p>', unsafe_allow_html=True)
+
+        # hero + corpo
+        img_path = Path(item["image"])
+        hero = ""
+        if img_path.exists() and img_path.stat().st_size > 0:
+            hero = f"<div class='article-hero'><img src='{as_data_uri(str(img_path))}' alt='hero'/></div>"
+
+        body = ARTICLE_BODY.get(item["slug"], item["summary"])
+
+        article_html = f"""
+        <div class="article-wrap">
+          {hero}
+          <div class="article-body">
+            <h2 class="article-title">{item['title']}</h2>
+            <div class="article-meta">{item['date']}</div>
+            <div class="article-text">{body}</div>
+            <div class="article-actions">
+              <a class="button-primary" href="./#newsroom">Voltar</a>
+              {f"<a class='button-ghost' href='{item['link']}' target='_blank' rel='noopener'>Fonte externa</a>" if item.get('link') else ""}
+            </div>
+          </div>
+        </div>
+        """
+        st.markdown(article_html, unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)  # fecha .section
+        st.stop()
+
+# ---- grade normal (sem ?news)
 cards = ['<div class="news-grid">']
 for item in NEWS_ITEMS:
     img_path = Path(item["image"])
@@ -651,16 +724,22 @@ for item in NEWS_ITEMS:
     else:
         thumb = "<div class='news-thumb' style='background:#ffffff'></div>"
 
+    internal_href = f"?news={item['slug']}#newsroom"
+    external_btn = f"<a class='button-ghost' href='{item['link']}' target='_blank' rel='noopener'>Fonte externa</a>" if item.get('link') else ""
+
     card_html = textwrap.dedent(f"""
     <div class="news-card">
-      {thumb}
-      <div class="news-body">
-        <div class="news-title">{item['title']}</div>
-        <div class="news-meta">{item['date']}</div>
-        <div class="news-summary">{item['summary']}</div>
-      </div>
+      <a href="{internal_href}" style="text-decoration:none;color:inherit">
+        {thumb}
+        <div class="news-body">
+          <div class="news-title">{item['title']}</div>
+          <div class="news-meta">{item['date']}</div>
+          <div class="news-summary">{item['summary']}</div>
+        </div>
+      </a>
       <div class="news-actions">
-        <a href="{item['link']}" target="_blank" rel="noopener">Ler mais</a>
+        <a class="button-primary" href="{internal_href}">Ler mais</a>
+        {external_btn}
       </div>
     </div>
     """).strip()
@@ -669,6 +748,7 @@ for item in NEWS_ITEMS:
 cards.append("</div>")
 st.markdown("\n".join(cards), unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)  # fecha a .section
+
 
 
 
