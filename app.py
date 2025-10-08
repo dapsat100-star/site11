@@ -475,7 +475,7 @@ SOLUTIONS = [
     },
     {
         "title": "Derramamento de Óleo no Mar",
-      desc": (
+      "desc": (
             "<ul style='margin:.4rem 0 0 1.1rem'>"
             "<li>Parceria com a canadense GHGSat, líder mundial em satélites SWIR.</li>"
             "<li>Detecção e medição de plumas de metano em ambientes onshore e offshore.</li>"
