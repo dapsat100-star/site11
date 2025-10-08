@@ -35,7 +35,7 @@ EMPRESA_CAPTIONS = [
 
 NEWS_ITEMS = [
     {"title":"MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano","date":"2025-08-26",
-     "summary":"Detecção de navios não colaborativos, spoofing e rendezvous.",
+     "summary":"Em 26 de agosto de 2025, a MAVIPE Sistemas Espaciais assinou contrato com a PETROBRAS para realizar o monitoramento de metano por satélite aplicado aos ambientes onshore e offshore em atendimento ao nível L5 (site level) da OGMP 2.0 (Oil And Gas Methane Partnership 2.0), conforme diretrizes do Programa de Meio Ambiente da Organização das Nações Unidas (ONU). ",
      "link":"https://example.com/noticia3","image":"news3.png"},
 
    
