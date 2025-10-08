@@ -605,12 +605,12 @@ from base64 import b64encode
 from pathlib import Path
 import streamlit as st
 
-# Helper para converter imagens em base64 (exibição inline)
+# --- Helper: converte imagens para base64 (exibição inline)
 def as_data_uri(path: str) -> str:
     p = Path(path)
     return "data:image/" + p.suffix.replace(".", "") + ";base64," + b64encode(p.read_bytes()).decode()
 
-# Helper para gerar o slug (parte da URL)
+# --- Helper: cria slug (usado na URL interna)
 def slugify(s: str) -> str:
     s = s.lower()
     s = re.sub(r"[^a-z0-9]+", "-", s)
@@ -620,40 +620,43 @@ st.markdown('<div id="newsroom"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Newsroom")
 
-# ================== 📦 Lista das notícias resumidas ==================
+# ================== 🗞️ Lista de notícias ==================
 NEWS_ITEMS = [
     {
         "title": "MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano por Satélite",
         "date": "2025-08-26",
         "summary": (
             "Em 26 de agosto de 2025, a MAVIPE Sistemas Espaciais assinou contrato com a PETROBRAS "
-            "para realizar o monitoramento de metano por satélite aplicado aos ambientes onshore e offshore "
-            "em atendimento ao nível L5 (site level) da OGMP 2.0, conforme diretrizes do Programa de Meio Ambiente da ONU."
+            "para realizar o monitoramento de metano por satélite aplicado aos ambientes onshore e offshore, "
+            "em conformidade com o nível L5 (site level) da OGMP 2.0."
         ),
-        "link": "https://example.com/noticia1",
+        "link": "",  # vazio → sem botão de fonte externa
         "image": "news1.png",
     },
     {
         "title": "A MAVIPE é Certificada pelo Ministério da Defesa como Empresa Estratégica de Defesa (EED)",
         "date": "2024-12-20",
-        "summary": "A certificação do Ministério da Defesa reforça o caráter estratégico das soluções da MAVIPE.",
-        "link": "https://example.com/noticia2",
+        "summary": (
+            "A certificação do Ministério da Defesa reforça o caráter estratégico das soluções da MAVIPE "
+            "e consolida sua atuação no ecossistema espacial e de defesa."
+        ),
+        "link": "",  # também sem fonte externa
         "image": "news2.png",
     },
 ]
 
-# Gera slugs automáticos
+# --- Gera slug automático
 for it in NEWS_ITEMS:
     it["slug"] = slugify(it["title"])
 
-# ================== 📄 Carrega textos completos do arquivo JSON ==================
+# ================== 📄 Carrega textos completos de um JSON externo ==================
 ARTICLE_BODY = {}
 json_path = Path("news_articles.json")
 if json_path.exists():
     with open(json_path, "r", encoding="utf-8") as f:
         ARTICLE_BODY = json.load(f)
 
-# ================== 💅 Estilos CSS ==================
+# ================== 💅 CSS ==================
 st.markdown("""
 <style>
 .news-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(360px,1fr));
@@ -687,7 +690,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ================== 🧭 Roteador interno (abre página de notícia) ==================
+# ================== 🧭 Router interno (abre página da notícia) ==================
 qp = st.query_params
 open_slug = qp.get("news", None)
 
@@ -701,7 +704,6 @@ if open_slug:
         if img_path.exists() and img_path.stat().st_size > 0:
             hero = f"<div class='article-hero'><img src='{as_data_uri(str(img_path))}' alt='hero'/></div>"
 
-        # Busca texto completo no JSON, senão usa o summary
         body = ARTICLE_BODY.get(item["slug"], {}).get("body", item["summary"])
 
         article_html = f"""
@@ -713,16 +715,15 @@ if open_slug:
             <div class="article-text">{body}</div>
             <div class="article-actions">
               <a class="button-primary" href="./#newsroom">Voltar</a>
-              {f"<a class='button-ghost' href='{item['link']}' target='_blank' rel='noopener'>Fonte externa</a>" if item.get('link') else ""}
             </div>
           </div>
         </div>
         """
         st.markdown(article_html, unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)  # fecha a .section
+        st.markdown("</div>", unsafe_allow_html=True)
         st.stop()
 
-# ================== 🗞️ Grade principal da Newsroom ==================
+# ================== 📰 Grade principal ==================
 cards = ['<div class="news-grid">']
 for item in NEWS_ITEMS:
     img_path = Path(item["image"])
@@ -732,8 +733,6 @@ for item in NEWS_ITEMS:
         thumb = "<div class='news-thumb' style='background:#ffffff'></div>"
 
     internal_href = f"?news={item['slug']}#newsroom"
-    external_btn = f"<a class='button-ghost' href='{item['link']}' target='_blank' rel='noopener'>Fonte externa</a>" if item.get('link') else ""
-
     card_html = textwrap.dedent(f"""
     <div class="news-card">
       <a href="{internal_href}" style="text-decoration:none;color:inherit">
@@ -746,7 +745,6 @@ for item in NEWS_ITEMS:
       </a>
       <div class="news-actions">
         <a class="button-primary" href="{internal_href}">Ler mais</a>
-        {external_btn}
       </div>
     </div>
     """).strip()
@@ -754,7 +752,8 @@ for item in NEWS_ITEMS:
 
 cards.append("</div>")
 st.markdown("\n".join(cards), unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)  # fecha a .section
+st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 
