@@ -406,6 +406,7 @@ with col_img:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ================== SOLUÇÕES (4 linhas x 2 colunas) ==================
+# ================== SOLUÇÕES (4 linhas x 2 colunas) ==================
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
 
 # Cabeçalho + fundo branco da seção
@@ -418,12 +419,17 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# CSS específico desta seção (cores para fundo branco)
+# CSS específico desta seção (cores para fundo branco + efeito hover)
 st.markdown("""
 <style>
 .sol-img{
   width:100%; max-width:520px; height:auto; border-radius:12px;
   box-shadow:0 8px 24px rgba(0,0,0,.10); display:block; margin:0 auto;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.sol-img:hover{
+  transform: scale(1.08); /* zoom-in suave ao passar o mouse */
+  box-shadow:0 14px 36px rgba(0,0,0,.25);
 }
 .sol-cap{ text-align:center; color:#334155; font-size:0.92rem; margin-top:8px; }
 .sol-title{ font-weight:800; font-size:1.15rem; color:#0b1221; margin:0 0 6px; }
@@ -440,7 +446,7 @@ SOLUTIONS = [
                  "Inclui metadados, nível de confiança e recomendação operacional."),
         "img": "solucao1.png",
         "caption": "Exemplo de SITREP com destaques geoespaciais",
-        "reverse": False,  # False = imagem esquerda, texto direita
+        "reverse": False,
     },
     {
         "title": "Derramamento de Óleo (SAR + IA)",
@@ -448,7 +454,7 @@ SOLUTIONS = [
                  "e relatório acionável para resposta ambiental."),
         "img": "solucao2.png",
         "caption": "Mancha detectada e qualificada em SAR",
-        "reverse": True,   # True = texto esquerda, imagem direita
+        "reverse": True,
     },
     {
         "title": "OGMP 2.0 Nível 5 — Metano",
@@ -477,8 +483,7 @@ for i, s in enumerate(SOLUTIONS, start=1):
         col_img, col_text = st.columns([1, 1.2], gap="large")
 
     # Bloco de imagem
-    img_col = col_img if not s["reverse"] else col_img  # só para clareza
-    with img_col:
+    with col_img:
         if Path(s["img"]).exists() and Path(s["img"]).stat().st_size > 0:
             st.markdown(f"<img class='sol-img' src='{as_data_uri(s['img'])}' alt='{s['title']}'/>",
                         unsafe_allow_html=True)
@@ -487,13 +492,12 @@ for i, s in enumerate(SOLUTIONS, start=1):
             st.info(f"Imagem não encontrada ({s['img']}).")
 
     # Bloco de texto
-    txt_col = col_text if s["reverse"] else col_text
-    with txt_col:
+    with col_text:
         st.markdown(f"<div class='sol-title'>{s['title']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='sol-text'>{s['desc']}</div>", unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
-# ================== /SOLUÇÕES ==================
+
 
 
 
