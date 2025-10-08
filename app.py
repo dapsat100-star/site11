@@ -30,7 +30,7 @@ PARTNER_INTERVAL_SEC  = 3
 EMPRESA_CAPTIONS = [
     "Empresa Certificada do Ministério da Defesa",
     "Plataforma Geoespacial DAP ATLAS — Multipropósito, Proprietária e Certificada como Produto Estratégico de Defesa",
-    "GeoINT & InSAR — Integridade",
+    "GeointeligÇencia — Inteligência, VigilÇancia e Reconhecimento",
 ]
 
 
