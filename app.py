@@ -40,7 +40,7 @@ NEWS_ITEMS = [
     {"title":"A MAVIPE é Certificada pelo Ministério da Defesa como Empresa Estratégica de Defesa (EED)","date":"2024-12-20",
      "summary":"Monitoramento de deformação em dutos, tanques e taludes.",
      "link":"https://example.com/noticia2","image":"news2.jpg"},
-    {"title":"DAP ATLAS integra alertas marítimos","date":"2025-07-02",
+    {"title":"MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano","date":"2025-08-26",
      "summary":"Detecção de navios não colaborativos, spoofing e rendezvous.",
      "link":"https://example.com/noticia3","image":"news3.png"},
 ]
