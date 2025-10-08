@@ -697,6 +697,7 @@ for item in NEWS_ITEMS:
 
 cards.append("</div>")
 st.markdown("\n".join(cards), unsafe_allow_html=True)
+
 # ================== SETORES & APLICAÇÕES ==================
 st.markdown("""
 <style>
