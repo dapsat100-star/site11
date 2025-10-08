@@ -54,10 +54,10 @@ def as_data_uri(path_str: str) -> str:
     b64 = base64.b64encode(p.read_bytes()).decode("utf-8")
     return f"data:{guess_mime(p)};base64,{b64}"
 
-def gather_empresa_images(max_n: int = 3) -> list[str]:
+def gather_empresa_images(max_n: int = 2) -> list[str]:
     base = ["empresa1.jpg","empresa1.jpeg","empresa1.png",
             "empresa2.jpg","empresa2.jpeg","empresa2.png",
-            "empresa3.jpg","empresa3.jpeg","empresa3.png"]
+         
     found = [p for p in base if Path(p).exists() and Path(p).stat().st_size > 0]
     extras = []
     for pat in ("empresa*.jpg","empresa*.jpeg","empresa*.png"):
