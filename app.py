@@ -459,46 +459,48 @@ st.markdown("""
 # ===== Dados das 4 soluções =====
 SOLUTIONS = [
     {
-        "title": " Monitoramento de Metano - OGMP2.0 - Nível 5 ",
-st.markdown("""
-"desc": (
-    "• Parceria com a canadense GHGSat, líder mundial em satélites SWIR.\n"
-    "• Detecção e medição de plumas de metano em ambientes onshore e offshore.\n"
-    "• Dashboards, APIs e relatórios compatíveis com OGMP 2.0 (ONU).\n"
-    "• Permite o reporte em nível L5 (site level).\n"
-    "• Apoia empresas na conquista do Selo Gold Standard em gestão de metano."
-),
-
-
-
-  "img": "solucao1.png",     
-        "caption": "Exemplo de Relatório Situacional para Derrame de Óleo",
-        "reverse": False,  # imagem à esquerda
+        "title": "Monitoramento de Metano — OGMP 2.0 (Nível 5)",
+        "desc": (
+            "<ul style='margin:.4rem 0 0 1.1rem'>"
+            "<li>Parceria com a canadense GHGSat, líder mundial em satélites SWIR.</li>"
+            "<li>Detecção e medição de plumas de metano em ambientes onshore e offshore.</li>"
+            "<li>Dashboards, APIs e relatórios compatíveis com OGMP 2.0 (ONU).</li>"
+            "<li>Permite o reporte em nível L5 (site level).</li>"
+            "<li>Apoia empresas na conquista do Selo Gold Standard em gestão de metano.</li>"
+            "</ul>"
+        ),
+        "img": "solucao1.png",
+        "caption": "Exemplo de Relatório de Metano (OGMP 2.0)",
+        "reverse": False,
     },
     {
         "title": "Derramamento de Óleo no Mar",
-        "desc": ("Empregando imagens de satélites do tipo radar (SAR), combinado à capacidade de emprego de IA, a Plataforma DAP ATLAS, da MAVIPE Sistemas Espaciais, é capaz de detectar derramamento de petróleo no mar dia e noite, em regime de dedicação 24/7. "        
-                 "Inclui metadados, nível de confiança e recomendação operacional."
-                  "O Relatório Situacional (SITREP) exibe uma imagem de satélite da Área de Interesse (AOI) como plano de fundo, com as principais características detectadas automaticamente e sobrepostas perfeitamente."
-                  "Os dados relevantes, extraídos pelo sofisticado processo de fusão de dados, são então plotados em uma tabela no lado direito da tela, acompanhados por uma descrição concisa no canto inferior direito, fornecendo aos tomadores de decisão uma visão geral clara e prática do dano ambiental e, frequentemente, identificando a fonte causadora."),
-        
-
+        "desc": (
+            "Empregando imagens de satélites do tipo radar (SAR), combinadas à IA, "
+            "a Plataforma DAP ATLAS detecta derramamento de petróleo no mar dia e noite, 24/7. "
+            "Inclui metadados, nível de confiança e recomendação operacional. "
+            "O Relatório Situacional (SITREP) exibe a imagem de satélite da Área de Interesse (AOI) "
+            "com as principais características detectadas automaticamente e sobrepostas. "
+            "Os dados relevantes são apresentados em tabela com uma descrição concisa para apoiar a resposta ambiental "
+            "e, frequentemente, identificar a fonte causadora."
+        ),
         "img": "solucao2.png",
         "caption": "Tela da plataforma DAP ATLAS",
-        "reverse": True,   # imagem à direita
+        "reverse": True,
     },
     {
-        "title": "Deteccção de Mudanças",
-                "desc": ("Detecção automática de mudanças utilizano imagens ópticas de altíssima resolução."), 
-        
+        "title": "Detecção de Mudanças",
+        "desc": "Detecção automática de mudanças utilizando imagens ópticas de altíssima resolução.",
         "img": "solucao3.png",
         "caption": "Fluxo de quantificação e evidências",
         "reverse": False,
     },
     {
-        "title": "Inteligência , Vigilância e Reconhecimento Espacial",
-        "desc": ("Vigilância de dutos, plantas e áreas sensíveis; detecção de mudanças, expansão irregular e "
-                 "análises InSAR para integridade estrutural."),
+        "title": "Inteligência, Vigilância e Reconhecimento (ISR)",
+        "desc": (
+            "Vigilância de dutos, plantas e áreas sensíveis; detecção de mudanças e expansão irregular; "
+            "análises InSAR para integridade estrutural."
+        ),
         "img": "solucao4.png",
         "caption": "Mudanças e alertas priorizados",
         "reverse": True,
