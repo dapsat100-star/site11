@@ -757,6 +757,7 @@ st.markdown(html, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ================== CONTATO ==================
+# ================== CONTATO ==================
 st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Agendar demo")
@@ -774,6 +775,27 @@ if st.button("Enviar e-mail"):
     subject = "MAVIPE — Agendar demo"
     body = f"Nome: {nome}\\nEmail: {email}\\nOrg: {org}\\nTelefone: {phone}\\nMensagem:\\n{msg}"
     st.success("Clique abaixo para abrir seu e-mail:")
-    st.markdown(f"[Abrir e-mail](mailto:contato@dapsat.com?subject={quote(subject)}&body={quote(body)})")
+    st.markdown(f"[Abrir e-mail](mailto:{MAVIPE_EMAIL}?subject={quote(subject)}&body={quote(body)})")
+
+# —— Infos fixas abaixo do formulário ——
+st.markdown("""
+<style>
+.contact-card{
+  margin-top:18px; padding:16px 18px; border-radius:12px;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 8px 24px rgba(0,0,0,.35); color:#e6eefc;
+}
+.contact-card h4{ margin:0 0 8px 0; font-size:1.05rem; font-weight:800; color:#fff; }
+.contact-item{ margin:.25rem 0; color:#cbd6f2; }
+.contact-item a{ color:#9fd8c8; text-decoration:none; }
+.contact-item a:hover{ text-decoration:underline; }
+</style>
+<div class="contact-card">
+  <h4>Informações de contato</h4>
+  <div class="contact-item"><strong>Endereço:</strong> """ + (globals().get("MAVIPE_ADDRESS") or "Preencha o endereço da MAVIPE") + """</div>
+  <div class="contact-item"><strong>E-mail:</strong> <a href="mailto:""" + (globals().get("MAVIPE_EMAIL") or "contato@dapsat.com") + """">""" + (globals().get("MAVIPE_EMAIL") or "contato@dapsat.com") + """</a></div>
+</div>
+""", unsafe_allow_html=True)
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
+
