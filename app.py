@@ -498,7 +498,7 @@ SOLUTIONS = [
         "reverse": False,
     },
     {
-        "title": "Ativos Críticos & Mudanças (GEOINT/InSAR)",
+        "title": "GeointeligÇencia - Inteligência , Vigilância e Reconhecimento Espacial",
         "desc": ("Vigilância de dutos, plantas e áreas sensíveis; detecção de mudanças, expansão irregular e "
                  "análises InSAR para integridade estrutural."),
         "img": "solucao4.png",
