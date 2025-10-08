@@ -475,11 +475,8 @@ SOLUTIONS = [
     "(L5, site level), ou seja, top-down mediante o emprego das análises padronizadas de dados satelitais fornecidas pela MAVIPE "
     "a todos os seus clientes. "
     "Dashboards, API e relatórios compatíveis com OGMP 2.0."
-),
-
-
-        
-       
+),       
+  "img": "solucao1.png",     
         "caption": "Exemplo de Relatório Situacional para Derrame de Óleo",
         "reverse": False,  # imagem à esquerda
     },
@@ -496,7 +493,7 @@ SOLUTIONS = [
                  "Inclui metadados, nível de confiança e recomendação operacional."
                   "O Relatório Situacional (SITREP) exibe uma imagem de satélite da Área de Interesse (AOI) como plano de fundo, com as principais características detectadas automaticamente e sobrepostas perfeitamente."
                   "Os dados relevantes, extraídos pelo sofisticado processo de fusão de dados, são então plotados em uma tabela no lado direito da tela, acompanhados por uma descrição concisa no canto inferior direito, fornecendo aos tomadores de decisão uma visão geral clara e prática do dano ambiental e, frequentemente, identificando a fonte causadora."),
-        "img": "solucao1.png",
+        
         "img": "solucao3.png",
         "caption": "Fluxo de quantificação e evidências",
         "reverse": False,
