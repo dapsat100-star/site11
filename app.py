@@ -428,7 +428,7 @@ st.markdown("""
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 .sol-img:hover{
-  transform: scale(1.08); /* zoom-in suave ao passar o mouse */
+  transform: scale(2); /* zoom-in suave ao passar o mouse */
   box-shadow:0 14px 36px rgba(0,0,0,.25);
 }
 .sol-cap{ text-align:center; color:#334155; font-size:0.92rem; margin-top:8px; }
