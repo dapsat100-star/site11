@@ -459,7 +459,7 @@ st.markdown("""
 # ===== Dados das 4 soluções =====
 SOLUTIONS = [
     {
-        "title": " Derramamento de Óleo no Mar",
+        "title": " Monitoramento de Metano - OGMP2.0 - Nível 5 ",
         "desc": ("Empregando imagens de satélites do tipo radar (SAR), combinado à capacidade de emprego de IA, a Plataforma DAP ATLAS, da MAVIPE Sistemas Espaciais, é capaz de detectar derramamento de petróleo no mar dia e noite, em regime de dedicação 24/7. "        
                  "Inclui metadados, nível de confiança e recomendação operacional."
                   "O Relatório Situacional (SITREP) exibe uma imagem de satélite da Área de Interesse (AOI) como plano de fundo, com as principais características detectadas automaticamente e sobrepostas perfeitamente."
@@ -469,14 +469,14 @@ SOLUTIONS = [
         "reverse": False,  # imagem à esquerda
     },
     {
-        "title": "Deteccção de Mudanças",
+        "title": "Derramamento de Óleo no Mar",
         "desc": ("Detecção automática de mudanças utilizano imagens ópticas de altíssima resolução."),
         "img": "solucao2.png",
         "caption": "Tela da plataforma DAP ATLAS",
         "reverse": True,   # imagem à direita
     },
     {
-        "title": "Monitoramento de Metano - OGMP2.0 - Nível 5",
+        "title": "Deteccção de Mudanças",
         "desc": (
     "Com as análises e dados fornecidos pela Plataforma DAP ATLAS, a MAVIPE entrega a seus clientes as informações "
     "necessárias para reportar as emissões de metano em nível L5 (site level), conforme os padrões do Oil and Gas Methane "
