@@ -419,18 +419,34 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# CSS específico desta seção (cores para fundo branco + efeito hover)
+# CSS com hover inteligente (zoom lateral)
 st.markdown("""
 <style>
 .sol-img{
-  width:100%; max-width:520px; height:auto; border-radius:12px;
-  box-shadow:0 8px 24px rgba(0,0,0,.10); display:block; margin:0 auto;
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  width:100%;
+  max-width:520px;
+  height:auto;
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.10);
+  display:block;
+  margin:0 auto;
+  transition: transform 0.45s ease, box-shadow 0.45s ease;
 }
-.sol-img:hover{
-  transform: scale(1.5); /* zoom-in suave ao passar o mouse */
-  box-shadow:0 14px 36px rgba(0,0,0,.25);
+
+/* Zoom inteligente — ímpar: imagem esquerda → expande para a direita */
+.sol-box:nth-child(odd) .sol-img:hover {
+  transform: scale(1.28);
+  transform-origin: left center;
+  box-shadow:0 18px 44px rgba(0,0,0,.35);
 }
+
+/* Zoom inteligente — par: imagem direita → expande para a esquerda */
+.sol-box:nth-child(even) .sol-img:hover {
+  transform: scale(1.28);
+  transform-origin: right center;
+  box-shadow:0 18px 44px rgba(0,0,0,.35);
+}
+
 .sol-cap{ text-align:center; color:#334155; font-size:0.92rem; margin-top:8px; }
 .sol-title{ font-weight:800; font-size:1.15rem; color:#0b1221; margin:0 0 6px; }
 .sol-text{ font-size:0.98rem; line-height:1.55; color:#334155; margin:6px 0 0; }
@@ -446,7 +462,7 @@ SOLUTIONS = [
                  "Inclui metadados, nível de confiança e recomendação operacional."),
         "img": "solucao1.png",
         "caption": "Exemplo de SITREP com destaques geoespaciais",
-        "reverse": False,
+        "reverse": False,  # False = imagem esquerda, texto direita
     },
     {
         "title": "Derramamento de Óleo (SAR + IA)",
@@ -454,7 +470,7 @@ SOLUTIONS = [
                  "e relatório acionável para resposta ambiental."),
         "img": "solucao2.png",
         "caption": "Mancha detectada e qualificada em SAR",
-        "reverse": True,
+        "reverse": True,   # True = texto esquerda, imagem direita
     },
     {
         "title": "OGMP 2.0 Nível 5 — Metano",
@@ -483,7 +499,8 @@ for i, s in enumerate(SOLUTIONS, start=1):
         col_img, col_text = st.columns([1, 1.2], gap="large")
 
     # Bloco de imagem
-    with col_img:
+    img_col = col_img if not s["reverse"] else col_img
+    with img_col:
         if Path(s["img"]).exists() and Path(s["img"]).stat().st_size > 0:
             st.markdown(f"<img class='sol-img' src='{as_data_uri(s['img'])}' alt='{s['title']}'/>",
                         unsafe_allow_html=True)
