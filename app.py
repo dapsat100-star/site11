@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 from urllib.parse import quote
 import streamlit as st
-
+import textwrap
 st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=None, layout="wide")
 
 # ================== CONFIG ==================
