@@ -608,106 +608,129 @@ with st.container():
             st.info("Imagem do caso de sucesso não encontrada (case_petrobras.png).")
 
 # ================== NEWSROOM ==================
-import textwrap
+# ================== NEWSROOM (robusta) ==================
+import textwrap, os
 from pathlib import Path
 
 st.markdown('<div id="newsroom"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 st.header("Newsroom")
 
-# CSS da grade de notícias
+# ---- CSS
 st.markdown("""
 <style>
-.news-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
-  gap:22px;
-  margin-top:20px;
-}
-.news-card{
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:16px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  box-shadow:0 10px 28px rgba(0,0,0,.35);
-  transition:transform .25s ease, box-shadow .25s ease;
-}
-.news-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 18px 44px rgba(0,0,0,.45);
-}
-.news-thumb{
-  width:100%;
-  height:200px;
-  object-fit:cover;
-  background:#0b1221;
-  display:block;
-}
+.news-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(360px,1fr)); gap:22px; margin-top:20px; }
+.news-card{ background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:16px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 10px 28px rgba(0,0,0,.35); transition:transform .25s, box-shadow .25s; }
+.news-card:hover{ transform:translateY(-4px); box-shadow:0 18px 44px rgba(0,0,0,.45); }
+.news-thumb{ width:100%; height:200px; object-fit:cover; background:#0b1221; display:block; }
 .news-body{ padding:16px 18px; flex:1; display:flex; flex-direction:column; justify-content:space-between; }
 .news-title{ color:#e6eefc; font-weight:700; font-size:1.05rem; margin:0 0 6px 0; line-height:1.35; }
 .news-meta{ color:#9fb0d4; font-size:.88rem; margin-bottom:8px; }
 .news-summary{ color:#cbd6f2; font-size:.95rem; margin-bottom:12px; line-height:1.55; }
 .news-actions{ padding:0 18px 18px 18px; }
-.news-actions a{
-  display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none;
-  background:#34d399; color:#05131a; font-weight:700; transition:background .25s ease;
-}
+.news-actions a{ display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none; background:#34d399; color:#05131a; font-weight:700; }
 .news-actions a:hover{ background:#22c37b; }
 @media (max-width:768px){ .news-grid{ grid-template-columns:1fr; } }
 </style>
 """, unsafe_allow_html=True)
 
-# Se já tiver NEWS_ITEMS definido acima, use-o. Caso não, descomente este exemplo:
-# NEWS_ITEMS = [
-#     {"title":"MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano","date":"2025-08-26",
-#      "summary":"Em 26 de agosto de 2025, a MAVIPE Sistemas Espaciais assinou contrato com a PETROBRAS...",
-#      "link":"https://example.com/noticia3","image":"news1.png"},
-#     {"title":"MAVIPE é Certificada como Empresa Estratégica de Defesa (EED)","date":"2024-12-20",
-#      "summary":"A certificação do Ministério da Defesa reforça o caráter estratégico...",
-#      "link":"https://example.com/noticia2","image":"news2.jpg"},
-# ]
+# ---- Helpers
+SCRIPT_DIR = Path(__file__).parent if "__file__" in globals() else Path.cwd()
 
-# Pixel preto 1x1 (fallback) — evita quebrar layout se a imagem não existir
-PIXEL_1x1 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NkYGBgAAAABAABJzQnCgAAAABJRU5ErkJggg=="
+def _guess_mime(p: Path) -> str:
+    ext = p.suffix.lower()
+    if ext == ".png": return "image/png"
+    if ext in (".jpg", ".jpeg"): return "image/jpeg"
+    return "application/octet-stream"
 
-# Monta o grid sem indentação inicial (evita bloco de código)
-cards = ['<div class="news-grid">']
-for it in sorted(NEWS_ITEMS, key=lambda x: (x.get("date",""), x.get("title","")), reverse=True):
-    title = it.get("title","")
-    date = it.get("date","")
-    summary = it.get("summary","")
-    link = it.get("link","#")
-    img_path = it.get("image")
-    if img_path and Path(img_path).exists() and Path(img_path).stat().st_size > 0:
-        thumb_src = as_data_uri(img_path)
+def img_data_uri_resolver(name_or_path: str) -> str | None:
+    """
+    Resolve 'news1.png' ou caminho qualquer.
+    Tenta: caminho absoluto, relativo ao CWD, relativo ao arquivo do app,
+    e fallback por glob ignorando case para png/jpg/jpeg.
+    """
+    candidates: list[Path] = []
+
+    p = Path(name_or_path)
+    if p.is_absolute():
+        candidates.append(p)
     else:
-        thumb_src = PIXEL_1x1
+        candidates.append(Path.cwd() / name_or_path)
+        candidates.append(SCRIPT_DIR / name_or_path)
 
-    card = textwrap.dedent(f"""
-    <div class="news-card">
-      <img class="news-thumb" src="{thumb_src}" alt="thumbnail"/>
-      <div class="news-body">
-        <div>
-          <div class="news-title">{title}</div>
-          <div class="news-meta">{date}</div>
-          <div class="news-summary">{summary}</div>
-        </div>
-      </div>
-      <div class="news-actions">
-        <a href="{link}" target="_blank" rel="noopener">Ler mais</a>
-      </div>
+        stem = Path(name_or_path).stem
+        for base in (Path.cwd(), SCRIPT_DIR):
+            for ext in ("png", "jpg", "jpeg", "PNG", "JPG", "JPEG"):
+                candidates.append(base / f"{stem}.{ext}")
+
+    for c in candidates:
+        if c.exists() and c.is_file() and c.stat().st_size > 0:
+            b64 = base64.b64encode(c.read_bytes()).decode("utf-8")
+            return f"data:{_guess_mime(c)};base64,{b64}"
+    return None
+
+# ---- Dados (ajuste os nomes conforme os arquivos que você colocou)
+NEWS_ITEMS = [
+    {
+        "title": "MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano",
+        "date": "2025-08-26",
+        "summary": ("Em 26 de agosto de 2025, a MAVIPE Sistemas Espaciais assinou contrato com a PETROBRAS "
+                    "para realizar o monitoramento de metano por satélite aplicado aos ambientes onshore e offshore "
+                    "em atendimento ao nível L5 (site level) da OGMP 2.0 (ONU)."),
+        "link": "https://example.com/noticia1",
+        "image": "news1.png",   # <<— garanta que este arquivo existe
+    },
+    {
+        "title": "A MAVIPE é Certificada pelo Ministério da Defesa como Empresa Estratégica de Defesa (EED)",
+        "date": "2024-12-20",
+        "summary": "Monitoramento de deformação em dutos, tanques e taludes.",
+        "link": "https://example.com/noticia2",
+        "image": "news2.png",   # <<— garanta que este arquivo existe
+    },
+]
+
+# ---- Render
+if not NEWS_ITEMS:
+    st.info("Adicione notícias em NEWS_ITEMS.")
+else:
+    cards = ['<div class="news-grid">']
+    missing = []
+    for it in sorted(NEWS_ITEMS, key=lambda x: (x.get("date",""), x.get("title","")), reverse=True):
+        title   = it.get("title","")
+        date    = it.get("date","")
+        summary = it.get("summary","")
+        link    = it.get("link","#")
+        img     = it.get("image")
+
+        src = img_data_uri_resolver(img) if img else None
+        thumb_html = (f"<img class='news-thumb' src='{src}' alt='thumb'/>"
+                      if src else "<div class='news-thumb'></div>")
+        if not src and img:
+            missing.append(img)
+
+        card = f"""
+<div class="news-card">
+  {thumb_html}
+  <div class="news-body">
+    <div>
+      <div class="news-title">{title}</div>
+      <div class="news-meta">{date}</div>
+      <div class="news-summary">{summary}</div>
     </div>
-    """).strip()
+  </div>
+  <div class="news-actions">
+    <a href="{link}" target="_blank" rel="noopener">Ler mais</a>
+  </div>
+</div>"""
+        cards.append(textwrap.dedent(card).strip())
+    cards.append("</div>")
+    st.markdown("\n".join(cards), unsafe_allow_html=True)
 
-    cards.append(card)
-
-cards.append("</div>")
-st.markdown("\n".join(cards), unsafe_allow_html=True)
+    # Diagnóstico amigável (mostra nomes que não encontrou)
+    if missing:
+        st.warning("Não encontrei as imagens: " + ", ".join(sorted(set(missing))) +
+                   ". Confirme o nome/extension e se estão na mesma pasta do app.")
 st.markdown("</div>", unsafe_allow_html=True)
-
-
 
 
 
