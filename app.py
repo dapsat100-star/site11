@@ -461,12 +461,14 @@ SOLUTIONS = [
     {
         "title": " Monitoramento de Metano - OGMP2.0 - Nível 5 ",
 st.markdown("""
-• Parceria com a canadense **GHGSat**, líder mundial em satélites SWIR.  
-• Detecção e medição de plumas de metano em ambientes onshore e offshore.  
-• Dashboards, APIs e relatórios compatíveis com **OGMP 2.0 (ONU)**.  
-• Permite o reporte em **nível L5 (site level)**.  
-• Apoia empresas na conquista do **Selo Gold Standard** em gestão de metano.
-""")
+"desc": (
+    "• Parceria com a canadense GHGSat, líder mundial em satélites SWIR.<br>"
+    "• Detecção e medição de plumas de metano em ambientes onshore e offshore.<br>"
+    "• Dashboards, APIs e relatórios compatíveis com OGMP 2.0 (ONU).<br>"
+    "• Permite o reporte em nível L5 (site level).<br>"
+    "• Apoia empresas na conquista do Selo Gold Standard em gestão de metano."
+),
+
 
   "img": "solucao1.png",     
         "caption": "Exemplo de Relatório Situacional para Derrame de Óleo",
