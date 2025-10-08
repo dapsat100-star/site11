@@ -459,7 +459,7 @@ st.markdown("""
 # ===== Dados das 4 soluções =====
 SOLUTIONS = [
     {
-        "title": "Relatório Situacional (SITREP) — Derramamento de Óleo no Mar",
+        "title": " Derramamento de Óleo no Mar",
         "desc": ("Empregando imagens de satélites do tipo radar (SAR), combinado à capacidade de emprego de IA, a Plataforma DAP ATLAS, da MAVIPE Sistemas Espaciais, é capaz de detectar derramamento de petróleo no mar dia e noite, em regime de dedicação 24/7. "        
                  "Inclui metadados, nível de confiança e recomendação operacional."
                   "O Relatório Situacional (SITREP) exibe uma imagem de satélite da Área de Interesse (AOI) como plano de fundo, com as principais características detectadas automaticamente e sobrepostas perfeitamente."
