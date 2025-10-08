@@ -478,8 +478,22 @@ SOLUTIONS = [
     },
     {
         "title": "OGMP 2.0 Nível 5 — Metano",
-        "desc": ("Com as análises e dados fornecidos pela Plataforma DAP ATLAS, a MAVIPE entrega a seus clientes as informações necessárias para reportar as emissões de metano em nível L5 (site level), conforme os padrões do Oil and Gas Methane Partnership 2.0 (OGMP 2.0), do programa de meio ambiente da Organização das Nações Unidas (ONU), contribuindo para a redução das emissões de gases de efeito estufa. "
-                 "Dashboards, API e relatórios compatíveis com OGMP 2.0."),
+        "desc": (
+    "Com as análises e dados fornecidos pela Plataforma DAP ATLAS, a MAVIPE entrega a seus clientes as informações "
+    "necessárias para reportar as emissões de metano em nível L5 (site level), conforme os padrões do Oil and Gas Methane "
+    "Partnership 2.0 (OGMP 2.0), do programa de meio ambiente da Organização das Nações Unidas (ONU), contribuindo para a "
+    "redução das emissões de gases de efeito estufa. "
+    "Através da sua parceria com a empresa canadense GHGSat, a MAVIPE emprega a maior frota mundial de satélites com sensores "
+    "SWIR, especificamente projetados para a detecção e medição de plumas de metano, em ambientes onshore e offshore, com "
+    "capacidade de revisitas praticamente diárias e com a maior e mais abrangente cobertura global disponível no mercado. "
+    "Ao assumir o compromisso público quanto à redução de emissões de metano, as empresas do setor de O&G assinam um acordo "
+    "com a OGMP 2.0, iniciativa global coordenada pela ONU dedicada à quantificação e gestão de emissões de metano. "
+    "O reconhecimento da excelência em gestão de metano pela OGMP com o Selo Gold Standard se dá com o monitoramento gradual "
+    "do nível das fontes de todos os ativos da cadeia de gás natural (nível L4), junto com o monitoramento a nível de unidade "
+    "(L5, site level), ou seja, top-down mediante o emprego das análises padronizadas de dados satelitais fornecidas pela MAVIPE "
+    "a todos os seus clientes. "
+    "Dashboards, API e relatórios compatíveis com OGMP 2.0."
+),
         "img": "solucao3.png",
         "caption": "Fluxo de quantificação e evidências",
         "reverse": False,
