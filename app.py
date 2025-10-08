@@ -475,13 +475,15 @@ SOLUTIONS = [
     },
     {
         "title": "Derramamento de Óleo no Mar",
-        "desc": (
-    "• Emprego de imagens de satélites do tipo radar (SAR), combinadas à IA.\n"
-    "• Detecção de derramamentos de petróleo no mar, dia e noite (24/7).\n"
-    "• Inclusão de metadados, nível de confiança e recomendações operacionais.\n"
-    "• Exibição da imagem da Área de Interesse (AOI) com características detectadas e sobrepostas.\n"
-    "• Dados apresentados em tabela e resumo conciso para apoiar a resposta ambiental e identificar a fonte causadora."
-),
+      desc": (
+            "<ul style='margin:.4rem 0 0 1.1rem'>"
+            "<li>Parceria com a canadense GHGSat, líder mundial em satélites SWIR.</li>"
+            "<li>Detecção e medição de plumas de metano em ambientes onshore e offshore.</li>"
+            "<li>Dashboards, APIs e relatórios compatíveis com OGMP 2.0 (ONU).</li>"
+            "<li>Permite o reporte em nível L5 (site level).</li>"
+            "<li>Apoia empresas na conquista do Selo Gold Standard em gestão de metano.</li>"
+            "</ul>"
+        ),
 
         "img": "solucao2.png",
         "caption": "Tela da plataforma DAP ATLAS",
