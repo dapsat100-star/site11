@@ -470,7 +470,7 @@ SOLUTIONS = [
     },
     {
         "title": "Deteccção de Mudanças",
-        "desc": ("Detecção automática de mudanças utilizano imagens ópticas de altíssima resoluação."),
+        "desc": ("Detecção automática de mudanças utilizano imagens ópticas de altíssima resolução."),
         "img": "solucao2.png",
         "caption": "Tela da plataforma DAP ATLAS",
         "reverse": True,   # imagem à direita
