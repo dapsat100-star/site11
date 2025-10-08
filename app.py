@@ -406,7 +406,6 @@ with col_img:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ================== SOLUÇÕES (4 linhas x 2 colunas) ==================
-# ================== SOLUÇÕES (4 linhas x 2 colunas) ==================
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
 
 # Cabeçalho + fundo branco da seção
@@ -419,9 +418,12 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# CSS com hover inteligente (zoom lateral)
+# CSS com hover robusto (classes left/right + overflow visível + !important)
 st.markdown("""
 <style>
+/* evita que o zoom seja cortado por contêineres do Streamlit */
+.block-container, .main, .stMarkdown, .sol-box { overflow: visible !important; }
+
 .sol-img{
   width:100%;
   max-width:520px;
@@ -431,19 +433,18 @@ st.markdown("""
   display:block;
   margin:0 auto;
   transition: transform 0.45s ease, box-shadow 0.45s ease;
+  will-change: transform;
 }
 
-/* Zoom inteligente — ímpar: imagem esquerda → expande para a direita */
-.sol-box:nth-child(odd) .sol-img:hover {
-  transform: scale(1.28);
-  transform-origin: left center;
+/* Marcadores de posição do zoom */
+.sol-box.left  .sol-img:hover{
+  transform-origin: left center !important;
+  transform: scale(1.28) !important;
   box-shadow:0 18px 44px rgba(0,0,0,.35);
 }
-
-/* Zoom inteligente — par: imagem direita → expande para a esquerda */
-.sol-box:nth-child(even) .sol-img:hover {
-  transform: scale(1.28);
-  transform-origin: right center;
+.sol-box.right .sol-img:hover{
+  transform-origin: right center !important;
+  transform: scale(1.28) !important;
   box-shadow:0 18px 44px rgba(0,0,0,.35);
 }
 
@@ -462,7 +463,7 @@ SOLUTIONS = [
                  "Inclui metadados, nível de confiança e recomendação operacional."),
         "img": "solucao1.png",
         "caption": "Exemplo de SITREP com destaques geoespaciais",
-        "reverse": False,  # False = imagem esquerda, texto direita
+        "reverse": False,  # imagem à esquerda
     },
     {
         "title": "Derramamento de Óleo (SAR + IA)",
@@ -470,7 +471,7 @@ SOLUTIONS = [
                  "e relatório acionável para resposta ambiental."),
         "img": "solucao2.png",
         "caption": "Mancha detectada e qualificada em SAR",
-        "reverse": True,   # True = texto esquerda, imagem direita
+        "reverse": True,   # imagem à direita
     },
     {
         "title": "OGMP 2.0 Nível 5 — Metano",
@@ -490,19 +491,22 @@ SOLUTIONS = [
     },
 ]
 
-# Render das 4 linhas (2 colunas por linha)
+# Render das 4 linhas (2 colunas por linha) com classe left/right
 for i, s in enumerate(SOLUTIONS, start=1):
-    st.markdown('<div class="sol-box">', unsafe_allow_html=True)
+    wrapper_class = "left" if not s["reverse"] else "right"
+    st.markdown(f'<div class="sol-box {wrapper_class}">', unsafe_allow_html=True)
+
     if s["reverse"]:
         col_text, col_img = st.columns([1.2, 1], gap="large")
     else:
         col_img, col_text = st.columns([1, 1.2], gap="large")
 
     # Bloco de imagem
-    img_col = col_img if not s["reverse"] else col_img
-    with img_col:
-        if Path(s["img"]).exists() and Path(s["img"]).stat().st_size > 0:
-            st.markdown(f"<img class='sol-img' src='{as_data_uri(s['img'])}' alt='{s['title']}'/>",
+    with col_img:
+        p = Path(s["img"])
+        if p.exists() and p.stat().st_size > 0:
+            # garante que passamos Path para as_data_uri
+            st.markdown(f"<img class='sol-img' src='{as_data_uri(p)}' alt='{s['title']}'/>",
                         unsafe_allow_html=True)
             st.markdown(f"<div class='sol-cap'>{s['caption']}</div>", unsafe_allow_html=True)
         else:
@@ -514,6 +518,8 @@ for i, s in enumerate(SOLUTIONS, start=1):
         st.markdown(f"<div class='sol-text'>{s['desc']}</div>", unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
+
+
 
 
 
