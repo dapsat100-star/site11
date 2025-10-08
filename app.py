@@ -792,7 +792,7 @@ st.markdown("""
 </style>
 <div class="contact-card">
   <h4>Informações de contato</h4>
-  <div class="contact-item"><strong>Endereço:</strong> """ + (globals().get("MAVIPE_ADDRESS") or "Preencha o endereço da MAVIPE") + """</div>
+  <div class="contact-item"><strong>Endereço:</strong> """ + (globals().get("MAVIPE_ADDRESS") or "Av. Cassiano Ricardo, 601 / Sala 123, Sao Jose dos Campos, SP 12.246-870 - Brasil") + """</div>
   <div class="contact-item"><strong>E-mail:</strong> <a href="mailto:""" + (globals().get("MAVIPE_EMAIL") or "contato@dapsat.com") + """">""" + (globals().get("MAVIPE_EMAIL") or "contato@dapsat.com") + """</a></div>
 </div>
 """, unsafe_allow_html=True)
