@@ -289,6 +289,7 @@ st.markdown(f'''
 ''', unsafe_allow_html=True)
 
 # ================== EMPRESA ==================
+# ================== EMPRESA ==================
 st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
 
@@ -338,7 +339,7 @@ with col_text:
         )
 
 with col_img:
-    imgs = gather_empresa_images(max_n=3)
+    imgs = gather_empresa_images(max_n=2)  # ✅ agora limita a 2 imagens
     if "emp_idx" not in st.session_state: st.session_state.emp_idx = 0
     if "emp_last_tick" not in st.session_state: st.session_state.emp_last_tick = time.time()
 
@@ -380,9 +381,10 @@ with col_img:
             time.sleep(0.05)
             st.rerun()
     else:
-        st.info("Coloque 3 imagens com nomes começando por 'empresa' (ex.: empresa1.jpg, empresa2.png, empresa3.jpeg).")
+        st.info("Coloque 1–2 imagens começando por 'empresa' (ex.: empresa1.jpg, empresa2.png).")
 
 st.markdown('</div>', unsafe_allow_html=True)
+
 
 # ================== SOLUÇÕES (4 linhas x 2 colunas) ==================
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
