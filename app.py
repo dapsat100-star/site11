@@ -418,7 +418,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ===== CSS robusto (direção na própria IMG) =====
+# ===== CSS robusto (hover sólido, sem transparência) =====
 st.markdown("""
 <style>
 /* não cortar o zoom pelos containers do Streamlit */
@@ -429,7 +429,7 @@ st.markdown("""
 /* imagem base */
 .sol-img{
   width:100%;
-  max-width:520px;           /* ajuste se quiser imagens maiores */
+  max-width:520px;
   height:auto;
   border-radius:12px;
   box-shadow:0 8px 24px rgba(0,0,0,.10);
@@ -439,15 +439,21 @@ st.markdown("""
   will-change: transform;
 }
 
-/* direções aplicadas NA PRÓPRIA IMG (evita quebras de seletor no Streamlit) */
+/* direções aplicadas NA PRÓPRIA IMG */
 .sol-img.sol-left:hover{
   transform-origin: left center !important;
-  transform: scale(1.40) !important;   /* fator de zoom (ajuste aqui) */
+  transform: scale(1.40) !important;
+  background:#ffffff !important;      /* fundo branco sólido */
+  z-index: 5 !important;
+  position: relative !important;
   box-shadow:0 18px 44px rgba(0,0,0,.35);
 }
 .sol-img.sol-right:hover{
   transform-origin: right center !important;
-  transform: scale(1.40) !important;   /* fator de zoom (ajuste aqui) */
+  transform: scale(1.40) !important;
+  background:#ffffff !important;      /* fundo branco sólido */
+  z-index: 5 !important;
+  position: relative !important;
   box-shadow:0 18px 44px rgba(0,0,0,.35);
 }
 
@@ -456,7 +462,7 @@ st.markdown("""
 .sol-title{ font-weight:800; font-size:1.15rem; color:#0b1221; margin:0 0 6px; }
 .sol-text{ font-size:0.98rem; line-height:1.55; color:#334155; margin:6px 0 0; }
 
-/* wrapper de cada solução */
+/* wrapper */
 .sol-box{ padding:14px 0 28px; border-bottom:1px dashed rgba(0,0,0,.08); }
 </style>
 """, unsafe_allow_html=True)
@@ -497,18 +503,16 @@ SOLUTIONS = [
     },
 ]
 
-# ===== Render (2 colunas por linha) com classe na PRÓPRIA IMG =====
+# ===== Render =====
 for i, s in enumerate(SOLUTIONS, start=1):
-    # wrapper só para espaçamento e divider
     st.markdown('<div class="sol-box">', unsafe_allow_html=True)
 
-    # ordem das colunas
     if s["reverse"]:
         col_text, col_img = st.columns([1.2, 1], gap="large")
     else:
         col_img, col_text = st.columns([1, 1.2], gap="large")
 
-    # Bloco de imagem
+    # Imagem
     with col_img:
         p = Path(s["img"])
         if p.exists() and p.stat().st_size > 0:
@@ -521,13 +525,12 @@ for i, s in enumerate(SOLUTIONS, start=1):
         else:
             st.info(f"Imagem não encontrada ({s['img']}).")
 
-    # Bloco de texto
+    # Texto
     with col_text:
         st.markdown(f"<div class='sol-title'>{s['title']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='sol-text'>{s['desc']}</div>", unsafe_allow_html=True)
 
     st.markdown('</div>', unsafe_allow_html=True)
-
 
 
 
