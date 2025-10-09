@@ -2,15 +2,14 @@
 import base64
 import time
 import re
+import json
 from pathlib import Path
 from urllib.parse import quote
 import streamlit as st
-import textwrap
 
-
+# ================== CONFIG GERAL ==================
 st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=None, layout="wide")
 
-# ================== CONFIG ==================
 YOUTUBE_ID = "Ulrl6TFaWtA"
 
 LOGO_CANDIDATES = [
@@ -27,7 +26,6 @@ LINKEDIN_CANDIDATES = [
 ]
 
 CAROUSEL_INTERVAL_SEC = 3
-PARTNER_INTERVAL_SEC  = 3
 
 EMPRESA_CAPTIONS = [
     "Empresa Certificada do Ministério da Defesa",
@@ -35,7 +33,9 @@ EMPRESA_CAPTIONS = [
     "Setor de Defesa — Inteligência, Vigilância e Reconhecimento",
 ]
 
-
+# Defaults (evita NameError no contato)
+MAVIPE_EMAIL = globals().get("MAVIPE_EMAIL") or "contato@dapsat.com"
+MAVIPE_ADDRESS = globals().get("MAVIPE_ADDRESS") or "Av. Cassiano Ricardo, 601 / Sala 123, São José dos Campos, SP 12246-870 - Brasil"
 
 # ================== UTILS ==================
 def find_first(candidates) -> str | None:
@@ -50,9 +50,10 @@ def guess_mime(path: Path) -> str:
     if ext == ".png": return "image/png"
     if ext in (".jpg", ".jpeg"): return "image/jpeg"
     if ext == ".svg": return "image/svg+xml"
+    if ext == ".webp": return "image/webp"
     return "application/octet-stream"
 
-def as_data_uri(path_str: str) -> str:
+def as_data_uri(path_str: str | Path) -> str:
     p = Path(path_str)
     b64 = base64.b64encode(p.read_bytes()).decode("utf-8")
     return f"data:{guess_mime(p)};base64,{b64}"
@@ -121,7 +122,6 @@ def render_dots(n: int, active_index: int) -> str:
         parts.append(f"<span class='{cls}'></span>")
     return "".join(parts)
 
-
 # ================== CSS (UNIFICADO + HOTFIX) ==================
 st.markdown('''
 <style>
@@ -168,95 +168,67 @@ h1.hero-title{font-size:clamp(36px,6vw,64px); line-height:1.05; margin:0 0 12px}
 .carousel-dots{display:flex; gap:8px; justify-content:center; margin-top:10px}
 .carousel-dots span{width:8px; height:8px; border-radius:50%; background:#5d6a8b; display:inline-block; opacity:.6}
 .carousel-dots span.active{background:#e6eefc; opacity:1}
-.thumbs{display:flex; gap:12px; justify-content:center; margin-top:10px; flex-wrap:wrap}
-.thumb{ display:inline-block; width:120px; height:70px; overflow:hidden; border-radius:8px; border:2px solid transparent; opacity:.85; transition:all .2s ease-in-out; }
-.thumb img{width:100%; height:100%; object-fit:cover; display:block}
-.thumb:hover{opacity:1; transform:translateY(-2px)}
-.thumb.active{border-color:#34d399; box-shadow:0 0 0 2px rgba(52,211,153,.35) inset;}
 .carousel-main{ width:100%; height:400px; object-fit:cover; border-radius:12px; box-shadow:0 8px 28px rgba(0,0,0,.35); }
 .carousel-caption{ text-align:center; color:#b9c6e6; font-size:0.95rem; margin-top:8px; }
 
-/* Parceiros */
-.carousel-main.partner{ object-fit:contain; background:rgba(255,255,255,.03); }
-.thumbs.partner .thumb{ background:rgba(255,255,255,.02); }
-.thumbs.partner .thumb img{ object-fit:contain; background:transparent; }
-
-/* ===== HOTFIX: Setores ===== */
-#setores{ position:relative; isolation:isolate; }
-#setores, #setores * { opacity:1 !important; } /* elimina heranças opacas */
-
-
-/* Social (LinkedIn) — ícone menor */
-.social{ display:flex; justify-content:center; margin-top:24px; }
-.social a{
-  display:inline-flex; align-items:center; justify-content:center;
-  width:44px; height:44px; border-radius:12px;
-  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
-  backdrop-filter:saturate(140%) blur(6px);
-  text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-}
-.social a:hover{ transform:translateY(-2px); border-color:rgba(52,211,153,.65);
-  box-shadow:0 8px 18px rgba(0,0,0,.35), 0 0 0 4px rgba(52,211,153,.15) inset; }
-.social img{ width:22px; height:22px; display:block; }
-
 /* ===== Cards de Setores (com ícone) ===== */
-.sector-card-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:20px;
-  margin-top:24px;
+#setores.section h2{
+  color:#0b1221; font-size:2rem; font-weight:800; text-align:center; margin:0 0 .8rem;
 }
+#setores.section h2::after{
+  content:""; display:block; width:68px; height:3px; background:#4EA8DE; margin:.65rem auto 0; border-radius:3px;
+}
+#setores .subtitle{
+  color:#334155; text-align:center; font-size:1.05rem; margin:0 0 2rem 0; opacity:1;
+}
+.sector-card-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; margin-top:1rem; }
 .sector-card{
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:16px;
-  padding:18px 20px;
-  box-shadow:0 10px 28px rgba(0,0,0,.45);
-  transition: transform .2s ease, box-shadow .2s ease;
-  color:#e6eefc;
+  background:#f8fafc; border:1px solid rgba(0,0,0,.06); border-radius:16px; padding:20px 22px;
+  box-shadow:0 10px 24px rgba(0,0,0,.08); transition:transform .2s, box-shadow .2s; color:#0b1221;
 }
-.sector-card:hover{ transform:translateY(-4px); box-shadow:0 16px 36px rgba(0,0,0,.55); }
+.sector-card:hover{ transform:translateY(-4px); box-shadow:0 14px 36px rgba(0,0,0,.12); }
 .sector-head{ display:flex; align-items:center; gap:12px; margin-bottom:8px; }
 .sector-icon{
-  flex:0 0 auto;
-  width:42px; height:42px;
-  border-radius:10px;
-  display:flex; align-items:center; justify-content:center;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.18);
-  overflow:hidden;
+  flex:0 0 auto; width:56px; height:56px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+  background:#fff; border:1px solid rgba(0,0,0,.08); overflow:hidden;
 }
-.sector-icon img{ width:100%; height:100%; object-fit:contain; display:block; }
-.sector-icon span{ font-size:22px; line-height:1; }
-.sector-card h3{ margin:0; font-size:1.2rem; font-weight:800; color:#fff; }
-.sector-card p{ color:#cbd6f2; margin:.3rem 0 .6rem 0; }
-.sector-card ul{ margin:0; padding-left:1.2rem; list-style:disc; color:#d5def6; }
+.sector-icon img, .sector-icon svg{ width:100% !important; height:100% !important; object-fit:contain; display:block; }
+.sector-icon span{ font-size:28px; line-height:1; }
+.sector-card h3{ margin:0; font-size:1.3rem; font-weight:800; color:#0b1221; }
+.sector-card p{ color:#334155; margin:.3rem 0 .6rem 0; }
+.sector-card ul{ margin:0; padding-left:1.2rem; list-style:disc; color:#475569; }
 .sector-card li{ margin:.45rem 0; font-size:.97rem; }
-.sector-card li strong{ color:#fff; }
 
+/* APLICAÇÕES */
+.sol-img{
+  width:100%; max-width:520px; height:auto; border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.10); display:block; margin:0 auto;
+  transition: transform 0.45s ease, box-shadow 0.45s ease;
+}
+.sol-img.sol-left:hover{transform-origin:left center;transform:scale(1.4);z-index:5;position:relative;box-shadow:0 18px 44px rgba(0,0,0,.35);}
+.sol-img.sol-right:hover{transform-origin:right center;transform:scale(1.4);z-index:5;position:relative;box-shadow:0 18px 44px rgba(0,0,0,.35);}
+.sol-cap{text-align:center;color:#334155;font-size:0.92rem;margin-top:8px;}
+.sol-title{font-weight:800;font-size:1.15rem;color:#0b1221;margin:0 0 6px;}
+.sol-text{font-size:0.98rem;line-height:1.55;color:#334155;margin:6px 0 0;}
+.sol-box{padding:24px 0;border-bottom:1px dashed rgba(0,0,0,.08);}
+
+/* Responsivo */
 @media (max-width:980px){
-  .news-grid{ grid-template-columns:1fr; }
   .sector-card-grid{ grid-template-columns:1fr; }
 }
 @media (max-width:768px){
   .navbar, .nav-left{ height:56px; }
   .nav-logo{ height:110px; transform:translateY(-10px); }
   .hero iframe{width:177.777vh; height:100vh; max-width:300vw;}
-  .kicker{font-size:14px;} h1.hero-title{font-size:clamp(28px,8vw,36px);}
-  .hero-sub{font-size:15px; max-width:100%;}
   .section{padding:56px 5vw;}
-  .nav-right a{margin-left:12px;}
-  .carousel-main{ height:240px; }
-  .social a{ width:40px; height:40px; border-radius:10px; }
-  .social img{ width:20px; height:20px; }
 }
 </style>
 ''', unsafe_allow_html=True)
 
 # ================== NAVBAR ==================
-logo_2x = Path("logo-mavipe@2x.png")
-logo_1x = Path("logo-mavipe.png")
 def pick_logo_path() -> str | None:
+    logo_2x = Path("logo-mavipe@2x.png")
+    logo_1x = Path("logo-mavipe.png")
     if logo_2x.exists() and logo_2x.stat().st_size > 0: return str(logo_2x)
     if logo_1x.exists() and logo_1x.stat().st_size > 0: return str(logo_1x)
     return find_first(LOGO_CANDIDATES)
@@ -298,7 +270,6 @@ st.markdown(f'''
 </div>
 ''', unsafe_allow_html=True)
 
-# ================== EMPRESA ==================
 # ================== EMPRESA ==================
 st.markdown('<div id="empresa"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
@@ -349,7 +320,7 @@ with col_text:
         )
 
 with col_img:
-    imgs = gather_empresa_images(max_n=2)  # ✅ agora limita a 2 imagens
+    imgs = gather_empresa_images(max_n=2)
     if "emp_idx" not in st.session_state: st.session_state.emp_idx = 0
     if "emp_last_tick" not in st.session_state: st.session_state.emp_last_tick = time.time()
 
@@ -395,13 +366,11 @@ with col_img:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ================== SOLUÇÃO (nova seção) ==================
+# ================== SOLUÇÃO ==================
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
-# Cabeçalho + fundo branco da seção
 st.markdown("""
 <div class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:24px 8vw;">
   <h2 style="margin:0 0 8px;">Solução</h2>
-  
 </div>
 """, unsafe_allow_html=True)
 st.markdown("""
@@ -411,140 +380,39 @@ st.markdown("""
     A Plataforma DAP ATLAS é uma solução georreferenciada de última geração desenvolvida pela MAVIPE Sistemas Espaciais, projetada para o monitoramento remoto terrestre e marítimo em larga escala.
   </p>
   <ul style="color:#cbd6f2; margin:0 0 0 1.1rem; line-height:1.5">
-    <li><b>Tecnologias empregadas: IA, aprendizado de máquina e métodos estatísticos tradicionais.</li>
-    <li><b>Origem e propósito — concebida inicialmente para Comando e Controle (C2) em centros de operações espaciais, com foco em Defesa & Segurança.</i>.
-    <li><b>Aplicações — expandida para o setor civil e corporativo, com uso em monitoramento ambiental, infraestruturas críticas, energia, logística e petróleo & gás.</i>.
-    <li><b>Entregáveis: análises, dados e insights acionáveis para apoiar decisões de gestores e autoridades.</li>
+    <li><b>Tecnologias empregadas:</b> IA, aprendizado de máquina e métodos estatísticos tradicionais.</li>
+    <li><b>Origem e propósito:</b> concebida para C2 em centros de operações espaciais (Defesa & Segurança).</li>
+    <li><b>Aplicações:</b> expandida para monitoramento ambiental, infraestruturas críticas, energia, logística e petróleo & gás.</li>
+    <li><b>Entregáveis:</b> análises, dados e insights acionáveis para apoiar decisões de gestores e autoridades.</li>
   </ul>
 </div>
 """, unsafe_allow_html=True)
 
-# ================== SETORES & APLICAÇÕES (única seção integrada) ==================
-# ======= ESTILO CSS =======
-st.markdown("""
-<style>
-#setores.section h2{
-  color:#0b1221!important;
-  font-size:2rem!important;
-  font-weight:800!important;
-  text-align:center!important;
-  margin:0 0 .8rem;
-}
-#setores.section h2::after{
-  content:"";
-  display:block;
-  width:68px;
-  height:3px;
-  background:#4EA8DE;
-  margin:.65rem auto 0;
-  border-radius:3px;
-}
-#setores .subtitle{
-  color:#334155!important;
-  text-align:center!important;
-  font-size:1.05rem!important;
-  margin:0 0 2rem 0!important;
-  opacity:1!important;
-}
-
-/* GRID dos cards */
-.sector-card-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:24px;
-  margin-top:1rem;
-}
-.sector-card{
-  background:#f8fafc;
-  border:1px solid rgba(0,0,0,.06);
-  border-radius:16px;
-  padding:20px 22px;
-  box-shadow:0 10px 24px rgba(0,0,0,.08);
-  transition:transform .2s, box-shadow .2s;
-}
-.sector-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 14px 36px rgba(0,0,0,.12);
-}
-.sector-head{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:8px;
-}
-.sector-icon img{width:40px;height:28px;display:block}
-.sector-card h3{margin:0;color:#0b1221;font-size:1.25rem;font-weight:600}
-.sector-card p{color:#334155;margin:.4rem 0 .6rem;line-height:1.5}
-.sector-card ul{color:#475569;margin:.5rem 0 0 1.1rem}
-.sector-card li{margin:.35rem 0;font-size:.96rem;line-height:1.4}
-
-/* APLICAÇÕES */
-.sol-img{
-  width:100%;
-  max-width:520px;
-  height:auto;
-  border-radius:12px;
-  box-shadow:0 8px 24px rgba(0,0,0,.10);
-  display:block;
-  margin:0 auto;
-  transition: transform 0.45s ease, box-shadow 0.45s ease;
-}
-.sol-img.sol-left:hover{transform-origin:left center!important;transform:scale(1.4)!important;z-index:5!important;position:relative!important;box-shadow:0 18px 44px rgba(0,0,0,.35);}
-.sol-img.sol-right:hover{transform-origin:right center!important;transform:scale(1.4)!important;z-index:5!important;position:relative!important;box-shadow:0 18px 44px rgba(0,0,0,.35);}
-.sol-cap{text-align:center;color:#334155;font-size:0.92rem;margin-top:8px;}
-.sol-title{font-weight:800;font-size:1.15rem;color:#0b1221;margin:0 0 6px;}
-.sol-text{font-size:0.98rem;line-height:1.55;color:#334155;margin:6px 0 0;}
-.sol-box{padding:24px 0;border-bottom:1px dashed rgba(0,0,0,.08);}
-</style>
-""", unsafe_allow_html=True)
-
-# ======= FUNÇÕES =======
-def find_first(paths):
-    for p in paths:
-        if Path(p).exists() and Path(p).stat().st_size > 0:
-            return p
-    return None
-
-def as_data_uri(path) -> str:
-    """Converte qualquer Path/str em data URI (corrigido)."""
-    p = Path(path)
-    suffix = p.suffix.lower()
-    if suffix == ".svg":
-        mime = "image/svg+xml"
-    elif suffix in (".jpg", ".jpeg"):
-        mime = "image/jpeg"
-    elif suffix == ".png":
-        mime = "image/png"
-    elif suffix == ".webp":
-        mime = "image/webp"
-    else:
-        mime = "application/octet-stream"
-    data = p.read_bytes()
-    return f"data:{mime};base64,{base64.b64encode(data).decode()}"
-
-def sector_icon_data_uri(slug: str) -> str | None:
-    candidates=[]
-    for ext in ("svg","png","jpg","jpeg"):
-        candidates += [
-            f"icons/{slug}.{ext}", f"icons/{slug}_icon.{ext}", f"icons/icon-{slug}.{ext}",
-            f"{slug}.{ext}", f"{slug}_icon.{ext}", f"icon-{slug}.{ext}",
-        ]
-    path = find_first(candidates)
-    return as_data_uri(path) if path else None
-
-# ======= CRIA O ÍCONE DE ÓLEO & GÁS (caso não exista) =======
-oleogas_svg = """
+# ================== SETORES & APLICAÇÕES (SEÇÃO ÚNICA) ==================
+# cria ícone padrão de óleo&gás (caso não exista)
+icons_dir = Path("icons"); icons_dir.mkdir(exist_ok=True)
+oleogas_path = icons_dir / "oleogas.svg"
+if not oleogas_path.exists():
+    oleogas_path.write_text("""
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <rect width="64" height="64" rx="12" fill="#0b1221"/>
   <path d="M14 48h36v2H14v-2Zm12-14h4v14h-4V34Zm18 0h4v14h-4V34ZM20 22h24l-2 12H22l-2-12Zm3 0 2 10h14l2-10H23Zm6-8h6v6h-6v-6Zm-2 6h10v2h-10v-2Z" fill="#4EA8DE"/>
 </svg>
-"""
-icons_dir = Path("icons"); icons_dir.mkdir(exist_ok=True)
-oleogas_path = icons_dir / "oleogas.svg"
-if not oleogas_path.exists():
-    oleogas_path.write_text(oleogas_svg.strip(), encoding="utf-8")
+""".strip(), encoding="utf-8")
 
-# ======= DADOS DOS SETORES =======
+def sector_icon_data_uri(slug: str) -> str | None:
+    candidates=[]
+    for ext in ("svg","png","jpg","jpeg","webp"):
+        candidates += [
+            f"icons/{slug}.{ext}", f"icons/{slug}_icon.{ext}", f"icons/icon-{slug}.{ext}",
+            f"{slug}.{ext}", f"{slug}_icon.{ext}", f"icon-{slug}.{ext}",
+        ]
+    for c in candidates:
+        p = Path(c)
+        if p.exists() and p.stat().st_size > 0:
+            return as_data_uri(p)
+    return None
+
 SECTORS = [
     {"slug":"oleogas","title":"Óleo & Gás",
      "desc":"Monitoramento de Emissão de Metano e Monitoramento de Ativos Críticos.",
@@ -552,7 +420,7 @@ SECTORS = [
         "Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5.",
         "Supervisão contínua de dutos e instalações estratégicas com IA e análise temporal.",
         "Detecção de Derramamento de Petróleo e suporte à resposta ambiental."
-     ]}, 
+     ]},
     {"slug":"defesa","title":"Defesa & Segurança",
      "desc":"Maritime & Ground Domain Awareness com alertas e análise assistida por IA.",
      "bullets":[
@@ -569,7 +437,6 @@ SECTORS = [
      ]},
 ]
 
-# ======= DADOS DAS APLICAÇÕES =======
 SOLUTIONS = [
     {
         "title": "Monitoramento de Metano — OGMP 2.0 (Nível 5)",
@@ -620,19 +487,21 @@ SOLUTIONS = [
     },
 ]
 
-# ======= RENDERIZAÇÃO COMPLETA =======
 st.markdown('<div id="setores" class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:48px 8vw;">', unsafe_allow_html=True)
 st.markdown('<h2>Setores & Aplicações</h2>', unsafe_allow_html=True)
 st.markdown('<p class="subtitle">Óleo &amp; Gás • Defesa &amp; Segurança • Monitoramento Ambiental</p>', unsafe_allow_html=True)
-# ---- Grid dos Setores (sem indentação para não virar code-block) ----
-cards_html = ['<div class="sector-card-grid">']
 
+# ---- Grid dos Setores (sem indentação para não virar code-block) ----
+fallback_by_slug = {"oleogas":"🛢️","defesa":"🛡️","ambiental":"🌎"}
+cards_html = ['<div class="sector-card-grid">']
 for s in SECTORS:
     data_uri = sector_icon_data_uri(s["slug"])
-    icon_html = f'<div class="sector-icon"><img src="{data_uri}" alt="{s["slug"]}"/></div>' if data_uri else ""
+    icon_html = (
+        f'<div class="sector-icon"><img src="{data_uri}" alt="{s["slug"]}"/></div>'
+        if data_uri else
+        f'<div class="sector-icon"><span>{fallback_by_slug.get(s["slug"], "📡")}</span></div>'
+    )
     bullets = "".join(f"<li>{b}</li>" for b in s["bullets"])
-
-    # linhas sem espaços à esquerda:
     cards_html.append(
         f'<div id="{s["slug"]}" class="sector-card">'
         f'<div class="sector-head">{icon_html}<h3>{s["title"]}</h3></div>'
@@ -640,11 +509,8 @@ for s in SECTORS:
         f'<ul>{bullets}</ul>'
         f'</div>'
     )
-
 cards_html.append('</div>')
 st.markdown("".join(cards_html), unsafe_allow_html=True)
-
-
 
 # ---- Aplicações ----
 st.markdown("<hr style='margin:3rem 0; border:0; border-top:1px solid rgba(0,0,0,.08);'/>", unsafe_allow_html=True)
@@ -658,7 +524,6 @@ for s in SOLUTIONS:
     else:
         col_img, col_text = st.columns([1, 1.2], gap="large")
 
-    # imagem
     with col_img:
         p = Path(s["img"])
         if p.exists() and p.stat().st_size > 0:
@@ -668,7 +533,6 @@ for s in SOLUTIONS:
         else:
             st.info(f"Imagem não encontrada ({s['img']}).")
 
-    # texto
     with col_text:
         st.markdown(f"<div class='sol-title'>{s['title']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='sol-text'>{s['desc']}</div>", unsafe_allow_html=True)
@@ -676,96 +540,45 @@ for s in SOLUTIONS:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-
-
-
-
-
-
-
-
-
-
-# ================== PARCEIROS & CASOS DE SUCESSO (LADO A LADO — STREAMLIT COLUMNS) ==================
+# ================== PARCEIROS ==================
 st.markdown('<div id="parceiros"></div>', unsafe_allow_html=True)
-
-# Fundo branco só nesta seção usando uma <div> wrapper
 st.markdown("""
 <div class="section partners-cases-section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:16px 8vw;">
 <h2 style="margin-top:0; margin-bottom:8px;">Parceiros</h2>
-
 </div>
 """, unsafe_allow_html=True)
 
-# CSS local para imagens e legendas
 st.markdown("""
 <style>
 .parcases-img{
-  width:50%;
-  max-width:520px;
-  height:auto;
-  border-radius:12px;
-  box-shadow:0 8px 24px rgba(0,0,0,.12);
-  display:block;
-  margin:0 auto;
+  width:50%; max-width:520px; height:auto; border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.12); display:block; margin:0 auto;
 }
-.parcapes-caption{
-  text-align:center;
-  color:#F5F5F5;
-  font-size:0.95rem;
-  margin-top:10px;
-  line-height:1.4;
-}
+.parcapes-caption{ text-align:center; color:#0b1221; font-size:0.95rem; margin-top:10px; line-height:1.4; }
 </style>
 """, unsafe_allow_html=True)
 
-# Container visual da seção (fundo branco já foi aplicado no wrapper acima)
 with st.container():
-    col1, col2 = st.columns([1,1], gap="large")
-
     partners_img = "partners.png"
-    success_img  = "case_petrobras.png"
-
-    # Coluna 1 — Parceiros
-    with col1:
-        if Path(partners_img).exists() and Path(partners_img).stat().st_size > 0:
-            st.markdown(
-                f"<img class='parcases-img' src='{as_data_uri(partners_img)}' alt='Parceiros — BlackSky &amp; GHGSat'/>",
-                unsafe_allow_html=True
-            )
-            st.markdown(
-                "<div class='parcapes-caption'>Provedores de Dados Espacais</div>",
-                unsafe_allow_html=True
-            )
-        else:
-            st.info("Imagem de parceiros não encontrada (partners.png).")
-
-  
-
+    if Path(partners_img).exists() and Path(partners_img).stat().st_size > 0:
+        st.markdown(
+            f"<img class='parcases-img' src='{as_data_uri(partners_img)}' alt='Parceiros — BlackSky &amp; GHGSat'/>",
+            unsafe_allow_html=True
+        )
+        st.markdown("<div class='parcapes-caption'>Provedores de Dados Espaciais</div>", unsafe_allow_html=True)
+    else:
+        st.info("Imagem de parceiros não encontrada (partners.png).")
 
 # ================== 📰 NEWSROOM ==================
-# ================== 📰 NEWSROOM ==================
-import re, textwrap, json
-from base64 import b64encode
-from pathlib import Path
-import streamlit as st
+st.markdown('<div id="newsroom"></div>', unsafe_allow_html=True)
+st.markdown('<div class="section">', unsafe_allow_html=True)
+st.header("Newsroom")
 
-# --- Helper: converte imagens para base64 (exibição inline)
-def as_data_uri(path: str) -> str:
-    p = Path(path)
-    return "data:image/" + p.suffix.replace(".", "") + ";base64," + b64encode(p.read_bytes()).decode()
-
-# --- Helper: cria slug (usado na URL interna)
 def slugify(s: str) -> str:
     s = s.lower()
     s = re.sub(r"[^a-z0-9]+", "-", s)
     return s.strip("-")
 
-st.markdown('<div id="newsroom"></div>', unsafe_allow_html=True)
-st.markdown('<div class="section">', unsafe_allow_html=True)
-st.header("Newsroom")
-
-# ================== 🗞️ Lista de notícias ==================
 NEWS_ITEMS = [
     {
         "title": "MAVIPE Assina Contrato com a PETROBRAS para Monitoramento de Metano por Satélite",
@@ -775,7 +588,7 @@ NEWS_ITEMS = [
             "para realizar o monitoramento de metano por satélite aplicado aos ambientes onshore e offshore, "
             "em conformidade com o nível L5 (site level) da OGMP 2.0."
         ),
-        "link": "",  # vazio → sem botão de fonte externa
+        "link": "",
         "image": "news1.png",
     },
     {
@@ -785,27 +598,23 @@ NEWS_ITEMS = [
             "A certificação do Ministério da Defesa reforça o caráter estratégico das soluções da MAVIPE "
             "e consolida sua atuação no ecossistema espacial e de defesa."
         ),
-        "link": "",  # também sem fonte externa
+        "link": "",
         "image": "news2.png",
     },
 ]
 
-# --- Gera slug automático
 for it in NEWS_ITEMS:
     it["slug"] = slugify(it["title"])
 
-# ================== 📄 Carrega textos completos de um JSON externo ==================
 ARTICLE_BODY = {}
 json_path = Path("news_articles.json")
 if json_path.exists():
     with open(json_path, "r", encoding="utf-8") as f:
         ARTICLE_BODY = json.load(f)
 
-# ================== 💅 CSS ==================
 st.markdown("""
 <style>
-.news-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(360px,1fr));
-  gap:20px; margin-top:18px; }
+.news-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(360px,1fr)); gap:20px; margin-top:18px; }
 .news-card { background:rgba(255,255,255,.02); border:1px solid rgba(255,255,255,.08);
   border-radius:14px; overflow:hidden; display:flex; flex-direction:column;
   box-shadow:0 6px 18px rgba(0,0,0,.25); transition:transform .2s ease; }
@@ -819,8 +628,6 @@ st.markdown("""
 .news-actions { padding:0 16px 14px 16px; display:flex; gap:10px; flex-wrap:wrap; }
 .button-primary { display:inline-block; padding:10px 14px; border-radius:10px;
   text-decoration:none; background:#34d399; color:#05131a; font-weight:700; }
-.button-ghost { display:inline-block; padding:9px 13px; border-radius:10px;
-  text-decoration:none; border:1px solid rgba(255,255,255,.25); color:#e6eefc; font-weight:600; }
 .article-wrap { max-width:1000px; margin:8px auto 24px auto; background:rgba(255,255,255,.02);
   border:1px solid rgba(255,255,255,.08); border-radius:14px; box-shadow:0 6px 18px rgba(0,0,0,.25); }
 .article-hero { width:100%; height:320px; background:#fff; overflow:hidden;
@@ -830,12 +637,10 @@ st.markdown("""
 .article-title { margin:0; color:#e6eefc; font-size:1.6rem; font-weight:800; }
 .article-meta { color:#9fb0d4; margin:6px 0 16px 0; }
 .article-text { color:#cbd6f2; font-size:1.05rem; line-height:1.6; }
-.article-actions { display:flex; gap:10px; margin-top:18px; }
 .backlink { text-decoration:none; color:#9fb0d4; }
 </style>
 """, unsafe_allow_html=True)
 
-# ================== 🧭 Router interno (abre página da notícia) ==================
 qp = st.query_params
 open_slug = qp.get("news", None)
 
@@ -843,14 +648,11 @@ if open_slug:
     item = next((x for x in NEWS_ITEMS if x["slug"] == open_slug), None)
     if item:
         st.markdown(f'<p><a class="backlink" href="./#newsroom">← Voltar para a Newsroom</a></p>', unsafe_allow_html=True)
-
         img_path = Path(item["image"])
         hero = ""
         if img_path.exists() and img_path.stat().st_size > 0:
-            hero = f"<div class='article-hero'><img src='{as_data_uri(str(img_path))}' alt='hero'/></div>"
-
+            hero = f"<div class='article-hero'><img src='{as_data_uri(img_path)}' alt='hero'/></div>"
         body = ARTICLE_BODY.get(item["slug"], {}).get("body", item["summary"])
-
         article_html = f"""
         <div class="article-wrap">
           {hero}
@@ -868,17 +670,16 @@ if open_slug:
         st.markdown("</div>", unsafe_allow_html=True)
         st.stop()
 
-# ================== 📰 Grade principal ==================
+# Grade principal da Newsroom
 cards = ['<div class="news-grid">']
 for item in NEWS_ITEMS:
     img_path = Path(item["image"])
     if img_path.exists() and img_path.stat().st_size > 0:
-        thumb = f"<div class='news-thumb'><img src='{as_data_uri(str(img_path))}' alt='thumb'/></div>"
+        thumb = f"<div class='news-thumb'><img src='{as_data_uri(img_path)}' alt='thumb'/></div>"
     else:
         thumb = "<div class='news-thumb' style='background:#ffffff'></div>"
-
     internal_href = f"?news={item['slug']}#newsroom"
-    card_html = textwrap.dedent(f"""
+    card_html = f"""
     <div class="news-card">
       <a href="{internal_href}" style="text-decoration:none;color:inherit">
         {thumb}
@@ -892,24 +693,11 @@ for item in NEWS_ITEMS:
         <a class="button-primary" href="{internal_href}">Ler mais</a>
       </div>
     </div>
-    """).strip()
+    """.strip()
     cards.append(card_html)
-
 cards.append("</div>")
 st.markdown("\n".join(cards), unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
-
-
-
-
-
-
-
-
-
-
-
-
 
 # ================== CONTATO ==================
 st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
@@ -931,25 +719,24 @@ if st.button("Enviar e-mail"):
     st.success("Clique abaixo para abrir seu e-mail:")
     st.markdown(f"[Abrir e-mail](mailto:{MAVIPE_EMAIL}?subject={quote(subject)}&body={quote(body)})")
 
-# —— Infos fixas abaixo do formulário ——
-st.markdown("""
+st.markdown(f"""
 <style>
-.contact-card{
-  margin-top:18px; padding:16px 18px; border-radius:12px;
+.contact-card{{ margin-top:18px; padding:16px 18px; border-radius:12px;
   background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
-  box-shadow:0 8px 24px rgba(0,0,0,.35); color:#e6eefc;
-}
-.contact-card h4{ margin:0 0 8px 0; font-size:1.05rem; font-weight:800; color:#fff; }
-.contact-item{ margin:.25rem 0; color:#cbd6f2; }
-.contact-item a{ color:#9fd8c8; text-decoration:none; }
-.contact-item a:hover{ text-decoration:underline; }
+  box-shadow:0 8px 24px rgba(0,0,0,.35); color:#e6eefc; }}
+.contact-card h4{{ margin:0 0 8px 0; font-size:1.05rem; font-weight:800; color:#fff; }}
+.contact-item{{ margin:.25rem 0; color:#cbd6f2; }}
+.contact-item a{{ color:#9fd8c8; text-decoration:none; }}
+.contact-item a:hover{{ text-decoration:underline; }}
 </style>
 <div class="contact-card">
   <h4>Informações de contato</h4>
-  <div class="contact-item"><strong>Endereço:</strong> """ + (globals().get("MAVIPE_ADDRESS") or "Av. Cassiano Ricardo, 601 / Sala 123, Sao Jose dos Campos, SP 12.246-870 - Brasil") + """</div>
-  <div class="contact-item"><strong>E-mail:</strong> <a href="mailto:""" + (globals().get("MAVIPE_EMAIL") or "contato@dapsat.com") + """">""" + (globals().get("MAVIPE_EMAIL") or "contato@dapsat.com") + """</a></div>
+  <div class="contact-item"><strong>Endereço:</strong> {MAVIPE_ADDRESS}</div>
+  <div class="contact-item"><strong>E-mail:</strong> <a href="mailto:{MAVIPE_EMAIL}">{MAVIPE_EMAIL}</a></div>
 </div>
 """, unsafe_allow_html=True)
 
 st.caption("© MAVIPE Space Systems · DAP ATLAS")
+
+
 
