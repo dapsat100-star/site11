@@ -34,7 +34,7 @@ EMPRESA_CAPTIONS = [
 ]
 
 
-# ================== UTILS ==================
+
 # ================== UTILS ==================
 def find_first(candidates) -> str | None:
     for name in candidates:
