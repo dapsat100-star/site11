@@ -470,7 +470,7 @@ SOLUTIONS = [
              "<li>Relatório Situacional (SITREP) com alvos e eventos sobrepostos.</li>"
              "<li>Suporte imediato à decisão e acionamento de vetores de defesa e segurança.</li>"
              "</ul>"
-)
+),
         "img": "solucao4.png",
         "caption": "Mudanças e alertas priorizados",
         "reverse": True,
