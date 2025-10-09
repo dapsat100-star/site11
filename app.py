@@ -418,7 +418,7 @@ SECTORS = [
      "bullets":[
         "Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5.",
         "Supervisão contínua de dutos e instalações estratégicas com IA e análise temporal.",
-        "Detecção de Derramamento de Petróleo e suporte à resposta ambiental."
+        "Detecção de Derramamento de Óleo e suporte à resposta ambiental."
      ]},
     {"slug":"defesa","title":"Defesa & Segurança",
      "desc":"Maritime & Ground Domain Awareness com alertas e análise assistida por IA.",
