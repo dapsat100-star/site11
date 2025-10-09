@@ -482,13 +482,13 @@ html = "\n".join(cards)
 st.markdown(html, unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# ================== SOLUÇÕES (4 linhas x 2 colunas) ==================
+# ================== APLICAÇÔES (4 linhas x 2 colunas) ==================
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
 
 # Cabeçalho + fundo branco da seção
 st.markdown("""
 <div class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:24px 8vw;">
-  <h2 style="margin:0 0 8px;">Soluções</h2>
+  <h2 style="margin:0 0 8px;">Aplicações</h2>
   <p style="margin:0; color:#334155; font-size:0.98rem;">
     Quatro ofertas principais — cada uma com resultados e entregáveis claros, prontos para operação.
   </p>
