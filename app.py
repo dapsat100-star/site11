@@ -471,11 +471,11 @@ SOLUTIONS = [
         "title": "Detecção de Mudanças",
         "desc": (
             "<ul style='margin:.4rem 0 0 1.1rem'>"
-            "<li>Emprego de imagens de satélites do tipo radar (SAR), combinadas à IA.</li>"
-            "<li>Detecção de derramamentos de óleo no mar, dia e noite (24/7).</li>"
-            "<li>Inclusão de metadados, nível de confiança e recomendações operacionais.</li>"
+            "<li>Monitoramento sistemático de ativos e detecção de mudanças físicas</li>"
+            "<li>Alertas configuráveis e relatórios com imagens “antes/depois”.</li>"
+            "<li>Alta taxa de revisita obtida pela configuração orbital otimizada da constelação BlackSky, permitindo múltiplas coletas diárias sobre o território brasileiro.</li>"
             "<li>Exibição da imagem da Área de Interesse (AOI) com características detectadas e sobrepostas.</li>"
-            "<li>Dados apresentados em tabela e resumo conciso para apoiar a resposta ambiental e identificar a fonte causadora.</li>"
+            "<li>Dados apresentados em tabela e resumo conciso para apoiar a resposta dos tomadores de decisão.</li>"
             "</ul>"
         ),
         "img": "solucao3.png",
