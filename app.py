@@ -398,7 +398,7 @@ st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
 # Cabeçalho + fundo branco da seção
 st.markdown("""
 <div class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:24px 8vw;">
-  <h2 style="margin:0 0 8px;">Aplicações</h2>
+  <h2 style="margin:0 0 8px;">Solução</h2>
   
 </div>
 """, unsafe_allow_html=True)
@@ -410,8 +410,8 @@ st.markdown("""
   </p>
   <ul style="color:#cbd6f2; margin:0 0 0 1.1rem; line-height:1.5">
     <li><b>Tecnologias empregadas: IA, aprendizado de máquina e métodos estatísticos tradicionais.</li>
-    <li><b>Origem e propósito — concebida inicialmente para Comando e Controle (C2) em centros de operações espaciais, com foco em Defesa & Segurança.</i>.</li>
-    <li><b>Aplicações — expandida para o setor civil e corporativo, com uso em monitoramento ambiental, infraestruturas críticas, energia, logística e petróleo & gás.</i>.</li>
+    <li><b>Origem e propósito — concebida inicialmente para Comando e Controle (C2) em centros de operações espaciais, com foco em Defesa & Segurança.</i>.
+    <li><b>Aplicações — expandida para o setor civil e corporativo, com uso em monitoramento ambiental, infraestruturas críticas, energia, logística e petróleo & gás.</i>.
     <li><b>Entregáveis: análises, dados e insights acionáveis para apoiar decisões de gestores e autoridades.</li>
   </ul>
 </div>
