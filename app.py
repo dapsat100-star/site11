@@ -420,8 +420,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ================== SETORES & APLICAÇÕES (única seção integrada) ==================
-
-
+# ======= ESTILO CSS =======
 st.markdown("""
 <style>
 #setores.section h2{
@@ -479,7 +478,7 @@ st.markdown("""
 .sector-card ul{color:#475569;margin:.5rem 0 0 1.1rem}
 .sector-card li{margin:.35rem 0;font-size:.96rem;line-height:1.4}
 
-/* APLICAÇÕES (imagens + textos) */
+/* APLICAÇÕES */
 .sol-img{
   width:100%;
   max-width:520px;
@@ -489,7 +488,6 @@ st.markdown("""
   display:block;
   margin:0 auto;
   transition: transform 0.45s ease, box-shadow 0.45s ease;
-  will-change: transform;
 }
 .sol-img.sol-left:hover{transform-origin:left center!important;transform:scale(1.4)!important;z-index:5!important;position:relative!important;box-shadow:0 18px 44px rgba(0,0,0,.35);}
 .sol-img.sol-right:hover{transform-origin:right center!important;transform:scale(1.4)!important;z-index:5!important;position:relative!important;box-shadow:0 18px 44px rgba(0,0,0,.35);}
@@ -500,16 +498,28 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ===== Funções utilitárias =====
+# ======= FUNÇÕES =======
 def find_first(paths):
     for p in paths:
         if Path(p).exists() and Path(p).stat().st_size > 0:
             return p
     return None
 
-def as_data_uri(path):
-    mime = "image/svg+xml" if path.endswith(".svg") else "image/png"
-    data = Path(path).read_bytes()
+def as_data_uri(path) -> str:
+    """Converte qualquer Path/str em data URI (corrigido)."""
+    p = Path(path)
+    suffix = p.suffix.lower()
+    if suffix == ".svg":
+        mime = "image/svg+xml"
+    elif suffix in (".jpg", ".jpeg"):
+        mime = "image/jpeg"
+    elif suffix == ".png":
+        mime = "image/png"
+    elif suffix == ".webp":
+        mime = "image/webp"
+    else:
+        mime = "application/octet-stream"
+    data = p.read_bytes()
     return f"data:{mime};base64,{base64.b64encode(data).decode()}"
 
 def sector_icon_data_uri(slug: str) -> str | None:
@@ -522,7 +532,7 @@ def sector_icon_data_uri(slug: str) -> str | None:
     path = find_first(candidates)
     return as_data_uri(path) if path else None
 
-# ===== Ícone da plataforma (cria automaticamente) =====
+# ======= CRIA O ÍCONE DE ÓLEO & GÁS (caso não exista) =======
 oleogas_svg = """
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <rect width="64" height="64" rx="12" fill="#0b1221"/>
@@ -534,7 +544,7 @@ oleogas_path = icons_dir / "oleogas.svg"
 if not oleogas_path.exists():
     oleogas_path.write_text(oleogas_svg.strip(), encoding="utf-8")
 
-# ===== Dados dos setores =====
+# ======= DADOS DOS SETORES =======
 SECTORS = [
     {"slug":"oleogas","title":"Óleo & Gás",
      "desc":"Monitoramento de Emissão de Metano e Monitoramento de Ativos Críticos.",
@@ -559,7 +569,7 @@ SECTORS = [
      ]},
 ]
 
-# ===== Dados das soluções =====
+# ======= DADOS DAS APLICAÇÕES =======
 SOLUTIONS = [
     {
         "title": "Monitoramento de Metano — OGMP 2.0 (Nível 5)",
@@ -610,7 +620,7 @@ SOLUTIONS = [
     },
 ]
 
-# ===== Renderização completa =====
+# ======= RENDERIZAÇÃO COMPLETA =======
 st.markdown('<div id="setores" class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:48px 8vw;">', unsafe_allow_html=True)
 st.markdown('<h2>Setores & Aplicações</h2>', unsafe_allow_html=True)
 st.markdown('<p class="subtitle">Óleo &amp; Gás • Defesa &amp; Segurança • Monitoramento Ambiental</p>', unsafe_allow_html=True)
@@ -635,7 +645,7 @@ for s in SECTORS:
 cards.append("</div>")
 st.markdown("\n".join(cards), unsafe_allow_html=True)
 
-# ---- Aplicações (continuação dentro da mesma seção) ----
+# ---- Aplicações ----
 st.markdown("<hr style='margin:3rem 0; border:0; border-top:1px solid rgba(0,0,0,.08);'/>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align:center; font-weight:700; color:#0b1221;'>Aplicações</h3>", unsafe_allow_html=True)
 st.markdown("<p style='text-align:center; color:#334155;'>Quatro ofertas principais — cada uma com resultados e entregáveis claros, prontos para operação.</p>", unsafe_allow_html=True)
@@ -664,6 +674,8 @@ for s in SOLUTIONS:
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
+
+
 
 
 
