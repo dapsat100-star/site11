@@ -351,6 +351,23 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 # ================== SOLUÇÃO ==================
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
+
+
+# Seção com fundo branco
+st.markdown("""
+<div class="section-solucao" style="
+    background:#ffffff;
+    color:#0b1221;
+    border-top:1px solid rgba(0,0,0,.06);
+    padding:56px 8vw;">
+  <h2 style="margin:0 0 10px;">Solução</h2>
+  <p style="margin:0 0 14px;">
+    A Plataforma <b>DAP ATLAS</b> é uma solução georreferenciada de última geração
+    desenvolvida pela MAVIPE Sistemas Espaciais para o monitoramento remoto terrestre e marítimo.
+  </p>
+</div>
+""", unsafe_allow_html=True)
+
 st.markdown("""
 <div class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:24px 8vw;">
   <h2 style="margin:0 0 8px;">Solução</h2>
