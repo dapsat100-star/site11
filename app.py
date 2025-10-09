@@ -305,7 +305,7 @@ col_text, col_img = st.columns([1, 1])
 
 with col_text:
     st.markdown(
-        "<h1 style='font-size:2.2rem; font-weight:700; color:#e6eefc; margin-bottom:12px;'>MAVIPE Sistemas Espaciais</h1>",
+        "<h1 style='font-size:2.2rem; font-weight:700; color:#00E3A5; margin-bottom:12px;'>MAVIPE Sistemas Espaciais</h1>",
         unsafe_allow_html=True,
     )
     st.markdown(
