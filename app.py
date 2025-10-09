@@ -469,7 +469,15 @@ SOLUTIONS = [
     },
     {
         "title": "Detecção de Mudanças",
-        "desc": "Detecção automática de mudanças utilizando imagens ópticas de altíssima resolução.",
+        "desc": (
+            "<ul style='margin:.4rem 0 0 1.1rem'>"
+            "<li>Emprego de imagens de satélites do tipo radar (SAR), combinadas à IA.</li>"
+            "<li>Detecção de derramamentos de óleo no mar, dia e noite (24/7).</li>"
+            "<li>Inclusão de metadados, nível de confiança e recomendações operacionais.</li>"
+            "<li>Exibição da imagem da Área de Interesse (AOI) com características detectadas e sobrepostas.</li>"
+            "<li>Dados apresentados em tabela e resumo conciso para apoiar a resposta ambiental e identificar a fonte causadora.</li>"
+            "</ul>"
+        ),
         "img": "solucao3.png",
         "caption": "DAP ATLAS - Módulo de Detecção de Mudanças e de Alvos",
         "reverse": False,
