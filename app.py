@@ -448,7 +448,7 @@ SOLUTIONS = [
             "</ul>"
         ),
         "img": "solucao2.png",
-        "caption": "DAP ATLAS - Módulo Monitoramento Derrame de Óleo",
+        "caption": "DAP ATLAS - Módulo Monitoramento Derramamento de Óleo",
         "reverse": True,
     },
     {
