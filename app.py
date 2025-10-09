@@ -476,6 +476,7 @@ SOLUTIONS = [
             "<li>Alta taxa de revisita obtida pela configuração orbital otimizada da constelação BlackSky, permitindo múltiplas coletas diárias sobre o território brasileiro.</li>"
             "<li>Exibição da imagem da Área de Interesse (AOI) com características detectadas e sobrepostas.</li>"
             "<li>Dados apresentados em tabela e resumo conciso para apoiar a resposta dos tomadores de decisão.</li>"
+            "<li>Possibilidade de entrega das imagens em até 3 horas após a passagem do satélite da constelação BlackSky.</li>"
             "</ul>"
         ),
         "img": "solucao3.png",
