@@ -392,6 +392,36 @@ with col_img:
         st.info("Coloque 1–2 imagens começando por 'empresa' (ex.: empresa1.jpg, empresa2.png).")
 
 st.markdown('</div>', unsafe_allow_html=True)
+
+# ================== SOLUÇÃO (nova seção) ==================
+st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
+st.markdown("""
+<div class="section" style="padding:56px 8vw;">
+  <h2 style="margin:0 0 10px; color:#e6eefc; font-weight:800;">Solução</h2>
+  <p class="lead" style="margin:0 0 14px;">
+    A MAVIPE integra <b>IA</b>, <b>imagens de satélite</b> (ópticas e SAR), <b>dados operacionais</b> e
+    <b>meteoceanográficos</b> para transformar observações em <b>informações acionáveis</b> — com
+    <b>painéis</b>, <b>APIs</b> e <b>relatórios</b> prontos para operação.
+  </p>
+  <ul style="color:#cbd6f2; margin:0 0 0 1.1rem; line-height:1.5">
+    <li><b>Plataforma DAP ATLAS</b> (Produto Estratégico de Defesa) — consolida dados, aplica modelos e prioriza alertas.</li>
+    <li><b>OGMP 2.0 L5</b> — medições, evidências e rastreabilidade para reporte de metano em nível de <i>site</i>.</li>
+    <li><b>Operação 24/7</b> — detecção com SAR dia/noite e condições adversas; workflows auditáveis.</li>
+  </ul>
+</div>
+""", unsafe_allow_html=True)
+
+
+
+
+
+
+
+
+
+
+
+
 # ================== SETORES & APLICAÇÕES ==================
 st.markdown("""
 <style>
