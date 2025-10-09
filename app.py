@@ -480,7 +480,7 @@ SOLUTIONS = [
             "</div>"
         ),
         "img": "solucao4.png",
-        "caption": "Detecção de dark ships e análise tática situacional",
+        "caption": "DAP ATLAS - Módulo Detecção de dark ships e análise tática situacional",
         "reverse": True,
     }
 ]
