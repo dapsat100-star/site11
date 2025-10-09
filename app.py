@@ -399,7 +399,7 @@ st.markdown("""
 <div class="section" style="padding:56px 8vw;">
   <h2 style="margin:0 0 10px; color:#00E3A5; font-weight:800;">Solução - Plataforma DAP ATLAS</h2>
   <p class="lead" style="margin:0 0 14px;">
-    solução georreferenciada de última geração para monitoramento remoto terrestre e marítimo.
+    A Plataforma DAP ATLAS é uma solução georreferenciada de última geração desenvolvida pela MAVIPE Sistemas Espaciais, projetada para o monitoramento remoto terrestre e marítimo em larga escala.
   </p>
   <ul style="color:#cbd6f2; margin:0 0 0 1.1rem; line-height:1.5">
     <li><b>Tecnologias empregadas: IA, aprendizado de máquina e métodos estatísticos tradicionais.</li>
