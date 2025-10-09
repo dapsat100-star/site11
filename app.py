@@ -516,7 +516,7 @@ st.markdown("".join(cards_html), unsafe_allow_html=True)
 # ---- Aplicações ----
 st.markdown("<hr style='margin:3rem 0; border:0; border-top:1px solid rgba(0,0,0,.08);'/>", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align:center; font-weight:700; color:#0b1221;'>Aplicações</h3>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center; color:#334155;'>Quatro ofertas principais — cada uma com resultados e entregáveis claros, prontos para operação.</p>", unsafe_allow_html=True)
+
 
 for s in SOLUTIONS:
     st.markdown('<div class="sol-box">', unsafe_allow_html=True)
