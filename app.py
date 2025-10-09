@@ -364,7 +364,7 @@ st.markdown("""
   </p>
   <ul style="color:#cbd6f2; margin:0 0 0 1.1rem; line-height:1.5">
     <li><b>Tecnologias empregadas:</b> IA, aprendizado de máquina e métodos estatísticos tradicionais.</li>
-    <li><b>Origem e propósito:</b> concebida para C2 em centros de operações espaciais (Defesa & Segurança).</li>
+    <li><b>Origem e propósito:</b> concebida originalmente como uma <b>plataforma ISR (Intelligence, Surveillance and Reconnaissance)</b> de apoio a <b>C2</b>, voltada a centros de operações espaciais e ao segmento de <b>Defesa &amp; Segurança</b>.</li>
     <li><b>Aplicações:</b> expandida para monitoramento ambiental, infraestruturas críticas, energia, logística e petróleo & gás.</li>
     <li><b>Entregáveis:</b> análises, dados e insights acionáveis para apoiar decisões de gestores e autoridades.</li>
   </ul>
