@@ -624,26 +624,27 @@ SOLUTIONS = [
 st.markdown('<div id="setores" class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:48px 8vw;">', unsafe_allow_html=True)
 st.markdown('<h2>Setores & Aplicações</h2>', unsafe_allow_html=True)
 st.markdown('<p class="subtitle">Óleo &amp; Gás • Defesa &amp; Segurança • Monitoramento Ambiental</p>', unsafe_allow_html=True)
+# ---- Grid dos Setores (sem indentação para não virar code-block) ----
+cards_html = ['<div class="sector-card-grid">']
 
-# ---- Grid dos Setores ----
-cards = ['<div class="sector-card-grid">']
 for s in SECTORS:
     data_uri = sector_icon_data_uri(s["slug"])
     icon_html = f'<div class="sector-icon"><img src="{data_uri}" alt="{s["slug"]}"/></div>' if data_uri else ""
     bullets = "".join(f"<li>{b}</li>" for b in s["bullets"])
-    tpl = f"""
-<div id="{s["slug"]}" class="sector-card">
-  <div class="sector-head">
-    {icon_html}
-    <h3>{s["title"]}</h3>
-  </div>
-  <p>{s["desc"]}</p>
-  <ul>{bullets}</ul>
-</div>
-"""
-    cards.append(textwrap.dedent(tpl).strip())
-cards.append("</div>")
-st.markdown("\n".join(cards), unsafe_allow_html=True)
+
+    # linhas sem espaços à esquerda:
+    cards_html.append(
+        f'<div id="{s["slug"]}" class="sector-card">'
+        f'<div class="sector-head">{icon_html}<h3>{s["title"]}</h3></div>'
+        f'<p>{s["desc"]}</p>'
+        f'<ul>{bullets}</ul>'
+        f'</div>'
+    )
+
+cards_html.append('</div>')
+st.markdown("".join(cards_html), unsafe_allow_html=True)
+
+
 
 # ---- Aplicações ----
 st.markdown("<hr style='margin:3rem 0; border:0; border-top:1px solid rgba(0,0,0,.08);'/>", unsafe_allow_html=True)
