@@ -356,20 +356,34 @@ st.markdown("""
   <h2 style="margin:0 0 8px;">Solução</h2>
 </div>
 """, unsafe_allow_html=True)
-st.markdown("""
-<div class="section" style="padding:56px 8vw;">
-  <h2 style="margin:0 0 10px; color:#00E3A5; font-weight:800;">Plataforma DAP ATLAS</h2>
-  <p class="lead" style="margin:0 0 14px;">
-    A Plataforma DAP ATLAS é uma solução georreferenciada de última geração desenvolvida pela MAVIPE Sistemas Espaciais, projetada para o monitoramento remoto terrestre e marítimo em larga escala.
-  </p>
-  <ul style="color:#cbd6f2; margin:0 0 0 1.1rem; line-height:1.5">
-    <li><b>Tecnologias empregadas:</b> IA, aprendizado de máquina e métodos estatísticos tradicionais.</li>
-    <li><b>Origem e propósito:</b> concebida originalmente como uma <b>plataforma ISR (Intelligence, Surveillance and Reconnaissance)</b> de apoio a <b>C2</b>, voltada a centros de operações espaciais e ao segmento de <b>Defesa &amp; Segurança</b>.</li>
-    <li><b>Aplicações:</b> expandida para monitoramento ambiental, infraestruturas críticas, energia, logística e petróleo & gás.</li>
-    <li><b>Entregáveis:</b> análises, dados e insights acionáveis para apoiar decisões de gestores e autoridades.</li>
-  </ul>
-</div>
-""", unsafe_allow_html=True)
+
+# ======= Layout: texto + imagem lado a lado =======
+col1, col2 = st.columns([1.4, 1])
+
+with col1:
+    st.markdown("""
+    <div style="padding-right:2vw;">
+      <h2 style="margin:0 0 10px; color:#00E3A5; font-weight:800;">Plataforma DAP ATLAS</h2>
+      <p class="lead" style="margin:0 0 14px;">
+        A Plataforma DAP ATLAS é uma solução georreferenciada de última geração desenvolvida pela MAVIPE Sistemas Espaciais, projetada para o monitoramento remoto terrestre e marítimo em larga escala.
+      </p>
+      <ul style="color:#334155; margin:0 0 0 1.1rem; line-height:1.5">
+        <li><b>Tecnologias empregadas:</b> IA, aprendizado de máquina e métodos estatísticos tradicionais.</li>
+        <li><b>Origem e propósito:</b> concebida originalmente como uma <b>plataforma ISR (Intelligence, Surveillance and Reconnaissance)</b> de apoio a <b>C2</b>, voltada a centros de operações espaciais e ao segmento de <b>Defesa &amp; Segurança</b>.</li>
+        <li><b>Aplicações:</b> expandida para monitoramento ambiental, infraestruturas críticas, energia, logística e petróleo & gás.</li>
+        <li><b>Entregáveis:</b> análises, dados e insights acionáveis para apoiar decisões de gestores e autoridades.</li>
+      </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col2:
+    from pathlib import Path
+    img_path = "dap_atlas_mock.png"  # substitua pelo nome real da imagem
+    if Path(img_path).exists():
+        st.image(img_path, use_column_width=True, caption="Interface simulada da Plataforma DAP ATLAS")
+    else:
+        st.info("Adicione a imagem 'dap_atlas_mock.png' na pasta do app.")
+
 
 # ================== SETORES & APLICAÇÕES (SEÇÃO ÚNICA) ==================
 # cria ícone padrão de óleo&gás (caso não exista)
