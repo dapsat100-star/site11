@@ -403,8 +403,8 @@ st.markdown("""
   </p>
   <ul style="color:#cbd6f2; margin:0 0 0 1.1rem; line-height:1.5">
     <li><b>Tecnologias empregadas: IA, aprendizado de máquina e métodos estatísticos tradicionais.</li>
-    <li><b>OGMP 2.0 L5</b> — medições, evidências e rastreabilidade para reporte de metano em nível de <i>site</i>.</li>
-    <li><b>Operação 24/7</b> — detecção com SAR dia/noite e condições adversas; workflows auditáveis.</li>
+    <li><b>Âmbitos de uso: Aplicações civis e de Defesa & Segurança.</i>.</li>
+    <li><b>Entregáveis: análises, dados e insights acionáveis para apoiar decisões de gestores e autoridades.</li>
   </ul>
 </div>
 """, unsafe_allow_html=True)
