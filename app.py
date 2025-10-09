@@ -461,9 +461,16 @@ SOLUTIONS = [
     {
         "title": "Inteligência, Vigilância e Reconhecimento (ISR)",
         "desc": (
-            "Vigilância de dutos, plantas e áreas sensíveis; detecção de mudanças e expansão irregular; "
-            "análises InSAR para integridade estrutural."
-        ),
+    "<ul style='margin:.4rem 0 0 1.1rem'>"
+    "<li>Inteligência para Comando e Controle (C2).</li>"
+    "<li>Monitoramento remoto por satélite em ambientes terrestres e marítimos.</li>"
+    "<li>Fusão de imagens ópticas e SAR com dados AIS, RF e meteoceanográficos.</li>"
+    "<li>Detecção de navios não colaborativos (dark ships), fronteiras e instalações sensíveis.</li>"
+    "<li>Operação contínua dia e noite, 24/7.</li>"
+    "<li>Relatório Situacional (SITREP) com alvos e eventos sobrepostos.</li>"
+    "<li>Suporte imediato à decisão e acionamento de vetores de defesa e segurança.</li>"
+    "</ul>"
+)
         "img": "solucao4.png",
         "caption": "Mudanças e alertas priorizados",
         "reverse": True,
