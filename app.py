@@ -418,7 +418,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ================== SETORES & APLICAÇÕES ==================
+
 # ================== SETORES & APLICAÇÕES ==================
 st.markdown("""
 <style>
