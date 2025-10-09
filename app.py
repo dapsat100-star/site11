@@ -6,6 +6,8 @@ from pathlib import Path
 from urllib.parse import quote
 import streamlit as st
 import textwrap
+
+
 st.set_page_config(page_title="MAVIPE Space Systems — DAP ATLAS", page_icon=None, layout="wide")
 
 # ================== CONFIG ==================
@@ -418,8 +420,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ================== SETORES & APLICAÇÕES (única seção integrada) ==================
-import base64, textwrap
-from pathlib import Path
+
 
 st.markdown("""
 <style>
