@@ -419,7 +419,7 @@ st.markdown("""
 
 
 
-# ================== SETORES & APLICAÇÕES ==================
+
 # ================== SETORES & APLICAÇÕES ==================
 import base64, textwrap
 from pathlib import Path
@@ -578,34 +578,7 @@ html = "\n".join(cards)
 st.markdown(html, unsafe_allow_html=True)
 
 
-# ---------- Renderização HTML completa ----------
-cards = ['<div id="setores" class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:48px 8vw;">']
-cards.append('<h2>Setores & Aplicações</h2>')
-cards.append('<p class="subtitle">Óleo &amp; Gás • Defesa &amp; Segurança • Monitoramento Ambiental</p>')
-cards.append('<div class="sector-card-grid">')
 
-for s in SECTORS:
-    data_uri = sector_icon_data_uri(s["slug"])
-    icon_html = (f'<div class="sector-icon"><img src="{data_uri}" alt="{s["slug"]}"/></div>'
-                 if data_uri else
-                 f'<div class="sector-icon"><span>{s["fallback_emoji"]}</span></div>')
-    bullets = "".join(f"<li>{b}</li>" for b in s["bullets"])
-    tpl = f"""
-<div id="{s["slug"]}" class="sector-card">
-  <div class="sector-head">
-    {icon_html}
-    <h3>{s["title"]}</h3>
-  </div>
-  <p>{s["desc"]}</p>
-  <ul>{bullets}</ul>
-</div>
-"""
-    cards.append(textwrap.dedent(tpl).strip())
-
-cards.append("</div></div>")
-html = "\n".join(cards)
-
-st.markdown(html, unsafe_allow_html=True)
 
 
 # ================== APLICAÇÔES (4 linhas x 2 colunas) ==================
