@@ -455,7 +455,7 @@ SOLUTIONS = [
         "title": "Detecção de Mudanças",
         "desc": "Detecção automática de mudanças utilizando imagens ópticas de altíssima resolução.",
         "img": "solucao3.png",
-        "caption": "Fluxo de quantificação e evidências",
+        "caption": "DAP ATLAS - Módulo de Detecção de Mudanças e de Alvos",
         "reverse": False,
     },
     {
