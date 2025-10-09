@@ -420,6 +420,10 @@ st.markdown("""
 
 
 # ================== SETORES & APLICAÇÕES ==================
+# ================== SETORES & APLICAÇÕES ==================
+import base64, textwrap
+from pathlib import Path
+
 st.markdown("""
 <style>
 #setores.section h2{
@@ -470,7 +474,7 @@ st.markdown("""
   gap:10px;
   margin-bottom:8px;
 }
-.sector-icon img{width:24px;height:24px;display:block}
+.sector-icon img{width:28px;height:28px;display:block}
 .sector-icon span{font-size:20px;display:inline-block;line-height:1}
 .sector-card h3{margin:0;color:#0b1221;font-size:1.25rem;font-weight:600}
 .sector-card p{color:#334155;margin:.4rem 0 .6rem;line-height:1.5}
@@ -478,6 +482,18 @@ st.markdown("""
 .sector-card li{margin:.35rem 0;font-size:.96rem;line-height:1.4}
 </style>
 """, unsafe_allow_html=True)
+
+# Função para procurar ícone
+def find_first(paths):
+    for p in paths:
+        if Path(p).exists() and Path(p).stat().st_size > 0:
+            return p
+    return None
+
+def as_data_uri(path):
+    mime = "image/svg+xml" if path.endswith(".svg") else "image/png"
+    data = Path(path).read_bytes()
+    return f"data:{mime};base64,{base64.b64encode(data).decode()}"
 
 def sector_icon_data_uri(slug: str) -> str | None:
     candidates=[]
@@ -488,6 +504,19 @@ def sector_icon_data_uri(slug: str) -> str | None:
         ]
     path = find_first(candidates)
     return as_data_uri(path) if path else None
+
+# ========== Ícone vetorial da plataforma (caso o arquivo não exista) ==========
+oleogas_svg = """
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="12" fill="#0b1221"/>
+  <path d="M14 48h36v2H14v-2Zm12-14h4v14h-4V34Zm18 0h4v14h-4V34ZM20 22h24l-2 12H22l-2-12Zm3 0 2 10h14l2-10H23Zm6-8h6v6h-6v-6Zm-2 6h10v2h-10v-2Z" fill="#4EA8DE"/>
+</svg>
+"""
+icons_dir = Path("icons")
+icons_dir.mkdir(exist_ok=True)
+oleogas_path = icons_dir / "oleogas.svg"
+if not oleogas_path.exists():
+    oleogas_path.write_text(oleogas_svg.strip(), encoding="utf-8")
 
 # ---------- Conteúdo dos setores ----------
 SECTORS = [
@@ -518,6 +547,36 @@ SECTORS = [
      ],
      "fallback_emoji":"🌎"},
 ]
+
+# ---------- Renderização HTML completa ----------
+cards = ['<div id="setores" class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:48px 8vw;">']
+cards.append('<h2>Setores & Aplicações</h2>')
+cards.append('<p class="subtitle">Óleo &amp; Gás • Defesa &amp; Segurança • Monitoramento Ambiental</p>')
+cards.append('<div class="sector-card-grid">')
+
+for s in SECTORS:
+    data_uri = sector_icon_data_uri(s["slug"])
+    icon_html = (f'<div class="sector-icon"><img src="{data_uri}" alt="{s["slug"]}"/></div>'
+                 if data_uri else
+                 f'<div class="sector-icon"><span>{s["fallback_emoji"]}</span></div>')
+    bullets = "".join(f"<li>{b}</li>" for b in s["bullets"])
+    tpl = f"""
+<div id="{s["slug"]}" class="sector-card">
+  <div class="sector-head">
+    {icon_html}
+    <h3>{s["title"]}</h3>
+  </div>
+  <p>{s["desc"]}</p>
+  <ul>{bullets}</ul>
+</div>
+"""
+    cards.append(textwrap.dedent(tpl).strip())
+
+cards.append("</div></div>")
+html = "\n".join(cards)
+
+st.markdown(html, unsafe_allow_html=True)
+
 
 # ---------- Renderização HTML completa ----------
 cards = ['<div id="setores" class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:48px 8vw;">']
