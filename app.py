@@ -399,14 +399,12 @@ st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
 st.markdown("""
 <div class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:24px 8vw;">
   <h2 style="margin:0 0 8px;">Aplicações</h2>
-  <p style="margin:0; color:#334155; font-size:0.98rem;">
-    Quatro ofertas principais — cada uma com resultados e entregáveis claros, prontos para operação.
-  </p>
+  
 </div>
 """, unsafe_allow_html=True)
 st.markdown("""
 <div class="section" style="padding:56px 8vw;">
-  <h2 style="margin:0 0 10px; color:#00E3A5; font-weight:800;">Solução - Plataforma DAP ATLAS</h2>
+  <h2 style="margin:0 0 10px; color:#00E3A5; font-weight:800;">Plataforma DAP ATLAS</h2>
   <p class="lead" style="margin:0 0 14px;">
     A Plataforma DAP ATLAS é uma solução georreferenciada de última geração desenvolvida pela MAVIPE Sistemas Espaciais, projetada para o monitoramento remoto terrestre e marítimo em larga escala.
   </p>
