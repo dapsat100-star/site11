@@ -392,7 +392,95 @@ with col_img:
         st.info("Coloque 1–2 imagens começando por 'empresa' (ex.: empresa1.jpg, empresa2.png).")
 
 st.markdown('</div>', unsafe_allow_html=True)
+# ================== SETORES & APLICAÇÕES ==================
+st.markdown("""
+<style>
+#setores.section h2{color:#fff!important;opacity:1!important;font-size:2rem!important;font-weight:800!important;text-align:center!important;margin:0 0 .8rem}
+#setores.section h2::after{content:"";display:block;width:68px;height:3px;background:#4EA8DE;margin:.65rem auto 0;border-radius:3px}
+#setores .subtitle{color:#f5f7ff!important;text-align:center!important;font-size:1.05rem!important;margin:0 0 1.6rem 0!important;opacity:1!important}
 
+.sector-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.sector-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:18px 20px;box-shadow:0 10px 28px rgba(0,0,0,.45);transition:transform .2s, box-shadow .2s}
+.sector-card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(0,0,0,.55)}
+.sector-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sector-icon img{width:24px;height:24px;display:block}
+.sector-icon span{font-size:20px;display:inline-block;line-height:1}
+.sector-card h3{margin:0;color:#fff;font-size:1.25rem;font-weight:600}
+.sector-card p{color:#e9eefc;margin:.4rem 0 .6rem;line-height:1.5}
+.sector-card ul{color:#d5def6;margin:.5rem 0 0 1.1rem}
+.sector-card li{margin:.35rem 0;font-size:.96rem;line-height:1.4}
+</style>
+""", unsafe_allow_html=True)
+
+def sector_icon_data_uri(slug: str) -> str | None:
+    candidates=[]
+    for ext in ("svg","png","jpg","jpeg"):
+        candidates += [
+            f"icons/{slug}.{ext}", f"icons/{slug}_icon.{ext}", f"icons/icon-{slug}.{ext}",
+            f"{slug}.{ext}", f"{slug}_icon.{ext}", f"icon-{slug}.{ext}",
+        ]
+    path = find_first(candidates)
+    return as_data_uri(path) if path else None
+
+SECTORS = [
+    {"slug":"oleogas","title":"Óleo & Gás",
+     "desc":"Monitoramento de Emissão de Metano e Monitoramento de Ativos Críticos ",
+     "bullets":[
+        "Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5",
+        "Detecção & Monitoramento de Ativos Críticos: Supervisão contínua de dutos, instalações industriais e outras infraestruturas estratégicas, com detecção de anomalias",
+        "Detecção de Derramamento de Petróleo: Identificação rápida de manchas e derrames de óleo no mar com alertas operacionais e suporte à resposta ambiental.",
+     ],
+     "fallback_emoji":"🛢️"}, 
+    
+    {"slug":"defesa","title":"Defesa & Segurança",
+     "desc":"Maritime & Ground Domain Awareness com alertas e análise assistida por IA.",
+     "bullets":[
+        "Monitoramento de embarcações não-colaborativas (dark ships)",
+        "Monitoramento de fronteiras terrestres e marítimas",        
+        "Monitoramento de instalações civis e militares (edificações, portos, aeroportos,etc.) ",
+     ],
+     "fallback_emoji":"🛡️"},
+    {"slug":"ambiental","title":"Ambiental",
+     "desc":"Monitoramento de emissões e riscos ambientais.",
+     "bullets":[
+        "Emissões em Resíduos: Detecção de metano em aterros sanitários e áreas de manejo de resíduos.",
+        "Cobertura do solo: Acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.",
+        "Desastres Ambientais: Monitoramento de eventos extremos,como enchentes e derramamentos de óleo no mar",
+     ],
+     "fallback_emoji":"🌎"},
+]    
+st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
+st.header("Setores & Aplicações")
+st.markdown(
+    '<p class="subtitle">Óleo &amp; Gás • Defesa &amp; Segurança • Monitoramento Ambiental</p>',
+    unsafe_allow_html=True
+)
+
+# Monta HTML sem indentação que crie bloco de código
+cards = ['<div class="sector-card-grid">']
+for s in SECTORS:
+    data_uri = sector_icon_data_uri(s["slug"])
+    icon_html = (f'<div class="sector-icon"><img src="{data_uri}" alt="{s["slug"]}"/></div>'
+                 if data_uri else
+                 f'<div class="sector-icon"><span>{s["fallback_emoji"]}</span></div>')
+    bullets = "".join(f"<li>{b}</li>" for b in s["bullets"])
+    tpl = f"""
+<div id="{s["slug"]}" class="sector-card">
+  <div class="sector-head">
+    {icon_html}
+    <h3>{s["title"]}</h3>
+  </div>
+  <p>{s["desc"]}</p>
+  <ul>{bullets}</ul>
+</div>
+"""
+    cards.append(textwrap.dedent(tpl).strip())
+cards.append("</div>")
+html = "\n".join(cards)
+
+# IMPORTANTE: unsafe_allow_html e sem indentação no início das linhas
+st.markdown(html, unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # ================== SOLUÇÕES (4 linhas x 2 colunas) ==================
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
@@ -779,97 +867,9 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 
 
-# ================== SETORES & APLICAÇÕES ==================
-st.markdown("""
-<style>
-#setores.section h2{color:#fff!important;opacity:1!important;font-size:2rem!important;font-weight:800!important;text-align:center!important;margin:0 0 .8rem}
-#setores.section h2::after{content:"";display:block;width:68px;height:3px;background:#4EA8DE;margin:.65rem auto 0;border-radius:3px}
-#setores .subtitle{color:#f5f7ff!important;text-align:center!important;font-size:1.05rem!important;margin:0 0 1.6rem 0!important;opacity:1!important}
 
-.sector-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.sector-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:18px 20px;box-shadow:0 10px 28px rgba(0,0,0,.45);transition:transform .2s, box-shadow .2s}
-.sector-card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(0,0,0,.55)}
-.sector-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.sector-icon img{width:24px;height:24px;display:block}
-.sector-icon span{font-size:20px;display:inline-block;line-height:1}
-.sector-card h3{margin:0;color:#fff;font-size:1.25rem;font-weight:600}
-.sector-card p{color:#e9eefc;margin:.4rem 0 .6rem;line-height:1.5}
-.sector-card ul{color:#d5def6;margin:.5rem 0 0 1.1rem}
-.sector-card li{margin:.35rem 0;font-size:.96rem;line-height:1.4}
-</style>
-""", unsafe_allow_html=True)
 
-def sector_icon_data_uri(slug: str) -> str | None:
-    candidates=[]
-    for ext in ("svg","png","jpg","jpeg"):
-        candidates += [
-            f"icons/{slug}.{ext}", f"icons/{slug}_icon.{ext}", f"icons/icon-{slug}.{ext}",
-            f"{slug}.{ext}", f"{slug}_icon.{ext}", f"icon-{slug}.{ext}",
-        ]
-    path = find_first(candidates)
-    return as_data_uri(path) if path else None
 
-SECTORS = [
-    {"slug":"oleogas","title":"Óleo & Gás",
-     "desc":"Monitoramento de Emissão de Metano e Monitoramento de Ativos Críticos ",
-     "bullets":[
-        "Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5",
-        "Detecção & Monitoramento de Ativos Críticos: Supervisão contínua de dutos, instalações industriais e outras infraestruturas estratégicas, com detecção de anomalias",
-        "Detecção de Derramamento de Petróleo: Identificação rápida de manchas e derrames de óleo no mar com alertas operacionais e suporte à resposta ambiental.",
-     ],
-     "fallback_emoji":"🛢️"}, 
-    
-    {"slug":"defesa","title":"Defesa & Segurança",
-     "desc":"Maritime & Ground Domain Awareness com alertas e análise assistida por IA.",
-     "bullets":[
-        "Monitoramento de embarcações não-colaborativas (dark ships)",
-        "Monitoramento de fronteiras terrestres e marítimas",        
-        "Monitoramento de instalações civis e militares (edificações, portos, aeroportos,etc.) ",
-     ],
-     "fallback_emoji":"🛡️"},
-    {"slug":"ambiental","title":"Ambiental",
-     "desc":"Monitoramento de emissões e riscos ambientais.",
-     "bullets":[
-        "Emissões em Resíduos: Detecção de metano em aterros sanitários e áreas de manejo de resíduos.",
-        "Cobertura do solo: Acompanhamento de desmatamento, mudanças no uso do solo e focos de incêndio.",
-        "Desastres Ambientais: Monitoramento de eventos extremos,como enchentes e derramamentos de óleo no mar",
-     ],
-     "fallback_emoji":"🌎"},
-]    
-st.markdown('<div id="setores" class="section">', unsafe_allow_html=True)
-st.header("Setores & Aplicações")
-st.markdown(
-    '<p class="subtitle">Óleo &amp; Gás • Defesa &amp; Segurança • Monitoramento Ambiental</p>',
-    unsafe_allow_html=True
-)
-
-# Monta HTML sem indentação que crie bloco de código
-cards = ['<div class="sector-card-grid">']
-for s in SECTORS:
-    data_uri = sector_icon_data_uri(s["slug"])
-    icon_html = (f'<div class="sector-icon"><img src="{data_uri}" alt="{s["slug"]}"/></div>'
-                 if data_uri else
-                 f'<div class="sector-icon"><span>{s["fallback_emoji"]}</span></div>')
-    bullets = "".join(f"<li>{b}</li>" for b in s["bullets"])
-    tpl = f"""
-<div id="{s["slug"]}" class="sector-card">
-  <div class="sector-head">
-    {icon_html}
-    <h3>{s["title"]}</h3>
-  </div>
-  <p>{s["desc"]}</p>
-  <ul>{bullets}</ul>
-</div>
-"""
-    cards.append(textwrap.dedent(tpl).strip())
-cards.append("</div>")
-html = "\n".join(cards)
-
-# IMPORTANTE: unsafe_allow_html e sem indentação no início das linhas
-st.markdown(html, unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ================== CONTATO ==================
 # ================== CONTATO ==================
 st.markdown('<div id="contato"></div>', unsafe_allow_html=True)
 st.markdown('<div class="section">', unsafe_allow_html=True)
