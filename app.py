@@ -486,7 +486,7 @@ SOLUTIONS = [
 ]
 
 
-]
+
 
 st.markdown('<div id="setores" class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:48px 8vw;">', unsafe_allow_html=True)
 st.markdown('<h2>Setores & Aplicações</h2>', unsafe_allow_html=True)
