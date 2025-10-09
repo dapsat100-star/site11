@@ -433,7 +433,7 @@ SOLUTIONS = [
             "</ul>"
         ),
         "img": "solucao1.png",
-        "caption": "Exemplo de Relatório de Metano (OGMP 2.0)",
+        "caption": "Módulo DAP ATLAS - Monitoramento de MEtano",
         "reverse": False,
     },
     {
