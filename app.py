@@ -472,7 +472,7 @@ st.markdown("""
   gap:10px;
   margin-bottom:8px;
 }
-.sector-icon img{width:28px;height:28px;display:block}
+.sector-icon img{width:40px;height:28px;display:block}
 .sector-card h3{margin:0;color:#0b1221;font-size:1.25rem;font-weight:600}
 .sector-card p{color:#334155;margin:.4rem 0 .6rem;line-height:1.5}
 .sector-card ul{color:#475569;margin:.5rem 0 0 1.1rem}
