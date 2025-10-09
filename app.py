@@ -697,7 +697,7 @@ with c2:
 msg = st.text_area("Qual desafio você quer resolver?")
 
 if st.button("Enviar e-mail"):
-    subject = "MAVIPE — Agendar demo"
+    subject = "MAVIPE — Contato"
     body = f"Nome: {nome}\\nEmail: {email}\\nOrg: {org}\\nTelefone: {phone}\\nMensagem:\\n{msg}"
     st.success("Clique abaixo para abrir seu e-mail:")
     st.markdown(f"[Abrir e-mail](mailto:{MAVIPE_EMAIL}?subject={quote(subject)}&body={quote(body)})")
