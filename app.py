@@ -293,31 +293,14 @@ with col_text:
         unsafe_allow_html=True,
     )
 
-    linkedin_path = find_first(LINKEDIN_CANDIDATES)
-    if linkedin_path:
-        st.markdown(
-            f"""
-            <div class="social">
-              <a href="https://www.linkedin.com/company/mavipe"
-                 target="_blank" rel="noopener" aria-label="LinkedIn da MAVIPE">
-                <img src="{as_data_uri(linkedin_path)}" alt="LinkedIn"/>
-              </a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            """
-            <div class="social">
-              <a href="https://www.linkedin.com/company/mavipe" target="_blank" rel="noopener"
-                 style="color:#9fc6ff; text-decoration:underline; width:auto; height:auto; background:transparent; border:none;">
-                 LinkedIn
-              </a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+    st.markdown(
+    '<p style="text-align:center; margin:16px 0;">'
+    '<a href="https://www.linkedin.com/company/mavipe" target="_blank" rel="noopener" '
+    'style="color:#9fc6ff; text-decoration:underline; font-weight:600;">'
+    'LinkedIn da MAVIPE</a></p>',
+    unsafe_allow_html=True
+)
+
 
 with col_img:
     imgs = gather_empresa_images(max_n=2)
