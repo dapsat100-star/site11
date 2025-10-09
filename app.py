@@ -460,21 +460,32 @@ SOLUTIONS = [
     },
     {
         "title": "Inteligência, Vigilância e Reconhecimento (ISR)",
-        "desc": (
-             "<ul style='margin:.4rem 0 0 1.1rem'>"
-             "<li>Inteligência para Comando e Controle (C2).</li>"
-             "<li>Monitoramento remoto por satélite em ambientes terrestres e marítimos.</li>"
-             "<li>Fusão de imagens ópticas e SAR com dados AIS, RF e meteoceanográficos.</li>"
-             "<li>Detecção de navios não colaborativos (dark ships), fronteiras e instalações sensíveis.</li>"
-             "<li>Operação contínua dia e noite, 24/7.</li>"
-             "<li>Relatório Situacional (SITREP) com alvos e eventos sobrepostos.</li>"
-             "<li>Suporte imediato à decisão e acionamento de vetores de defesa e segurança.</li>"
-             "</ul>"
-),
-        "img": "solucao4.png",
-        "caption": "Mudanças e alertas priorizados",
-        "reverse": True,
-    },
+{
+    "title": "Inteligência, Vigilância e Reconhecimento (ISR)",
+    "desc": (
+        "<ul style='margin:.4rem 0 0 1.1rem'>"
+        "<li>Inteligência para Comando e Controle (C2).</li>"
+        "<li>Monitoramento remoto por satélite em ambientes terrestres e marítimos.</li>"
+        "<li>Fusão de imagens ópticas e SAR com dados AIS, RF e meteoceanográficos.</li>"
+        "<li>Detecção de navios não colaborativos (dark ships), fronteiras e instalações sensíveis.</li>"
+        "<li>Operação contínua dia e noite, 24/7.</li>"
+        "<li>Relatório Situacional (SITREP) com alvos e eventos sobrepostos.</li>"
+        "<li>Suporte imediato à decisão e acionamento de vetores de defesa e segurança.</li>"
+        "</ul>"
+        "<div style='margin-top:12px; background:rgba(11,18,33,0.85); border:1px solid rgba(255,255,255,0.08); "
+        "border-radius:10px; padding:12px 16px; color:#e6eefc; font-size:0.9rem; line-height:1.5;'>"
+        "<b>Exemplo Operacional — SITREP:</b><br>"
+        "Uma ameaça potencial (<i>dark ship</i>) foi identificada a aproximadamente 55 minutos da fronteira. "
+        "Informações detalhadas, geradas pelo sistema de fusão de dados da plataforma, são exibidas abaixo do ícone da ameaça, "
+        "com um resumo conciso no canto inferior direito. O processo fornece às autoridades base técnica para decisões rápidas "
+        "e acionamento coordenado de vetores de defesa e segurança para mitigar ou neutralizar a ameaça."
+        "</div>"
+    ),
+    "img": "solucao4.png",
+    "caption": "Detecção de dark ships e análise tática situacional",
+    "reverse": True,
+}
+
 ]
 
 st.markdown('<div id="setores" class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:48px 8vw;">', unsafe_allow_html=True)
