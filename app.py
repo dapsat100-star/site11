@@ -713,22 +713,7 @@ with st.container():
         else:
             st.info("Imagem de parceiros não encontrada (partners.png).")
 
-    # Coluna 2 — Caso de Sucesso
-    with col2:
-        if Path(success_img).exists() and Path(success_img).stat().st_size > 0:
-            st.markdown(
-                f"<img class='parcases-img' src='{as_data_uri(success_img)}' alt='Caso de Sucesso — Petrobras OGMP 2.0'/>",
-                unsafe_allow_html=True
-            )
-            st.markdown(
-                """<div class='parcapes-caption'>
-                Caso de Sucesso — <b>Monitoramento OGMP 2.0 Nível 5 com Petrobras</b><br>
-                Detecção e quantificação de emissões de metano (onshore &amp; offshore), com IA, dados satelitais e dashboards georreferenciados.
-                </div>""",
-                unsafe_allow_html=True
-            )
-        else:
-            st.info("Imagem do caso de sucesso não encontrada (case_petrobras.png).")
+  
 
 
 # ================== 📰 NEWSROOM ==================
