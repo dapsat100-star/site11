@@ -394,6 +394,16 @@ with col_img:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # ================== SOLUÇÃO (nova seção) ==================
+st.markdown("""
+<div class="section partners-cases-section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:16px 8vw;">
+<h2 style="margin-top:0; margin-bottom:8px;">Parceiros</h2>
+
+</div>
+""", unsafe_allow_html=True)
+
+
+
+
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
 st.markdown("""
 <div class="section" style="padding:56px 8vw;">
