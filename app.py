@@ -380,7 +380,7 @@ with col2:
     from pathlib import Path
     img_path = "dap_atlas_mock.png"  # substitua pelo nome real da imagem
     if Path(img_path).exists():
-        st.image(img_path, use_column_width=True, caption="Interface simulada da Plataforma DAP ATLAS")
+        st.image(img_path, use_container_width=True, caption="Interface simulada da Plataforma DAP ATLAS")
     else:
         st.info("Adicione a imagem 'dap_atlas_mock.png' na pasta do app.")
 
