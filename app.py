@@ -403,7 +403,7 @@ st.markdown("""
   </p>
   <ul style="color:#cbd6f2; margin:0 0 0 1.1rem; line-height:1.5">
     <li><b>Tecnologias empregadas: IA, aprendizado de máquina e métodos estatísticos tradicionais.</li>
-    <li><b>Âmbitos de uso: Aplicações civis e de Defesa & Segurança.</i>.</li>
+    <li><b>Aplicações — expandida para o setor civil e corporativo, com uso em monitoramento ambiental, infraestruturas críticas, energia, logística e petróleo & gás.</i>.</li>
     <li><b>Entregáveis: análises, dados e insights acionáveis para apoiar decisões de gestores e autoridades.</li>
   </ul>
 </div>
