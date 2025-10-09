@@ -433,7 +433,7 @@ SOLUTIONS = [
             "</ul>"
         ),
         "img": "solucao1.png",
-        "caption": "Módulo DAP ATLAS - Monitoramento de MEtano",
+        "caption": "DAP ATLAS - Módulo Monitoramento de Metano",
         "reverse": False,
     },
     {
