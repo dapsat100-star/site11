@@ -397,7 +397,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
 st.markdown("""
 <div class="section" style="padding:56px 8vw;">
-  <h2 style="margin:0 0 10px; color:#e6eefc; font-weight:800;">Solução</h2>
+  <h2 style="margin:0 0 10px; color:#00E3A5; font-weight:800;">Solução - Plataforma DAP ATLAS</h2>
   <p class="lead" style="margin:0 0 14px;">
     A MAVIPE integra <b>IA</b>, <b>imagens de satélite</b> (ópticas e SAR), <b>dados operacionais</b> e
     <b>meteoceanográficos</b> para transformar observações em <b>informações acionáveis</b> — com
