@@ -417,10 +417,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
-
-
-# ================== SETORES & APLICAÇÕES ==================
+# ================== SETORES & APLICAÇÕES (única seção integrada) ==================
 import base64, textwrap
 from pathlib import Path
 
@@ -450,6 +447,7 @@ st.markdown("""
   opacity:1!important;
 }
 
+/* GRID dos cards */
 .sector-card-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
@@ -475,15 +473,33 @@ st.markdown("""
   margin-bottom:8px;
 }
 .sector-icon img{width:28px;height:28px;display:block}
-.sector-icon span{font-size:20px;display:inline-block;line-height:1}
 .sector-card h3{margin:0;color:#0b1221;font-size:1.25rem;font-weight:600}
 .sector-card p{color:#334155;margin:.4rem 0 .6rem;line-height:1.5}
 .sector-card ul{color:#475569;margin:.5rem 0 0 1.1rem}
 .sector-card li{margin:.35rem 0;font-size:.96rem;line-height:1.4}
+
+/* APLICAÇÕES (imagens + textos) */
+.sol-img{
+  width:100%;
+  max-width:520px;
+  height:auto;
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.10);
+  display:block;
+  margin:0 auto;
+  transition: transform 0.45s ease, box-shadow 0.45s ease;
+  will-change: transform;
+}
+.sol-img.sol-left:hover{transform-origin:left center!important;transform:scale(1.4)!important;z-index:5!important;position:relative!important;box-shadow:0 18px 44px rgba(0,0,0,.35);}
+.sol-img.sol-right:hover{transform-origin:right center!important;transform:scale(1.4)!important;z-index:5!important;position:relative!important;box-shadow:0 18px 44px rgba(0,0,0,.35);}
+.sol-cap{text-align:center;color:#334155;font-size:0.92rem;margin-top:8px;}
+.sol-title{font-weight:800;font-size:1.15rem;color:#0b1221;margin:0 0 6px;}
+.sol-text{font-size:0.98rem;line-height:1.55;color:#334155;margin:6px 0 0;}
+.sol-box{padding:24px 0;border-bottom:1px dashed rgba(0,0,0,.08);}
 </style>
 """, unsafe_allow_html=True)
 
-# Função para procurar ícone
+# ===== Funções utilitárias =====
 def find_first(paths):
     for p in paths:
         if Path(p).exists() and Path(p).stat().st_size > 0:
@@ -505,20 +521,19 @@ def sector_icon_data_uri(slug: str) -> str | None:
     path = find_first(candidates)
     return as_data_uri(path) if path else None
 
-# ========== Ícone vetorial da plataforma (caso o arquivo não exista) ==========
+# ===== Ícone da plataforma (cria automaticamente) =====
 oleogas_svg = """
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
   <rect width="64" height="64" rx="12" fill="#0b1221"/>
   <path d="M14 48h36v2H14v-2Zm12-14h4v14h-4V34Zm18 0h4v14h-4V34ZM20 22h24l-2 12H22l-2-12Zm3 0 2 10h14l2-10H23Zm6-8h6v6h-6v-6Zm-2 6h10v2h-10v-2Z" fill="#4EA8DE"/>
 </svg>
 """
-icons_dir = Path("icons")
-icons_dir.mkdir(exist_ok=True)
+icons_dir = Path("icons"); icons_dir.mkdir(exist_ok=True)
 oleogas_path = icons_dir / "oleogas.svg"
 if not oleogas_path.exists():
     oleogas_path.write_text(oleogas_svg.strip(), encoding="utf-8")
 
-# ---------- Conteúdo dos setores ----------
+# ===== Dados dos setores =====
 SECTORS = [
     {"slug":"oleogas","title":"Óleo & Gás",
      "desc":"Monitoramento de Emissão de Metano e Monitoramento de Ativos Críticos.",
@@ -526,124 +541,24 @@ SECTORS = [
         "Monitoramento de Emissão de Metano — OGMP 2.0 Nível 5.",
         "Supervisão contínua de dutos e instalações estratégicas com IA e análise temporal.",
         "Detecção de Derramamento de Petróleo e suporte à resposta ambiental."
-     ],
-     "fallback_emoji":"🛢️"}, 
-    
+     ]}, 
     {"slug":"defesa","title":"Defesa & Segurança",
      "desc":"Maritime & Ground Domain Awareness com alertas e análise assistida por IA.",
      "bullets":[
         "Monitoramento de embarcações não-colaborativas (dark ships).",
         "Monitoramento de fronteiras terrestres e marítimas.",
         "Acompanhamento de instalações civis e militares críticas."
-     ],
-     "fallback_emoji":"🛡️"},
-    
+     ]},
     {"slug":"ambiental","title":"Ambiental",
      "desc":"Monitoramento de emissões e riscos ambientais.",
      "bullets":[
         "Detecção de metano em aterros sanitários e áreas de resíduos.",
         "Acompanhamento de desmatamento e mudanças no uso do solo.",
         "Monitoramento de desastres ambientais como enchentes e derramamentos."
-     ],
-     "fallback_emoji":"🌎"},
+     ]},
 ]
 
-# ---------- Renderização HTML completa ----------
-cards = ['<div id="setores" class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:48px 8vw;">']
-cards.append('<h2>Setores & Aplicações</h2>')
-cards.append('<p class="subtitle">Óleo &amp; Gás • Defesa &amp; Segurança • Monitoramento Ambiental</p>')
-cards.append('<div class="sector-card-grid">')
-
-for s in SECTORS:
-    data_uri = sector_icon_data_uri(s["slug"])
-    icon_html = (f'<div class="sector-icon"><img src="{data_uri}" alt="{s["slug"]}"/></div>'
-                 if data_uri else
-                 f'<div class="sector-icon"><span>{s["fallback_emoji"]}</span></div>')
-    bullets = "".join(f"<li>{b}</li>" for b in s["bullets"])
-    tpl = f"""
-<div id="{s["slug"]}" class="sector-card">
-  <div class="sector-head">
-    {icon_html}
-    <h3>{s["title"]}</h3>
-  </div>
-  <p>{s["desc"]}</p>
-  <ul>{bullets}</ul>
-</div>
-"""
-    cards.append(textwrap.dedent(tpl).strip())
-
-cards.append("</div></div>")
-html = "\n".join(cards)
-
-st.markdown(html, unsafe_allow_html=True)
-
-
-
-
-
-# ================== APLICAÇÔES (4 linhas x 2 colunas) ==================
-st.markdown('<div id="solucao"></div>', unsafe_allow_html=True)
-
-# Cabeçalho + fundo branco da seção
-st.markdown("""
-<div class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:24px 8vw;">
-  <h2 style="margin:0 0 8px;">Aplicações</h2>
-  <p style="margin:0; color:#334155; font-size:0.98rem;">
-    Quatro ofertas principais — cada uma com resultados e entregáveis claros, prontos para operação.
-  </p>
-</div>
-""", unsafe_allow_html=True)
-
-# ===== CSS robusto (hover sólido, sem transparência) =====
-st.markdown("""
-<style>
-/* não cortar o zoom pelos containers do Streamlit */
-.block-container, .main, .stMarkdown, [data-testid="column"], [data-testid="stVerticalBlock"], .element-container {
-  overflow: visible !important;
-}
-
-/* imagem base */
-.sol-img{
-  width:100%;
-  max-width:520px;
-  height:auto;
-  border-radius:12px;
-  box-shadow:0 8px 24px rgba(0,0,0,.10);
-  display:block;
-  margin:0 auto;
-  transition: transform 0.45s ease, box-shadow 0.45s ease;
-  will-change: transform;
-}
-
-/* direções aplicadas NA PRÓPRIA IMG */
-.sol-img.sol-left:hover{
-  transform-origin: left center !important;
-  transform: scale(1.40) !important;
-  background:#ffffff !important;      /* fundo branco sólido */
-  z-index: 5 !important;
-  position: relative !important;
-  box-shadow:0 18px 44px rgba(0,0,0,.35);
-}
-.sol-img.sol-right:hover{
-  transform-origin: right center !important;
-  transform: scale(1.40) !important;
-  background:#ffffff !important;      /* fundo branco sólido */
-  z-index: 5 !important;
-  position: relative !important;
-  box-shadow:0 18px 44px rgba(0,0,0,.35);
-}
-
-/* textos */
-.sol-cap{ text-align:center; color:#334155; font-size:0.92rem; margin-top:8px; }
-.sol-title{ font-weight:800; font-size:1.15rem; color:#FFFFFF; margin:0 0 6px; }
-.sol-text{ font-size:0.98rem; line-height:1.55; color:#FFFFFF; margin:6px 0 0; }
-
-/* wrapper */
-.sol-box{ padding:14px 0 28px; border-bottom:1px dashed rgba(0,0,0,.08); }
-</style>
-""", unsafe_allow_html=True)
-
-# ===== Dados das 4 soluções =====
+# ===== Dados das soluções =====
 SOLUTIONS = [
     {
         "title": "Monitoramento de Metano — OGMP 2.0 (Nível 5)",
@@ -662,7 +577,7 @@ SOLUTIONS = [
     },
     {
         "title": "Derramamento de Óleo no Mar",
-      "desc": (
+        "desc": (
             "<ul style='margin:.4rem 0 0 1.1rem'>"
             "<li>Emprego de imagens de satélites do tipo radar (SAR), combinadas à IA.</li>"
             "<li>Detecção de derramamentos de óleo no mar, dia e noite (24/7).</li>"
@@ -671,7 +586,6 @@ SOLUTIONS = [
             "<li>Dados apresentados em tabela e resumo conciso para apoiar a resposta ambiental e identificar a fonte causadora.</li>"
             "</ul>"
         ),
-
         "img": "solucao2.png",
         "caption": "Tela da plataforma DAP ATLAS",
         "reverse": True,
@@ -695,34 +609,63 @@ SOLUTIONS = [
     },
 ]
 
-# ===== Render =====
-for i, s in enumerate(SOLUTIONS, start=1):
-    st.markdown('<div class="sol-box">', unsafe_allow_html=True)
+# ===== Renderização completa =====
+st.markdown('<div id="setores" class="section" style="background:#ffffff; color:#0b1221; border-top:1px solid rgba(0,0,0,.06); padding:48px 8vw;">', unsafe_allow_html=True)
+st.markdown('<h2>Setores & Aplicações</h2>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">Óleo &amp; Gás • Defesa &amp; Segurança • Monitoramento Ambiental</p>', unsafe_allow_html=True)
 
+# ---- Grid dos Setores ----
+cards = ['<div class="sector-card-grid">']
+for s in SECTORS:
+    data_uri = sector_icon_data_uri(s["slug"])
+    icon_html = f'<div class="sector-icon"><img src="{data_uri}" alt="{s["slug"]}"/></div>' if data_uri else ""
+    bullets = "".join(f"<li>{b}</li>" for b in s["bullets"])
+    tpl = f"""
+<div id="{s["slug"]}" class="sector-card">
+  <div class="sector-head">
+    {icon_html}
+    <h3>{s["title"]}</h3>
+  </div>
+  <p>{s["desc"]}</p>
+  <ul>{bullets}</ul>
+</div>
+"""
+    cards.append(textwrap.dedent(tpl).strip())
+cards.append("</div>")
+st.markdown("\n".join(cards), unsafe_allow_html=True)
+
+# ---- Aplicações (continuação dentro da mesma seção) ----
+st.markdown("<hr style='margin:3rem 0; border:0; border-top:1px solid rgba(0,0,0,.08);'/>", unsafe_allow_html=True)
+st.markdown("<h3 style='text-align:center; font-weight:700; color:#0b1221;'>Aplicações</h3>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; color:#334155;'>Quatro ofertas principais — cada uma com resultados e entregáveis claros, prontos para operação.</p>", unsafe_allow_html=True)
+
+for s in SOLUTIONS:
+    st.markdown('<div class="sol-box">', unsafe_allow_html=True)
     if s["reverse"]:
         col_text, col_img = st.columns([1.2, 1], gap="large")
     else:
         col_img, col_text = st.columns([1, 1.2], gap="large")
 
-    # Imagem
+    # imagem
     with col_img:
         p = Path(s["img"])
         if p.exists() and p.stat().st_size > 0:
             img_dir_class = "sol-left" if not s["reverse"] else "sol-right"
-            st.markdown(
-                f"<img class='sol-img {img_dir_class}' src='{as_data_uri(p)}' alt='{s['title']}'/>",
-                unsafe_allow_html=True
-            )
+            st.markdown(f"<img class='sol-img {img_dir_class}' src='{as_data_uri(p)}' alt='{s['title']}'/>", unsafe_allow_html=True)
             st.markdown(f"<div class='sol-cap'>{s['caption']}</div>", unsafe_allow_html=True)
         else:
             st.info(f"Imagem não encontrada ({s['img']}).")
 
-    # Texto
+    # texto
     with col_text:
         st.markdown(f"<div class='sol-title'>{s['title']}</div>", unsafe_allow_html=True)
         st.markdown(f"<div class='sol-text'>{s['desc']}</div>", unsafe_allow_html=True)
-
     st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
+
+
+
 
 
 
