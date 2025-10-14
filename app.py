@@ -367,7 +367,7 @@ with col1:
     <div style="padding-right:2vw;">
       <h2 style="margin:0 0 10px; color:#00E3A5; font-weight:800;">Plataforma DAP ATLAS</h2>
       <p class="lead" style="margin:0 0 14px;">
-        A DAP ATLAS é o pilar central das soluções desenvolvidas pela MAVIPE Sistemas Espaciais — uma plataforma geointeligente que transforma imagens de satélite em decisões rápidas, seguras e estratégicas.
+        É o pilar central das soluções desenvolvidas pela MAVIPE Sistemas Espaciais — uma plataforma geointeligente que transforma imagens de satélite em decisões rápidas, seguras e estratégicas.
       </p>
       <ul style="color:#334155; margin:0 0 0 1.1rem; line-height:1.5">
         <li><b>Tecnologias empregadas:</b> IA, aprendizado de máquina e métodos estatísticos tradicionais.</li>
