@@ -365,7 +365,7 @@ col1, col2 = st.columns([1.4, 1])
 with col1:
     st.markdown("""
     <div style="padding-right:2vw;">
-      <h2 style="margin:0 0 10px; color:#00E3A5; font-weight:800;">Plataforma DAP ATLAS</h2>
+      <h2 style="margin:0 0 10px; color:#00E3A5; font-weight:800;">Plataforma Geoespacial DAP ATLAS</h2>
       <p class="lead" style="margin:0 0 14px;">
         É o pilar central das aplicações desenvolvidas pela MAVIPE Sistemas Espaciais — uma plataforma geointeligente que transforma imagens de satélite em decisões rápidas, seguras e estratégicas.Originalmente concebida para operações ISR (Intelligence, Surveillance & Reconnaissance) e apoio a centros de comando e controle (C2), a plataforma evoluiu para atender também aos setores de energia, meio ambiente, infraestrutura, logística e petróleo & gás.
       </p>
