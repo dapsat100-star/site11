@@ -371,7 +371,7 @@ with col1:
       </p>
       <ul style="color:#334155; margin:0 0 0 1.1rem; line-height:1.5">
         <li><b>Tecnologias empregadas:</b> Inteligência Artificial, Aprendizado de Máquina e Métodos Estatísticos Tradicionais.</li>
-        <li><b>Entregáveis:</b> análises, dados e insights acionáveis para apoiar decisões de gestores e autoridades.</li>
+        <li><b>Entregáveis:</b> Análises, Dados e Insights Acionáveis para Apoiar Decisões de Gestores e Autoridades.</li>
       </ul>
     </div>
     """, unsafe_allow_html=True)
