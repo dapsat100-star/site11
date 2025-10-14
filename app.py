@@ -370,7 +370,7 @@ with col1:
         É o pilar central das aplicações desenvolvidas pela MAVIPE Sistemas Espaciais — uma plataforma geointeligente que transforma imagens de satélite em decisões rápidas, seguras e estratégicas.Originalmente concebida para operações ISR (Intelligence, Surveillance & Reconnaissance) e apoio a centros de comando e controle (C2), a plataforma evoluiu para atender também aos setores de energia, meio ambiente, infraestrutura, logística e petróleo & gás.
       </p>
       <ul style="color:#334155; margin:0 0 0 1.1rem; line-height:1.5">
-        <li><b>Tecnologias empregadas:</b> IA, aprendizado de máquina e métodos estatísticos tradicionais.</li>
+        <li><b>Tecnologias empregadas:</b> Inteligência Artificial, Aprendizado de Máquina e Métodos Estatísticos Tradicionais.</li>
         <li><b>Entregáveis:</b> análises, dados e insights acionáveis para apoiar decisões de gestores e autoridades.</li>
       </ul>
     </div>
